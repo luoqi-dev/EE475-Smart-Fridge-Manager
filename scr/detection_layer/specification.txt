@@ -1,0 +1,5 @@
+// This is an example:
+
+Inputs: data/sessions/session_ID/frames/framexxx.jpg
+
+Ouputs: data/sessions/session_ID/vision.json

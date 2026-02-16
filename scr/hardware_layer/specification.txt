@@ -1,0 +1,5 @@
+This is an example
+
+Inputs: physical environment
+
+Outputs: data/sessions/session_ID/frames/framexxx.jpg

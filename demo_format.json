@@ -1,0 +1,46 @@
+{
+  "session_id": "session_20260216_144514",
+  "metadata": {
+    "camera_model": "Raspberry Pi Camera Module v2",
+    "resolution": "640x480",
+    "fps": 2,
+    "yolo_model": "gemini-3-flash-preview",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "frame_path": "/Users/vul3su4gmail.com/Desktop/UW/SCHOOL/26 Winter/EE 475/main/EE475-Smart-Fridge-Manager/data/2.png",
+      "index": 0,
+      "timestamp": "2026-02-16T14:45:14.000Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.9,
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    }
+  ],
+  "roi_definition": {
+    "name": "fridge_interior",
+    "coordinates": {
+      "x": 200,
+      "y": 100,
+      "width": 300,
+      "height": 350
+    }
+  }
+}

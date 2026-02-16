@@ -1,0 +1,102 @@
+{
+  "session_id": "session_20260130_143052",
+  "metadata": {
+    "camera_model": "Raspberry Pi Camera Module v2",
+    "resolution": "640x480",
+    "fps": 2,
+    "yolo_model": "yolov8n-fridge-v1.pt",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "index": 0,
+      "timestamp": "2026-01-30T14:30:52.123Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.88,
+          "bbox": { "x": 120, "y": 210, "width": 80, "height": 85 },
+          "center": { "x": 160, "y": 252.5 },
+          "track_id": 1,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "hash_0000"
+    },
+    {
+      "index": 1,
+      "timestamp": "2026-01-30T14:30:52.623Z",
+      "timestamp_ms": 500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.90,
+          "bbox": { "x": 140, "y": 220, "width": 82, "height": 87 },
+          "center": { "x": 181, "y": 263.5 },
+          "track_id": 1,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "hash_0001"
+    },
+    {
+      "index": 2,
+      "timestamp": "2026-01-30T14:30:53.123Z",
+      "timestamp_ms": 1000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.92,
+          "bbox": { "x": 180, "y": 200, "width": 85, "height": 90 },
+          "center": { "x": 222.5, "y": 245 },
+          "track_id": 1,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "hash_0002"
+    },
+    {
+      "index": 3,
+      "timestamp": "2026-01-30T14:30:53.623Z",
+      "timestamp_ms": 1500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.93,
+          "bbox": { "x": 220, "y": 180, "width": 85, "height": 90 },
+          "center": { "x": 262.5, "y": 225 },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": "hash_0003"
+    },
+    {
+      "index": 4,
+      "timestamp": "2026-01-30T14:30:54.123Z",
+      "timestamp_ms": 2000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": { "x": 240, "y": 170, "width": 88, "height": 92 },
+          "center": { "x": 284, "y": 216 },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": "hash_0004"
+    }
+  ],
+  "roi_definition": {
+    "name": "fridge_interior",
+    "coordinates": {
+      "x": 200,
+      "y": 100,
+      "width": 300,
+      "height": 350
+    }
+  }
+}
+

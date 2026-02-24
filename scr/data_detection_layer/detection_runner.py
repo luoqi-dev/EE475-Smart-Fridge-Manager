@@ -7,7 +7,7 @@ import sqlite3
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Set
 
 # Local imports (your repo structure)
 from loader import (
@@ -16,7 +16,7 @@ from loader import (
     TypeValidationError,
     ValueValidationError,
 )
-from vision_to_events import infer_db_events_from_vision_session, insert_events
+from vision_to_events import DbEvent, ensure_schema_v2, infer_db_events_from_vision_session, insert_events
 
 
 # ----------------------------
@@ -149,12 +149,92 @@ def connect_db(db_path: Path) -> sqlite3.Connection:
     return conn
 
 
+def _db_debug_enabled() -> bool:
+    """
+    Enable detailed DB post-write logging only when FRIDGE_DB_DEBUG=1.
+    """
+    return os.environ.get("FRIDGE_DB_DEBUG", "0").strip() == "1"
+
+
+def _print_db_debug(
+    conn: sqlite3.Connection,
+    *,
+    session_id: str,
+    inferred_events_count: int,
+    db_rows_affected: int,
+    db_events: List[DbEvent],
+) -> None:
+    print(
+        "[DetectionRunner][DB] Summary: "
+        f"session_id={session_id}, "
+        f"inferred_events_count={inferred_events_count}, "
+        f"db_rows_affected={db_rows_affected}"
+    )
+
+    rows = conn.execute(
+        """
+        SELECT id, session_id, event_time_utc, item_name, status, confidence, track_id
+        FROM events
+        WHERE session_id = ?
+        ORDER BY event_time_utc ASC, id ASC;
+        """,
+        (session_id,),
+    ).fetchall()
+
+    print(f"[DetectionRunner][DB] Rows for session_id={session_id}:")
+    if not rows:
+        print("  []")
+    else:
+        for r in rows:
+            print(f"  id={r[0]} time={r[2]} item={r[3]} status={r[4]} conf={r[5]} track_id={r[6]}")
+
+    item_names: Set[str] = {e.item_name for e in db_events}
+    if not item_names:
+        print("[DetectionRunner][DB] Inventory snapshot skipped: no inferred events.")
+        return
+
+    for item_name in sorted(item_names):
+        counts = conn.execute(
+            """
+            SELECT status, COUNT(*) as cnt
+            FROM events
+            WHERE item_name = ?
+            GROUP BY status
+            ORDER BY status;
+            """,
+            (item_name,),
+        ).fetchall()
+
+        print(f"[DetectionRunner][DB] Inventory snapshot for item={item_name}:")
+        if not counts:
+            print("  counts=[]")
+        else:
+            compact_counts = ", ".join([f"{status}:{cnt}" for status, cnt in counts])
+            print(f"  counts=[{compact_counts}]")
+
+        fifo_row = conn.execute(
+            """
+            SELECT id, event_time_utc
+            FROM events
+            WHERE item_name = ? AND status = 'IN_FRIDGE'
+            ORDER BY event_time_utc ASC, id ASC
+            LIMIT 1;
+            """,
+            (item_name,),
+        ).fetchone()
+
+        if fifo_row is None:
+            print("  earliest_in_fridge=None")
+        else:
+            print(f"  earliest_in_fridge=id={fifo_row[0]}, time={fifo_row[1]}")
+
+
 def process_session_to_events(project_root: Path, session_id: str) -> int:
     """
     End-to-end:
       - wait for vision.json
       - load dataclass
-      - infer PUT_IN/TAKE_OUT events
+      - infer IN_FRIDGE/REMOVED events
       - insert into SQLite events table
 
     Returns:
@@ -176,8 +256,17 @@ def process_session_to_events(project_root: Path, session_id: str) -> int:
 
     conn = connect_db(db_path)
     try:
+        ensure_schema_v2(conn)
         inserted = insert_events(conn, db_events)
         print(f"[DetectionRunner] Successfully inserted {inserted} rows into events table.")
+        if _db_debug_enabled():
+            _print_db_debug(
+                conn,
+                session_id=session.session_id,
+                inferred_events_count=len(db_events),
+                db_rows_affected=inserted,
+                db_events=db_events,
+            )
         return inserted
     finally:
         conn.close()

@@ -1,0 +1,73 @@
+{
+  "session_id": "session_20260224_164000",
+  "metadata": {
+    "camera_model": "RaspberryPi Camera Module 3",
+    "resolution": "640x480",
+    "fps": 2,
+    "yolo_model": "yolov8n.pt",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "index": 0,
+      "timestamp": "2026-02-24T16:40:00.000Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.86,
+          "bbox": {
+            "x": 140,
+            "y": 190,
+            "width": 60,
+            "height": 60
+          },
+          "center": {
+            "x": 170.0,
+            "y": 220.0
+          },
+          "track_id": 41,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "0000000000000000000000000000000000000000000000000000000000000001"
+    },
+    {
+      "index": 1,
+      "timestamp": "2026-02-24T16:40:00.500Z",
+      "timestamp_ms": 500,
+      "detections": [],
+      "frame_hash": "0000000000000000000000000000000000000000000000000000000000000002"
+    },
+    {
+      "index": 2,
+      "timestamp": "2026-02-24T16:40:01.000Z",
+      "timestamp_ms": 1000,
+      "detections": [],
+      "frame_hash": "0000000000000000000000000000000000000000000000000000000000000003"
+    },
+    {
+      "index": 3,
+      "timestamp": "2026-02-24T16:40:01.500Z",
+      "timestamp_ms": 1500,
+      "detections": [],
+      "frame_hash": "0000000000000000000000000000000000000000000000000000000000000004"
+    },
+    {
+      "index": 4,
+      "timestamp": "2026-02-24T16:40:02.000Z",
+      "timestamp_ms": 2000,
+      "detections": [],
+      "frame_hash": "0000000000000000000000000000000000000000000000000000000000000005"
+    }
+  ],
+  "roi_definition": {
+    "name": "fridge_interior",
+    "coordinates": {
+      "x": 200,
+      "y": 100,
+      "width": 300,
+      "height": 350
+    }
+  }
+}

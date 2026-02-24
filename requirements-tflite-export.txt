@@ -1,0 +1,16 @@
+# TFLite 匯出所需依賴（export_tflite_only.py / train_export.py 的 TFLite 步驟）
+# 一次安裝：pip install -r requirements-tflite-export.txt
+
+# ONNX 相關（TFLite 會先轉 ONNX）
+onnx>=1.12.0,<1.18.0
+onnxscript
+onnxslim>=0.1.59
+sng4onnx>=1.0.1
+onnx_graphsurgeon>=0.3.26
+
+# ONNX -> TensorFlow -> TFLite（onnx2tf 會用到 tf_keras）
+onnx2tf
+tf_keras
+
+# 若 Ultralytics 仍要求 ai-edge-litert 1.2~1.4，PyPI 僅有 2.1.2，可先不裝或試裝：
+# ai-edge-litert

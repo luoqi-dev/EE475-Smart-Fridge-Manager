@@ -37,10 +37,11 @@ def get_class_name(model, class_id: int) -> str:
         return model.names.get(int(class_id), f"class_{class_id}")
     return f"class_{class_id}"
 
-def run_inference_on_folder(image_dir: Path):
+def run_inference_on_folder(image_dir: Path, show: bool = True):
     """
     Process a folder of images (001.jpg, 002.jpg, ...) in numerical order.
     Uses model.track() with persist=True and bytetrack for identity persistence.
+    If show=False, no OpenCV window is shown (batch/headless mode).
     """
     ensure_events_dir()
     image_dir = Path(image_dir)
@@ -48,7 +49,7 @@ def run_inference_on_folder(image_dir: Path):
         image_dir.mkdir(parents=True, exist_ok=True)
         print(f"Created folder: {image_dir}")
         print("Put images there (e.g. 001.jpg, 002.jpg, ...) and run again, or run: python inference.py <path_to_folder>")
-        return
+        return (0, 0)
     if not image_dir.is_dir():
         raise NotADirectoryError(str(image_dir))
 
@@ -64,7 +65,7 @@ def run_inference_on_folder(image_dir: Path):
 
     if not image_paths:
         print(f"No images found in {image_dir}")
-        return
+        return (0, 0)
 
     # Load model (TFLite or .pt)
     if not MODEL_PATH.exists():
@@ -76,11 +77,32 @@ def run_inference_on_folder(image_dir: Path):
     put_in_count = 0
     take_out_count = 0
 
+    # Demo-format output (session_id, metadata, samples, roi_definition)
+    session_id = "session_" + datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    h0, w0 = 480, 640  # default if no frame read yet
+    demo = {
+        "session_id": session_id,
+        "metadata": {
+            "camera_model": "Raspberry Pi Camera Module v2",
+            "resolution": "640x480",
+            "fps": 2,
+            "yolo_model": str(MODEL_PATH.name),
+            "confidence_threshold": 0.5,
+        },
+        "samples": [],
+        "roi_definition": {
+            "name": "fridge_interior",
+            "coordinates": {"x": 200, "y": 100, "width": 300, "height": 350},
+        },
+    }
+    sample_index = 0
+
     for idx, img_path in enumerate(image_paths):
         frame = cv2.imread(str(img_path))
         if frame is None:
             continue
         h, w = frame.shape[:2]
+        h0, w0 = h, w
 
         # track with persist and ByteTrack (Kalman-based identity persistence)
         results = model.track(
@@ -89,6 +111,12 @@ def run_inference_on_folder(image_dir: Path):
             tracker="bytetrack.yaml",
             verbose=False,
         )
+
+        ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+        ts_ms = idx * 500  # assume ~2 fps
+        frame_path_str = str(img_path.resolve())
+        detections_for_sample = []
+        motion_for_track = {}  # track_id -> "PUT_IN" | "TAKE_OUT" this frame
 
         # Draw trigger line
         line_y = int(TRIGGER_Y * h)
@@ -108,10 +136,15 @@ def run_inference_on_folder(image_dir: Path):
                     tid = int(box.id[0]) if box.id is not None else None
                     cls_id = int(box.cls[0])
                     cls_name = get_class_name(model, cls_id)
+                    conf = float(box.conf[0]) if box.conf is not None else 0.0
 
-                    # Centroid (normalized 0–1)
-                    x_center = (xyxy[0] + xyxy[2]) / 2 / w
-                    y_center = (xyxy[1] + xyxy[3]) / 2 / h
+                    # Bbox and center (normalized 0-1 for demo_format); use float() for JSON serializability
+                    x1 = float(xyxy[0] / w)
+                    y1 = float(xyxy[1] / h)
+                    x2 = float(xyxy[2] / w)
+                    y2 = float(xyxy[3] / h)
+                    x_center = float((xyxy[0] + xyxy[2]) / 2 / w)
+                    y_center = float((xyxy[1] + xyxy[3]) / 2 / h)
 
                     if tid is not None:
                         above_now = y_center < TRIGGER_Y
@@ -119,36 +152,74 @@ def run_inference_on_folder(image_dir: Path):
 
                         if tid in side:
                             prev_side = side[tid]
+                            # Camera convention: above→below = take out, below→above = put in
                             if prev_side == "above" and now_side == "below":
-                                motion = "PUT_IN"
-                                put_in_count += 1
-                                write_event(img_path.stem, tid, cls_name, motion)
-                            elif prev_side == "below" and now_side == "above":
                                 motion = "TAKE_OUT"
                                 take_out_count += 1
                                 write_event(img_path.stem, tid, cls_name, motion)
+                                motion_for_track[tid] = motion
+                            elif prev_side == "below" and now_side == "above":
+                                motion = "PUT_IN"
+                                put_in_count += 1
+                                write_event(img_path.stem, tid, cls_name, motion)
+                                motion_for_track[tid] = motion
                         side[tid] = now_side
 
+                    det = {
+                        "class_name": str(cls_name),
+                        "confidence": round(float(conf), 4),
+                        "bbox": {
+                            "x": float(round(x1, 4)), "y": float(round(y1, 4)),
+                            "width": float(round(x2 - x1, 4)), "height": float(round(y2 - y1, 4)),
+                        },
+                        "center": {"x": float(round(x_center, 4)), "y": float(round(y_center, 4))},
+                        "track_id": int(tid) if tid is not None else 0,
+                        "in_roi": True,
+                    }
+                    if tid is not None and tid in motion_for_track:
+                        det["motion_vector"] = motion_for_track[tid]
+                    detections_for_sample.append(det)
+
                     # Draw box and label
-                    x1, y1, x2, y2 = map(int, xyxy)
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                    x1_px, y1_px, x2_px, y2_px = map(int, xyxy)
+                    cv2.rectangle(frame, (x1_px, y1_px), (x2_px, y2_px), (0, 255, 0), 2)
                     label = f"{cls_name}" + (f" ID:{tid}" if tid is not None else "")
                     cv2.putText(
-                        frame, label, (x1, y1 - 5),
+                        frame, label, (x1_px, y1_px - 5),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1,
                     )
+
+        demo["samples"].append({
+            "frame_path": frame_path_str,
+            "index": int(sample_index),
+            "timestamp": ts,
+            "timestamp_ms": int(ts_ms),
+            "detections": detections_for_sample,
+            "frame_hash": "",
+        })
+        sample_index += 1
 
         # On-screen IN/OUT count
         cv2.putText(
             frame, f"PUT_IN: {put_in_count}  TAKE_OUT: {take_out_count}",
             (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2,
         )
-        cv2.imshow("inference", frame)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+        if show:
+            cv2.imshow("inference", frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
 
-    cv2.destroyAllWindows()
-    print(f"Processed {len(image_paths)} frames. PUT_IN: {put_in_count}, TAKE_OUT: {take_out_count}")
+    if show:
+        cv2.destroyAllWindows()
+
+    demo["metadata"]["resolution"] = f"{w0}x{h0}"
+    out_path = EVENTS_DIR / f"{session_id}.json"
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(demo, f, indent=2, ensure_ascii=False)
+    print(f"Demo-format output: {out_path}")
+
+    print(f"Processed {len(image_paths)} frames. PUT_IN (put in): {put_in_count}, TAKE_OUT (take out): {take_out_count}")
+    return (put_in_count, take_out_count)
 
 def write_event(frame_id: str, track_id: int, object_class: str, motion_vector: str):
     """Write one JSON event to ./events/ for the Data Processing Layer watcher."""
@@ -166,8 +237,13 @@ def write_event(frame_id: str, track_id: int, object_class: str, motion_vector: 
 
 if __name__ == "__main__":
     import sys
-    # Default: detection/model/images (001.jpg, 002.jpg, ...). Or: python inference.py <path_to_image_folder>
+    # Default: detection/model/images. Or: python inference.py [--no-show] <path_to_image_folder>
     image_folder = MODEL_DIR / "images"
-    if len(sys.argv) > 1:
-        image_folder = Path(sys.argv[1])
-    run_inference_on_folder(image_folder)
+    show = True
+    for arg in sys.argv[1:]:
+        if arg == "--no-show":
+            show = False
+        elif not arg.startswith("-"):
+            image_folder = Path(arg)
+            break
+    run_inference_on_folder(image_folder, show=show)

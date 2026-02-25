@@ -1,0 +1,347 @@
+{
+  "session_id": "session_20260225_003536",
+  "metadata": {
+    "camera_model": "Raspberry Pi Camera Module v2",
+    "resolution": "640x480",
+    "fps": 2,
+    "yolo_model": "fruit_model_optimized.onnx",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\001.jpg",
+      "index": 0,
+      "timestamp": "2026-02-25T00:35:37.376Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8644,
+          "bbox": {
+            "x": 0.48,
+            "y": 0.5132,
+            "width": 0.52,
+            "height": 0.4843
+          },
+          "center": {
+            "x": 0.74,
+            "y": 0.7554
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\002.jpg",
+      "index": 1,
+      "timestamp": "2026-02-25T00:35:37.408Z",
+      "timestamp_ms": 500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8682,
+          "bbox": {
+            "x": 0.4597,
+            "y": 0.5148,
+            "width": 0.52,
+            "height": 0.4834
+          },
+          "center": {
+            "x": 0.7197,
+            "y": 0.7565
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\003.jpg",
+      "index": 2,
+      "timestamp": "2026-02-25T00:35:37.437Z",
+      "timestamp_ms": 1000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8618,
+          "bbox": {
+            "x": 0.4576,
+            "y": 0.5141,
+            "width": 0.5214,
+            "height": 0.4836
+          },
+          "center": {
+            "x": 0.7182,
+            "y": 0.7559
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\004.jpg",
+      "index": 3,
+      "timestamp": "2026-02-25T00:35:37.463Z",
+      "timestamp_ms": 1500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8527,
+          "bbox": {
+            "x": 0.4613,
+            "y": 0.5141,
+            "width": 0.5223,
+            "height": 0.4834
+          },
+          "center": {
+            "x": 0.7224,
+            "y": 0.7558
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\005.jpg",
+      "index": 4,
+      "timestamp": "2026-02-25T00:35:37.493Z",
+      "timestamp_ms": 2000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8588,
+          "bbox": {
+            "x": 0.4612,
+            "y": 0.5153,
+            "width": 0.5228,
+            "height": 0.4825
+          },
+          "center": {
+            "x": 0.7226,
+            "y": 0.7566
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\006.jpg",
+      "index": 5,
+      "timestamp": "2026-02-25T00:35:37.522Z",
+      "timestamp_ms": 2500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8605,
+          "bbox": {
+            "x": 0.5004,
+            "y": 0.5337,
+            "width": 0.4996,
+            "height": 0.4656
+          },
+          "center": {
+            "x": 0.7502,
+            "y": 0.7666
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\007.jpg",
+      "index": 6,
+      "timestamp": "2026-02-25T00:35:37.550Z",
+      "timestamp_ms": 3000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8409,
+          "bbox": {
+            "x": 0.4804,
+            "y": 0.56,
+            "width": 0.4811,
+            "height": 0.4383
+          },
+          "center": {
+            "x": 0.7209,
+            "y": 0.7791
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\008.jpg",
+      "index": 7,
+      "timestamp": "2026-02-25T00:35:37.579Z",
+      "timestamp_ms": 3500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8352,
+          "bbox": {
+            "x": 0.4702,
+            "y": 0.5724,
+            "width": 0.4764,
+            "height": 0.4267
+          },
+          "center": {
+            "x": 0.7084,
+            "y": 0.7858
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\009.jpg",
+      "index": 8,
+      "timestamp": "2026-02-25T00:35:37.607Z",
+      "timestamp_ms": 4000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8545,
+          "bbox": {
+            "x": 0.5097,
+            "y": 0.5636,
+            "width": 0.4844,
+            "height": 0.4362
+          },
+          "center": {
+            "x": 0.7519,
+            "y": 0.7817
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\010.jpg",
+      "index": 9,
+      "timestamp": "2026-02-25T00:35:37.634Z",
+      "timestamp_ms": 4500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8236,
+          "bbox": {
+            "x": 0.4396,
+            "y": 0.5067,
+            "width": 0.5488,
+            "height": 0.4922
+          },
+          "center": {
+            "x": 0.714,
+            "y": 0.7528
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\011.jpg",
+      "index": 10,
+      "timestamp": "2026-02-25T00:35:37.664Z",
+      "timestamp_ms": 5000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.9065,
+          "bbox": {
+            "x": 0.3193,
+            "y": 0.2825,
+            "width": 0.6807,
+            "height": 0.7127
+          },
+          "center": {
+            "x": 0.6597,
+            "y": 0.6388
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\012.jpg",
+      "index": 11,
+      "timestamp": "2026-02-25T00:35:37.691Z",
+      "timestamp_ms": 5500,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8628,
+          "bbox": {
+            "x": 0.2914,
+            "y": 0.1086,
+            "width": 0.7086,
+            "height": 0.7
+          },
+          "center": {
+            "x": 0.6457,
+            "y": 0.4586
+          },
+          "track_id": 1,
+          "in_roi": true,
+          "motion_vector": "PUT_IN"
+        }
+      ],
+      "frame_hash": ""
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\013.jpg",
+      "index": 12,
+      "timestamp": "2026-02-25T00:35:37.719Z",
+      "timestamp_ms": 6000,
+      "detections": [
+        {
+          "class_name": "fruit",
+          "confidence": 0.8006,
+          "bbox": {
+            "x": 0.4011,
+            "y": 0.0253,
+            "width": 0.5635,
+            "height": 0.5136
+          },
+          "center": {
+            "x": 0.6829,
+            "y": 0.2821
+          },
+          "track_id": 1,
+          "in_roi": true
+        }
+      ],
+      "frame_hash": ""
+    }
+  ],
+  "roi_definition": {
+    "name": "fridge_interior",
+    "coordinates": {
+      "x": 200,
+      "y": 100,
+      "width": 300,
+      "height": 350
+    }
+  }
+}

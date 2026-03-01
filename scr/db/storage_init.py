@@ -9,7 +9,7 @@
 #   schemas/
 #     manifest.json
 #     01_events.sql
-#     02_inventory.sql
+#     02_collision_workflow.sql
 #
 # You can add more .sql files later; initializer will execute all in order.
 # How to use: python -m src.db.storage_init /tmp/test_fridge.db
@@ -31,7 +31,7 @@ class SchemaManifest:
       {
         "schemas": [
           "01_events.sql",
-          "02_inventory.sql"
+          "02_collision_workflow.sql"
         ]
       }
     """
@@ -184,4 +184,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,6 +1,6 @@
 {
   "schemas": [
     "01_events.sql",
-    "02_inventory.sql"
+    "02_collision_workflow.sql"
   ]
 }

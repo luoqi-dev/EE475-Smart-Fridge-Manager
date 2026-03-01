@@ -5,15 +5,22 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Deque, Dict, List, Optional, Set, Tuple
 
+from collision_resolver import (
+    CollisionResolver,
+    OPERATION_PUT_IN,
+    OPERATION_TAKE_OUT,
+    ParsedOperation,
+    ensure_collision_schema,
+)
 from models import VisionSession
 
 
 @dataclass(frozen=True)
 class DbEvent:
     session_id: str
-    event_time_utc: str  # sample.timestamp (ISO-UTC-Z)
-    item_name: str       # detection.class_name
-    status: str          # 'IN_FRIDGE' | 'REMOVED'
+    event_time_utc: str
+    item_name: str
+    status: str
     confidence: float
     track_id: int
 
@@ -35,110 +42,8 @@ def _prune_window(window: Deque[int], current_frame: int, window_frames: int) ->
         window.popleft()
 
 
-def _table_exists(conn: sqlite3.Connection, table_name: str) -> bool:
-    row = conn.execute(
-        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=? LIMIT 1;",
-        (table_name,),
-    ).fetchone()
-    return row is not None
-
-
-def _create_events_table_v2(conn: sqlite3.Connection) -> None:
-    conn.executescript(
-        """
-        CREATE TABLE IF NOT EXISTS events (
-          id             INTEGER PRIMARY KEY AUTOINCREMENT,
-          session_id     TEXT,
-          event_time_utc TEXT NOT NULL,
-          item_name      TEXT NOT NULL,
-          status         TEXT NOT NULL CHECK(status IN ('IN_FRIDGE','REMOVED','PENDING')),
-          confidence     REAL,
-          track_id       INTEGER
-        );
-
-        CREATE INDEX IF NOT EXISTS idx_events_time ON events(event_time_utc);
-        CREATE INDEX IF NOT EXISTS idx_events_item_time ON events(item_name, event_time_utc);
-        """
-    )
-
-
 def ensure_schema_v2(conn: sqlite3.Connection) -> None:
-    """
-    Idempotently migrate events schema from v1 ACTION to v2 STATUS.
-    """
-    if not _table_exists(conn, "events"):
-        _create_events_table_v2(conn)
-        return
-
-    cols = conn.execute("PRAGMA table_info(events);").fetchall()
-    by_lower = {str(c[1]).lower(): str(c[1]) for c in cols}
-
-    status_col = by_lower.get("status")
-    action_col = by_lower.get("action")
-
-    if status_col is None and action_col is not None:
-        renamed = False
-        try:
-            conn.execute(f"ALTER TABLE events RENAME COLUMN {action_col} TO status;")
-            renamed = True
-        except sqlite3.OperationalError:
-            renamed = False
-
-        if not renamed:
-            conn.execute("ALTER TABLE events ADD COLUMN status TEXT;")
-            conn.execute(
-                """
-                UPDATE events
-                SET status = CASE UPPER(COALESCE(action, ''))
-                    WHEN 'PUT_IN' THEN 'IN_FRIDGE'
-                    WHEN 'TAKE_OUT' THEN 'REMOVED'
-                    WHEN 'IN_FRIDGE' THEN 'IN_FRIDGE'
-                    WHEN 'REMOVED' THEN 'REMOVED'
-                    WHEN 'PENDING' THEN 'PENDING'
-                    ELSE UPPER(COALESCE(action, 'PENDING'))
-                END
-                WHERE status IS NULL OR TRIM(status) = '';
-                """
-            )
-
-        cols = conn.execute("PRAGMA table_info(events);").fetchall()
-        by_lower = {str(c[1]).lower(): str(c[1]) for c in cols}
-        status_col = by_lower.get("status")
-        action_col = by_lower.get("action")
-
-    if status_col is not None and action_col is not None:
-        conn.execute(
-            f"""
-            UPDATE events
-            SET {status_col} = CASE UPPER(COALESCE({action_col}, ''))
-                WHEN 'PUT_IN' THEN 'IN_FRIDGE'
-                WHEN 'TAKE_OUT' THEN 'REMOVED'
-                WHEN 'IN_FRIDGE' THEN 'IN_FRIDGE'
-                WHEN 'REMOVED' THEN 'REMOVED'
-                WHEN 'PENDING' THEN 'PENDING'
-                ELSE UPPER(COALESCE({action_col}, 'PENDING'))
-            END
-            WHERE {status_col} IS NULL OR TRIM({status_col}) = '';
-            """
-        )
-
-    if status_col is not None:
-        conn.execute(
-            f"""
-            UPDATE events
-            SET {status_col} = CASE UPPER(COALESCE({status_col}, ''))
-                WHEN 'PUT_IN' THEN 'IN_FRIDGE'
-                WHEN 'TAKE_OUT' THEN 'REMOVED'
-                WHEN 'IN_FRIDGE' THEN 'IN_FRIDGE'
-                WHEN 'REMOVED' THEN 'REMOVED'
-                WHEN 'PENDING' THEN 'PENDING'
-                ELSE {status_col}
-            END;
-            """
-        )
-
-    _create_events_table_v2(conn)
-    conn.commit()
+    ensure_collision_schema(conn)
 
 
 def infer_db_events_from_vision_session(
@@ -151,11 +56,40 @@ def infer_db_events_from_vision_session(
     stable_after_transition: int = 3,
     miss_grace: int = 2,
 ) -> List[DbEvent]:
-    """
-    Convert VisionSession into status events with occlusion-tolerant evidence logic.
-    """
+    operations = infer_operations_from_vision_session(
+        session,
+        outside_evidence_min=outside_evidence_min,
+        inside_hit_min=inside_hit_min,
+        outside_hit_min=outside_hit_min,
+        window_frames=window_frames,
+        stable_after_transition=stable_after_transition,
+        miss_grace=miss_grace,
+    )
+    return [
+        DbEvent(
+            session_id=operation.session_id,
+            event_time_utc=operation.event_time_utc,
+            item_name=operation.item_name,
+            status="IN_FRIDGE" if operation.operation == OPERATION_PUT_IN else "REMOVED",
+            confidence=operation.confidence,
+            track_id=operation.track_id,
+        )
+        for operation in operations
+    ]
+
+
+def infer_operations_from_vision_session(
+    session: VisionSession,
+    *,
+    outside_evidence_min: int = 2,
+    inside_hit_min: int = 2,
+    outside_hit_min: int = 2,
+    window_frames: int = 5,
+    stable_after_transition: int = 3,
+    miss_grace: int = 2,
+) -> List[ParsedOperation]:
     states: Dict[Tuple[int, str], _TrackState] = {}
-    out: List[DbEvent] = []
+    out: List[ParsedOperation] = []
 
     samples_sorted = sorted(session.samples, key=lambda s: (s.timestamp_ms, s.index))
 
@@ -192,11 +126,11 @@ def infer_db_events_from_vision_session(
                         st.pending_put_frame = frame_no
                     elif 0 < (frame_no - st.pending_put_frame) <= stable_after_transition:
                         out.append(
-                            DbEvent(
+                            ParsedOperation(
                                 session_id=session.session_id,
                                 event_time_utc=sample.timestamp,
                                 item_name=det.class_name,
-                                status="IN_FRIDGE",
+                                operation=OPERATION_PUT_IN,
                                 confidence=float(det.confidence),
                                 track_id=int(det.track_id),
                             )
@@ -228,11 +162,11 @@ def infer_db_events_from_vision_session(
                         st.pending_remove_frame = frame_no
                     elif 0 < (frame_no - st.pending_remove_frame) <= stable_after_transition:
                         out.append(
-                            DbEvent(
+                            ParsedOperation(
                                 session_id=session.session_id,
                                 event_time_utc=sample.timestamp,
                                 item_name=det.class_name,
-                                status="REMOVED",
+                                operation=OPERATION_TAKE_OUT,
                                 confidence=float(det.confidence),
                                 track_id=int(det.track_id),
                             )
@@ -259,56 +193,20 @@ def infer_db_events_from_vision_session(
 
 
 def apply_events(conn: sqlite3.Connection, events: List[DbEvent]) -> int:
-    """
-    Apply events using FIFO inventory semantics in one IMMEDIATE transaction.
-
-    IN_FRIDGE: insert new row.
-    REMOVED: mark earliest IN_FRIDGE row for item_name as REMOVED (no new row).
-    """
-    ensure_schema_v2(conn)
-
-    if not events:
-        return 0
-
-    changed = 0
-    conn.execute("BEGIN IMMEDIATE;")
-    try:
-        for e in events:
-            if e.status == "IN_FRIDGE":
-                conn.execute(
-                    """
-                    INSERT INTO events (session_id, event_time_utc, item_name, status, confidence, track_id)
-                    VALUES (?, ?, ?, ?, ?, ?);
-                    """,
-                    (e.session_id, e.event_time_utc, e.item_name, e.status, e.confidence, e.track_id),
-                )
-                changed += 1
-            elif e.status == "REMOVED":
-                row = conn.execute(
-                    """
-                    SELECT id
-                    FROM events
-                    WHERE item_name=? AND status='IN_FRIDGE'
-                    ORDER BY event_time_utc ASC, id ASC
-                    LIMIT 1;
-                    """,
-                    (e.item_name,),
-                ).fetchone()
-                if row is not None:
-                    conn.execute("UPDATE events SET status='REMOVED' WHERE id=?;", (int(row[0]),))
-                    changed += 1
-            else:
-                raise ValueError(f"Unsupported status: {e.status}")
-        conn.commit()
-    except Exception:
-        conn.rollback()
-        raise
-
-    return changed
+    ensure_collision_schema(conn)
+    operations = [
+        ParsedOperation(
+            session_id=event.session_id,
+            event_time_utc=event.event_time_utc,
+            item_name=event.item_name,
+            operation=OPERATION_PUT_IN if event.status == "IN_FRIDGE" else OPERATION_TAKE_OUT,
+            confidence=event.confidence,
+            track_id=event.track_id,
+        )
+        for event in events
+    ]
+    return CollisionResolver(conn).apply_operations(operations)
 
 
 def insert_events(conn: sqlite3.Connection, events: List[DbEvent]) -> int:
-    """
-    Backward-compatible wrapper.
-    """
     return apply_events(conn, events)

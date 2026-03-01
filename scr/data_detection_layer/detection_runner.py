@@ -5,18 +5,18 @@ import os
 import socket
 import sqlite3
 import time
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Set
 
 # Local imports (your repo structure)
+from collision_resolver import CollisionActionConsumer, CollisionResolver, ensure_collision_schema
 from loader import (
     load_and_validate_vision_json,
     MissingFieldError,
     TypeValidationError,
     ValueValidationError,
 )
-from vision_to_events import DbEvent, ensure_schema_v2, infer_db_events_from_vision_session, insert_events
+from vision_to_events import DbEvent, infer_operations_from_vision_session
 
 
 # ----------------------------
@@ -173,7 +173,7 @@ def _print_db_debug(
 
     rows = conn.execute(
         """
-        SELECT id, session_id, event_time_utc, item_name, status, confidence, track_id
+        SELECT id, session_id, event_time_utc, item_name, status, confidence, track_id, item_instance_id, pending_type, case_id
         FROM events
         WHERE session_id = ?
         ORDER BY event_time_utc ASC, id ASC;
@@ -186,7 +186,11 @@ def _print_db_debug(
         print("  []")
     else:
         for r in rows:
-            print(f"  id={r[0]} time={r[2]} item={r[3]} status={r[4]} conf={r[5]} track_id={r[6]}")
+            print(
+                "  "
+                f"id={r[0]} time={r[2]} item={r[3]} status={r[4]} conf={r[5]} "
+                f"track_id={r[6]} item_instance_id={r[7]} pending_type={r[8]} case_id={r[9]}"
+            )
 
     item_names: Set[str] = {e.item_name for e in db_events}
     if not item_names:
@@ -248,22 +252,37 @@ def process_session_to_events(project_root: Path, session_id: str) -> int:
     session = load_and_validate_vision_json(str(vision_path))
     print(f"[DetectionRunner] Parsed VisionSession: samples={len(session.samples)}")
 
-    db_events = infer_db_events_from_vision_session(session)
-    print(f"[DetectionRunner] Inferred {len(db_events)} DB events.")
+    operations = infer_operations_from_vision_session(session)
+    print(f"[DetectionRunner] Inferred {len(operations)} high-level operations.")
+    db_events = [
+        DbEvent(
+            session_id=operation.session_id,
+            event_time_utc=operation.event_time_utc,
+            item_name=operation.item_name,
+            status="IN_FRIDGE" if operation.operation == "PUT_IN" else "REMOVED",
+            confidence=operation.confidence,
+            track_id=operation.track_id,
+        )
+        for operation in operations
+    ]
 
     db_path = project_root / DEFAULT_DB_REL
     print(f"[DetectionRunner] Writing to database: {db_path}")
 
     conn = connect_db(db_path)
     try:
-        ensure_schema_v2(conn)
-        inserted = insert_events(conn, db_events)
-        print(f"[DetectionRunner] Successfully inserted {inserted} rows into events table.")
+        ensure_collision_schema(conn)
+        inserted = CollisionResolver(conn).apply_operations(operations)
+        processed_actions = CollisionActionConsumer(conn).process_new_actions()
+        print(
+            "[DetectionRunner] Database updates complete: "
+            f"rows_inserted_or_updated={inserted}, processed_actions={processed_actions}."
+        )
         if _db_debug_enabled():
             _print_db_debug(
                 conn,
                 session_id=session.session_id,
-                inferred_events_count=len(db_events),
+                inferred_events_count=len(operations),
                 db_rows_affected=inserted,
                 db_events=db_events,
             )
@@ -306,7 +325,14 @@ def run_socket_listener(
             try:
                 conn, _ = server.accept()
             except socket.timeout:
-                # 每 1 秒执行一次
+                conn = connect_db(project_root / DEFAULT_DB_REL)
+                try:
+                    ensure_collision_schema(conn)
+                    processed_actions = CollisionActionConsumer(conn).process_new_actions()
+                    if processed_actions:
+                        print(f"[DetectionRunner] Processed {processed_actions} queued collision action(s).")
+                finally:
+                    conn.close()
                 print("[DetectionRunner] Listening...")
                 continue
 

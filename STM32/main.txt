@@ -1,0 +1,36 @@
+#include "mbed.h"
+
+// ======================= Shared state =======================
+// Door state: 1 = open (reed switch open), 0 = closed (reed switch closed)
+volatile int g_door_open = 0;
+
+// Average temperature in Celsius (from 4x DHT11)
+volatile float g_avg_temp = 0.0f;
+
+// Mutex for shared variables
+Mutex g_state_mutex;
+
+// ======================= Task entry prototypes =======================
+extern void task_switch_entry();
+extern void task_temperature_entry();
+extern void task_redled_entry();
+extern void task_whiteled_entry();
+
+// ======================= Threads =======================
+static Thread th_switch(osPriorityHigh,        2048);
+static Thread th_temp  (osPriorityAboveNormal, 4096); // DHT read uses timing, give more stack
+static Thread th_red   (osPriorityNormal,      1024);
+static Thread th_white (osPriorityNormal,      1024);
+
+int main() {
+    // Start tasks
+    th_switch.start(callback(task_switch_entry));
+    th_temp.start(callback(task_temperature_entry));
+    th_red.start(callback(task_redled_entry));
+    th_white.start(callback(task_whiteled_entry));
+
+    // main thread idles
+    while (true) {
+        ThisThread::sleep_for(1000ms);
+    }
+}

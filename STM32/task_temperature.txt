@@ -1,0 +1,132 @@
+#include "mbed.h"
+
+// ======================= Pin mapping =======================
+#define DHT1_PIN PB_2
+#define DHT2_PIN PB_4
+#define DHT3_PIN PB_11
+#define DHT4_PIN PB_12
+
+#define TEMP_SAMPLE_MS 1000  // DHT11 min ~1s
+
+// ======================= Shared vars =======================
+extern volatile float g_avg_temp;
+extern Mutex g_state_mutex;
+
+// --------- microsecond busy wait ----------
+static void sleep_us_busy(int us) {
+    Timer t;
+    t.start();
+    while (chrono::duration_cast<chrono::microseconds>(t.elapsed_time()).count() < us) {}
+    t.stop();
+}
+
+// Wait until pin equals target_level, or timeout(us). true if reached.
+static bool wait_level(DigitalIn &din, int target_level, int timeout_us) {
+    Timer t;
+    t.start();
+    while (din.read() != target_level) {
+        if (chrono::duration_cast<chrono::microseconds>(t.elapsed_time()).count() > timeout_us) {
+            return false;
+        }
+    }
+    t.stop();
+    return true;
+}
+
+// Read one byte from DHT11 stream
+static bool read_byte(DigitalIn &din, uint8_t &out) {
+    out = 0;
+    for (int i = 0; i < 8; i++) {
+        // Bit start: ~50us LOW then HIGH
+        if (!wait_level(din, 0, 120)) return false;
+        if (!wait_level(din, 1, 120)) return false;
+
+        // Measure HIGH duration
+        Timer t;
+        t.start();
+        if (!wait_level(din, 0, 200)) { t.stop(); return false; }
+        int high_us = (int)chrono::duration_cast<chrono::microseconds>(t.elapsed_time()).count();
+        t.stop();
+
+        out <<= 1;
+        // threshold ~40us: >40us -> 1, else 0
+        if (high_us > 40) out |= 1;
+    }
+    return true;
+}
+
+// Read DHT11: true if success; outputs tempC/humi (integer)
+static bool dht11_read(PinName pin, int &tempC, int &humi) {
+    DigitalInOut dio(pin);
+
+    // Start signal: pull low >=18ms
+    dio.output();
+    dio = 0;
+    ThisThread::sleep_for(20ms);
+    dio = 1;
+    sleep_us_busy(30);
+
+    // Release bus
+    dio.input();
+    dio.mode(PullUp);
+
+    DigitalIn din(pin);
+    din.mode(PullUp);
+
+    // critical timing section
+    core_util_critical_section_enter();
+
+    bool ok = true;
+    // Response: 80us LOW, 80us HIGH, then LOW before data
+    ok = ok && wait_level(din, 0, 250);
+    ok = ok && wait_level(din, 1, 250);
+    ok = ok && wait_level(din, 0, 250);
+
+    uint8_t b0, b1, b2, b3, b4;
+    if (ok) ok = read_byte(din, b0);
+    if (ok) ok = read_byte(din, b1);
+    if (ok) ok = read_byte(din, b2);
+    if (ok) ok = read_byte(din, b3);
+    if (ok) ok = read_byte(din, b4);
+
+    core_util_critical_section_exit();
+
+    if (!ok) return false;
+
+    // checksum
+    uint8_t sum = (uint8_t)(b0 + b1 + b2 + b3);
+    if (sum != b4) return false;
+
+    humi  = (int)b0;
+    tempC = (int)b2;
+    return true;
+}
+
+void task_temperature_entry() {
+    while (true) {
+        int t1, h1, t2, h2, t3, h3, t4, h4;
+        bool ok1 = dht11_read(DHT1_PIN, t1, h1);
+        bool ok2 = dht11_read(DHT2_PIN, t2, h2);
+        bool ok3 = dht11_read(DHT3_PIN, t3, h3);
+        bool ok4 = dht11_read(DHT4_PIN, t4, h4);
+
+        float sumT = 0.0f;
+        int count = 0;
+
+        if (ok1) { sumT += (float)t1; count++; }
+        if (ok2) { sumT += (float)t2; count++; }
+        if (ok3) { sumT += (float)t3; count++; }
+        if (ok4) { sumT += (float)t4; count++; }
+
+        if (count > 0) {
+            float avg = sumT / (float)count;
+            {
+                ScopedLock<Mutex> lock(g_state_mutex);
+                g_avg_temp = avg;
+            }
+        }
+        // else: keep last g_avg_temp
+
+        ThisThread::sleep_for(TEMP_SAMPLE_MS * 1ms);
+    }
+}

@@ -1,0 +1,23 @@
+#include "mbed.h"
+
+#define RED_LED_PIN PB_13
+#define LED_UPDATE_MS 20
+
+extern volatile int g_door_open;
+extern Mutex g_state_mutex;
+
+void task_redled_entry() {
+    DigitalOut red(RED_LED_PIN);
+    red = 0;
+
+    while (true) {
+        int door;
+        {
+            ScopedLock<Mutex> lock(g_state_mutex);
+            door = g_door_open;
+        }
+
+        red = (door == 1) ? 1 : 0;
+        ThisThread::sleep_for(LED_UPDATE_MS * 1ms);
+    }
+}

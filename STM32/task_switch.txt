@@ -1,0 +1,58 @@
+#include "mbed.h"
+
+// ======================= Pin mapping =======================
+#define REED_SWITCH_PIN PC_5
+
+// ======================= Timing =======================
+#define SWITCH_POLL_MS  10
+#define DEBOUNCE_MS     50   // 50~100ms recommended
+
+// ======================= Shared vars =======================
+extern volatile int g_door_open;
+extern volatile float g_avg_temp;
+extern Mutex g_state_mutex;
+
+// If wiring makes logic inverted, flip here.
+static inline int reed_raw_read(DigitalIn &reed) {
+    // Expected: open circuit -> 1, closed -> 0
+    return reed.read() ? 1 : 0;
+}
+
+static int debounce_confirm(DigitalIn &reed) {
+    int a = reed_raw_read(reed);
+    ThisThread::sleep_for(DEBOUNCE_MS * 1ms);
+    int b = reed_raw_read(reed);
+    return (a == b) ? a : b;
+}
+
+void task_switch_entry() {
+    // PullUp is common for reed switch input stability
+    DigitalIn reed(REED_SWITCH_PIN, PinMode::PullUp);
+
+    // initialize
+    int stable = debounce_confirm(reed);
+    {
+        ScopedLock<Mutex> lock(g_state_mutex);
+        g_door_open = stable;
+    }
+
+    while (true) {
+        int now = reed_raw_read(reed);
+
+        int last;
+        {
+            ScopedLock<Mutex> lock(g_state_mutex);
+            last = g_door_open;
+        }
+
+        if (now != last) {
+            int confirmed = debounce_confirm(reed);
+            {
+                ScopedLock<Mutex> lock(g_state_mutex);
+                g_door_open = confirmed;
+            }
+        }
+
+        ThisThread::sleep_for(SWITCH_POLL_MS * 1ms);
+    }
+}

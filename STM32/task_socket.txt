@@ -1,0 +1,199 @@
+#include "mbed.h"
+
+/*
+============================================================
+    Socket Task (UART -> Raspberry Pi)
+
+    Responsibilities:
+    1) Send a "session_end" message when g_door_open
+       transitions from 1 (open) to 0 (closed).
+
+    2) Send a temperature update every 5 seconds
+       containing the current average temperature.
+
+    Communication Method:
+    - USART1 (PA9 / PA10)
+    - Through onboard ST-Link Virtual COM Port (USB)
+    - Raspberry Pi reads from /dev/ttyACM0
+
+============================================================
+*/
+
+
+// ==========================================================
+// Shared Variables (defined in main.cpp)
+// ==========================================================
+
+// Door state: 1 = open, 0 = closed
+extern volatile int g_door_open;
+
+// Average temperature in Celsius
+extern volatile float g_avg_temp;
+
+// Mutex protecting shared variables
+extern Mutex g_state_mutex;
+
+
+// ==========================================================
+// UART Configuration (NUCLEO-WB55RG default USART1 pins)
+// ==========================================================
+
+#define UART_TX_PIN PA_9
+#define UART_RX_PIN PA_10
+#define UART_BAUD   115200
+
+
+// ==========================================================
+// Timing Parameters
+// ==========================================================
+
+#define TEMP_SEND_PERIOD_MS 5000   // Send temperature every 5 seconds
+#define DOOR_CHECK_PERIOD_MS 20    // Check door state every 20 ms
+
+
+// ==========================================================
+// Helper Function: Send a string over UART
+// ==========================================================
+
+static void uart_send_line(BufferedSerial &serial, const char *line)
+{
+    serial.write(line, strlen(line));
+}
+
+
+// ==========================================================
+// Send Session End Message
+// Triggered when door transitions from open (1) to closed (0)
+// ==========================================================
+
+static void send_session_end(BufferedSerial &serial)
+{
+    /*
+        JSON Format:
+        {
+            "type": "session_end"
+        }
+    */
+    uart_send_line(serial, "{\"type\":\"session_end\"}\n");
+}
+
+
+// ==========================================================
+// Send Temperature Update Message
+// Called every 5 seconds
+// ==========================================================
+
+static void send_temp_update(BufferedSerial &serial, float avg_temp)
+{
+    /*
+        JSON Format:
+        {
+            "type": "temp_update",
+            "avg_temp": 5.23
+        }
+    */
+
+    char buffer[96];
+
+    // Use snprintf to avoid buffer overflow
+    int len = snprintf(buffer, sizeof(buffer),
+                       "{\"type\":\"temp_update\",\"avg_temp\":%.2f}\n",
+                       avg_temp);
+
+    if (len > 0) {
+        serial.write(buffer, len);
+    }
+}
+
+
+// ==========================================================
+// Task Entry Function
+// ==========================================================
+
+void task_socket_entry()
+{
+    // Initialize UART serial interface
+    BufferedSerial serial(UART_TX_PIN, UART_RX_PIN, UART_BAUD);
+
+    // Configure UART format: 8 data bits, no parity, 1 stop bit
+    serial.set_format(
+        8,
+        BufferedSerial::None,
+        1
+    );
+
+    // ------------------------------------------------------
+    // Store previous door state for edge detection
+    // ------------------------------------------------------
+    int last_door_state;
+
+    {
+        // Lock mutex while reading shared variable
+        ScopedLock<Mutex> lock(g_state_mutex);
+        last_door_state = g_door_open;
+    }
+
+    // ------------------------------------------------------
+    // Timer used for 5-second periodic temperature sending
+    // ------------------------------------------------------
+    Timer temp_timer;
+    temp_timer.start();
+
+    // ======================================================
+    // Main Loop
+    // ======================================================
+    while (true)
+    {
+        // --------------------------------------------------
+        // 1) Detect door transition: 1 -> 0
+        // --------------------------------------------------
+
+        int current_door_state;
+
+        {
+            ScopedLock<Mutex> lock(g_state_mutex);
+            current_door_state = g_door_open;
+        }
+
+        // If door transitions from open to closed
+        if (last_door_state == 1 && current_door_state == 0)
+        {
+            send_session_end(serial);
+        }
+
+        // Update previous state
+        last_door_state = current_door_state;
+
+
+        // --------------------------------------------------
+        // 2) Periodic temperature transmission (5 seconds)
+        // --------------------------------------------------
+
+        auto elapsed_ms =
+            chrono::duration_cast<chrono::milliseconds>(
+                temp_timer.elapsed_time()
+            ).count();
+
+        if (elapsed_ms >= TEMP_SEND_PERIOD_MS)
+        {
+            float current_temp;
+
+            {
+                ScopedLock<Mutex> lock(g_state_mutex);
+                current_temp = g_avg_temp;
+            }
+
+            send_temp_update(serial, current_temp);
+
+            // Reset timer to maintain periodic behavior
+            temp_timer.reset();
+        }
+
+
+        // --------------------------------------------------
+        // Sleep to reduce CPU usage
+        // --------------------------------------------------
+
+        ThisThread::sleep_for(DOOR_CHECK_PERIOD_MS * 1ms);
+    }
+}

@@ -1,2 +1,0 @@
-Input：data/sessions/sessoin_ID/vision.json
-Output：data/db

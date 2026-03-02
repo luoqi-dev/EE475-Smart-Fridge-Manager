@@ -1,3 +1,7 @@
+# Aim to resolve the collision
+# 1. Multi item removal collision: remove 1 item among several items with same catagory.
+#    If items are been putted into fridge < 1 min -> defultly removed the earliest one.
+#    
 from __future__ import annotations
 
 import json

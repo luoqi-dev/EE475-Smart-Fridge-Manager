@@ -1,0 +1,324 @@
+{
+  "session_id": "session_20260302_004555",
+  "metadata": {
+    "resolution": "640x480",
+    "yolo_model": "fruit_model_optimized_data2.onnx",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\001.jpg",
+      "index": 0,
+      "timestamp": "2026-03-02T00:45:56.763Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9549,
+          "bbox": {
+            "x": 0.5195,
+            "y": 0.5142,
+            "width": 0.4802,
+            "height": 0.4858
+          },
+          "center": {
+            "x": 0.7597,
+            "y": 0.7571
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\002.jpg",
+      "index": 1,
+      "timestamp": "2026-03-02T00:45:56.799Z",
+      "timestamp_ms": 500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9381,
+          "bbox": {
+            "x": 0.5125,
+            "y": 0.5158,
+            "width": 0.4872,
+            "height": 0.4842
+          },
+          "center": {
+            "x": 0.7561,
+            "y": 0.7579
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\003.jpg",
+      "index": 2,
+      "timestamp": "2026-03-02T00:45:56.831Z",
+      "timestamp_ms": 1000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9462,
+          "bbox": {
+            "x": 0.529,
+            "y": 0.5154,
+            "width": 0.4709,
+            "height": 0.4846
+          },
+          "center": {
+            "x": 0.7644,
+            "y": 0.7577
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\004.jpg",
+      "index": 3,
+      "timestamp": "2026-03-02T00:45:56.860Z",
+      "timestamp_ms": 1500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9443,
+          "bbox": {
+            "x": 0.5357,
+            "y": 0.5161,
+            "width": 0.4643,
+            "height": 0.4839
+          },
+          "center": {
+            "x": 0.7678,
+            "y": 0.7581
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\005.jpg",
+      "index": 4,
+      "timestamp": "2026-03-02T00:45:56.892Z",
+      "timestamp_ms": 2000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9488,
+          "bbox": {
+            "x": 0.5355,
+            "y": 0.5185,
+            "width": 0.4644,
+            "height": 0.4815
+          },
+          "center": {
+            "x": 0.7677,
+            "y": 0.7592
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\006.jpg",
+      "index": 5,
+      "timestamp": "2026-03-02T00:45:56.920Z",
+      "timestamp_ms": 2500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9464,
+          "bbox": {
+            "x": 0.5147,
+            "y": 0.5417,
+            "width": 0.4851,
+            "height": 0.4583
+          },
+          "center": {
+            "x": 0.7573,
+            "y": 0.7708
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\007.jpg",
+      "index": 6,
+      "timestamp": "2026-03-02T00:45:56.952Z",
+      "timestamp_ms": 3000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9462,
+          "bbox": {
+            "x": 0.5066,
+            "y": 0.5715,
+            "width": 0.4934,
+            "height": 0.4285
+          },
+          "center": {
+            "x": 0.7533,
+            "y": 0.7858
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\008.jpg",
+      "index": 7,
+      "timestamp": "2026-03-02T00:45:56.982Z",
+      "timestamp_ms": 3500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9522,
+          "bbox": {
+            "x": 0.5158,
+            "y": 0.5751,
+            "width": 0.4842,
+            "height": 0.4249
+          },
+          "center": {
+            "x": 0.7579,
+            "y": 0.7875
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\009.jpg",
+      "index": 8,
+      "timestamp": "2026-03-02T00:45:57.012Z",
+      "timestamp_ms": 4000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9447,
+          "bbox": {
+            "x": 0.5203,
+            "y": 0.5614,
+            "width": 0.4796,
+            "height": 0.4386
+          },
+          "center": {
+            "x": 0.7601,
+            "y": 0.7807
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\010.jpg",
+      "index": 9,
+      "timestamp": "2026-03-02T00:45:57.041Z",
+      "timestamp_ms": 4500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9441,
+          "bbox": {
+            "x": 0.5069,
+            "y": 0.4843,
+            "width": 0.4928,
+            "height": 0.5157
+          },
+          "center": {
+            "x": 0.7533,
+            "y": 0.7421
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\011.jpg",
+      "index": 10,
+      "timestamp": "2026-03-02T00:45:57.071Z",
+      "timestamp_ms": 5000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.9338,
+          "bbox": {
+            "x": 0.4548,
+            "y": 0.1885,
+            "width": 0.5447,
+            "height": 0.8099
+          },
+          "center": {
+            "x": 0.7272,
+            "y": 0.5935
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\012.jpg",
+      "index": 11,
+      "timestamp": "2026-03-02T00:45:57.100Z",
+      "timestamp_ms": 5500,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.8956,
+          "bbox": {
+            "x": 0.3177,
+            "y": 0.0028,
+            "width": 0.6823,
+            "height": 0.6642
+          },
+          "center": {
+            "x": 0.6589,
+            "y": 0.335
+          }
+        },
+        {
+          "class_name": "Apple",
+          "confidence": 0.2683,
+          "bbox": {
+            "x": 0.2738,
+            "y": 0.0,
+            "width": 0.7256,
+            "height": 1.0
+          },
+          "center": {
+            "x": 0.6366,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "frame_path": "C:\\Users\\Brian\\Desktop\\EE476\\EE475-Smart-Fridge-Manager\\test_data\\in\\1\\013.jpg",
+      "index": 12,
+      "timestamp": "2026-03-02T00:45:57.127Z",
+      "timestamp_ms": 6000,
+      "detections": [
+        {
+          "class_name": "Apple",
+          "confidence": 0.8676,
+          "bbox": {
+            "x": 0.446,
+            "y": 0.0028,
+            "width": 0.4811,
+            "height": 0.3833
+          },
+          "center": {
+            "x": 0.6865,
+            "y": 0.1945
+          }
+        },
+        {
+          "class_name": "Apple",
+          "confidence": 0.3081,
+          "bbox": {
+            "x": 0.3429,
+            "y": 0.0268,
+            "width": 0.657,
+            "height": 0.9697
+          },
+          "center": {
+            "x": 0.6713,
+            "y": 0.5116
+          }
+        }
+      ]
+    }
+  ]
+}

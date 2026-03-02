@@ -9,27 +9,27 @@ from ultralytics import YOLO
 
 # Paths (project root = EE475-Smart-Fridge-Manager)
 PROJECT_ROOT = Path(__file__).resolve().parent
-DATA_YAML = PROJECT_ROOT / "data" / "data.yaml"
+# DATA_YAML = PROJECT_ROOT / "data" / "data.yaml"
 OUTPUT_TFLITE = PROJECT_ROOT / "fruit_model_optimized.tflite"
 
 def main():
-    if not DATA_YAML.exists():
-        raise FileNotFoundError(f"Dataset config not found: {DATA_YAML}")
+    # if not DATA_YAML.exists():
+    #     raise FileNotFoundError(f"Dataset config not found: {DATA_YAML}")
 
-    # 1. Train YOLO11n
-    model = YOLO("yolo11n.pt")
-    results = model.train(
-        data=str(DATA_YAML),
-        epochs=100,
-        imgsz=640,
-        device=0,  # 0 = first GPU; if PyTorch doesn't support your GPU (e.g. RTX 50 series sm_120), it will fall back to CPU
-        project=str(PROJECT_ROOT / "runs" / "fruit"),
-        name="yolo11n_fruit",
-        exist_ok=True,
-    )
+    # # 1. Train YOLO11n
+    # model = YOLO("yolo11n.pt")
+    # results = model.train(
+    #     data=str(DATA_YAML),
+    #     epochs=100,
+    #     imgsz=640,
+    #     device=0,  # 0 = first GPU; if PyTorch doesn't support your GPU (e.g. RTX 50 series sm_120), it will fall back to CPU
+    #     project=str(PROJECT_ROOT / "runs" / "fruit"),
+    #     name="yolo11n_fruit",
+    #     exist_ok=True,
+    # )
 
     # 2. Locate best.pt (saved in run dir)
-    best_pt = Path(results.save_dir) / "weights" / "best.pt"
+    best_pt = "..\EE475-Smart-Fridge-Manager\runs\fruit\yolo11n_data2\weights\best.pt"
     if not best_pt.exists():
         best_pt = Path(results.save_dir) / "best.pt"
     if not best_pt.exists():

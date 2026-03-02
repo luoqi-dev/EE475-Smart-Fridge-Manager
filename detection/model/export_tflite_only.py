@@ -9,12 +9,13 @@ from ultralytics import YOLO
 def _log(msg):
     print(msg, flush=True)
 
-PROJECT_ROOT = Path(__file__).resolve().parent
-DATA_YAML = PROJECT_ROOT / "data" / "data.yaml"
-OUTPUT_TFLITE = PROJECT_ROOT / "fruit_model_optimized.tflite"
-OUTPUT_ONNX = PROJECT_ROOT / "fruit_model_optimized.onnx"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+print("ROOT: ",PROJECT_ROOT)
+DATA_YAML = PROJECT_ROOT / "data_2" / "data.yaml"
+OUTPUT_TFLITE = PROJECT_ROOT / "fruit_model_optimized_data2.tflite"
+OUTPUT_ONNX = PROJECT_ROOT / "fruit_model_optimized_data2.onnx"
 
-BEST_PT = PROJECT_ROOT / "runs" / "fruit" / "yolo11n_fruit" / "weights" / "best.pt"
+BEST_PT = PROJECT_ROOT / "runs" / "fruit" / "yolo11n_data2" / "weights" / "best.pt"
 
 def copy_tflite(export_dir, out_path):
     for f in export_dir.glob("*.tflite"):
@@ -70,3 +71,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

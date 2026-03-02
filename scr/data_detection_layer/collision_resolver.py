@@ -40,7 +40,7 @@ class ParsedOperation:
 
 @dataclass(frozen=True)
 class ItemInstanceState:
-    item_instance_id: str
+    item_id: str
     item_name: str
     put_in_time_utc: str
     current_status: str
@@ -109,7 +109,6 @@ def _ensure_events_base_table(conn: sqlite3.Connection) -> None:
           status           TEXT NOT NULL CHECK(status IN ('IN_FRIDGE','REMOVED','PENDING')),
           confidence       REAL,
           track_id         INTEGER,
-          item_instance_id TEXT,
           pending_type     TEXT NULL,
           case_id          TEXT NULL,
           updated_at_utc   TEXT NULL
@@ -117,10 +116,59 @@ def _ensure_events_base_table(conn: sqlite3.Connection) -> None:
 
         CREATE INDEX IF NOT EXISTS idx_events_time ON events(event_time_utc);
         CREATE INDEX IF NOT EXISTS idx_events_item_time ON events(item_name, event_time_utc);
-        CREATE INDEX IF NOT EXISTS idx_events_instance_id ON events(item_instance_id, id);
         CREATE INDEX IF NOT EXISTS idx_events_case_status ON events(case_id, status, item_name);
         """
     )
+
+
+def _rebuild_events_without_item_instance_id(conn: sqlite3.Connection) -> None:
+    conn.executescript(
+        """
+        DROP INDEX IF EXISTS idx_events_instance_id;
+
+        CREATE TABLE events_v3 (
+          id               INTEGER PRIMARY KEY AUTOINCREMENT,
+          session_id       TEXT,
+          event_time_utc   TEXT NOT NULL,
+          item_name        TEXT NOT NULL,
+          status           TEXT NOT NULL CHECK(status IN ('IN_FRIDGE','REMOVED','PENDING')),
+          confidence       REAL,
+          track_id         INTEGER,
+          pending_type     TEXT NULL,
+          case_id          TEXT NULL,
+          updated_at_utc   TEXT NULL
+        );
+
+        INSERT INTO events_v3 (
+          id,
+          session_id,
+          event_time_utc,
+          item_name,
+          status,
+          confidence,
+          track_id,
+          pending_type,
+          case_id,
+          updated_at_utc
+        )
+        SELECT
+          id,
+          session_id,
+          event_time_utc,
+          item_name,
+          status,
+          confidence,
+          track_id,
+          pending_type,
+          case_id,
+          updated_at_utc
+        FROM events;
+
+        DROP TABLE events;
+        ALTER TABLE events_v3 RENAME TO events;
+        """
+    )
+    _ensure_events_base_table(conn)
 
 
 def ensure_collision_schema(conn: sqlite3.Connection) -> None:
@@ -152,8 +200,9 @@ def ensure_collision_schema(conn: sqlite3.Connection) -> None:
                 )
 
         columns = {name.lower(): name for name in _column_names(conn, "events")}
-        if "item_instance_id" not in columns:
-            conn.execute("ALTER TABLE events ADD COLUMN item_instance_id TEXT;")
+        if "item_instance_id" in columns:
+            _rebuild_events_without_item_instance_id(conn)
+            columns = {name.lower(): name for name in _column_names(conn, "events")}
         if "pending_type" not in columns:
             conn.execute("ALTER TABLE events ADD COLUMN pending_type TEXT NULL;")
         if "case_id" not in columns:
@@ -179,13 +228,6 @@ def ensure_collision_schema(conn: sqlite3.Connection) -> None:
 
         _ensure_events_base_table(conn)
 
-    conn.execute(
-        """
-        UPDATE events
-        SET item_instance_id = CAST(id AS TEXT)
-        WHERE item_instance_id IS NULL OR TRIM(item_instance_id) = '';
-        """
-    )
     conn.execute(
         """
         UPDATE events
@@ -253,45 +295,25 @@ def _row_to_case(row: sqlite3.Row) -> CollisionCase:
 def get_in_fridge_instances(conn: sqlite3.Connection, item_name: str) -> List[ItemInstanceState]:
     rows = conn.execute(
         """
-        WITH latest AS (
-          SELECT e.*
-          FROM events e
-          INNER JOIN (
-            SELECT item_instance_id, MAX(id) AS max_id
-            FROM events
-            WHERE item_instance_id IS NOT NULL
-            GROUP BY item_instance_id
-          ) latest_ids
-            ON latest_ids.item_instance_id = e.item_instance_id
-           AND latest_ids.max_id = e.id
-        ),
-        first_put AS (
-          SELECT item_instance_id, MIN(event_time_utc) AS put_in_time_utc
-          FROM events
-          WHERE status = 'IN_FRIDGE'
-          GROUP BY item_instance_id
-        )
-        SELECT latest.item_instance_id,
-               latest.item_name,
-               latest.status,
-               latest.session_id,
-               latest.confidence,
-               latest.track_id,
-               latest.case_id,
-               latest.pending_type,
-               first_put.put_in_time_utc
-        FROM latest
-        INNER JOIN first_put
-          ON first_put.item_instance_id = latest.item_instance_id
-        WHERE latest.item_name = ?
-          AND latest.status = 'IN_FRIDGE'
-        ORDER BY first_put.put_in_time_utc ASC, latest.id ASC;
+        SELECT id,
+               item_name,
+               status,
+               session_id,
+               confidence,
+               track_id,
+               case_id,
+               pending_type,
+               event_time_utc
+        FROM events
+        WHERE item_name = ?
+          AND status = 'IN_FRIDGE'
+        ORDER BY event_time_utc ASC, id ASC;
         """,
         (item_name,),
     ).fetchall()
     return [
         ItemInstanceState(
-            item_instance_id=str(row[0]),
+            item_id=str(row[0]),
             item_name=str(row[1]),
             current_status=str(row[2]),
             session_id=row[3],
@@ -347,12 +369,11 @@ def _build_case_summary(item_name: str, pending_type: str, pending_item_ids: Seq
     return f"Resolve pending case for {item_name}."
 
 
-def _latest_instance_state(conn: sqlite3.Connection, item_instance_id: str) -> Optional[sqlite3.Row]:
+def _get_item_row(conn: sqlite3.Connection, item_id: str) -> Optional[sqlite3.Row]:
     conn.row_factory = sqlite3.Row
     row = conn.execute(
         """
         SELECT id,
-               item_instance_id,
                item_name,
                status,
                session_id,
@@ -362,30 +383,25 @@ def _latest_instance_state(conn: sqlite3.Connection, item_instance_id: str) -> O
                pending_type,
                event_time_utc
         FROM events
-        WHERE item_instance_id = ?
-        ORDER BY id DESC
+        WHERE id = ?
         LIMIT 1;
         """,
-        (item_instance_id,),
+        (item_id,),
     ).fetchone()
     conn.row_factory = None
     return row
 
 
-def _insert_event(
+def _insert_inventory_item(
     conn: sqlite3.Connection,
     *,
     session_id: Optional[str],
     event_time_utc: str,
     item_name: str,
-    status: str,
     confidence: Optional[float],
     track_id: Optional[int],
-    item_instance_id: str,
-    pending_type: Optional[str] = None,
-    case_id: Optional[str] = None,
-) -> None:
-    conn.execute(
+) -> int:
+    cursor = conn.execute(
         """
         INSERT INTO events (
           session_id,
@@ -394,24 +410,60 @@ def _insert_event(
           status,
           confidence,
           track_id,
-          item_instance_id,
           pending_type,
           case_id,
           updated_at_utc
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """,
         (
             session_id,
             event_time_utc,
             item_name,
+            STATUS_IN_FRIDGE,
+            confidence,
+            track_id,
+            None,
+            None,
+            event_time_utc,
+        ),
+    )
+    return int(cursor.lastrowid)
+
+
+def _update_item_status(
+    conn: sqlite3.Connection,
+    *,
+    item_id: str,
+    session_id: Optional[str],
+    updated_at_utc: str,
+    status: str,
+    confidence: Optional[float],
+    track_id: Optional[int],
+    pending_type: Optional[str] = None,
+    case_id: Optional[str] = None,
+) -> None:
+    conn.execute(
+        """
+        UPDATE events
+        SET session_id = ?,
+            status = ?,
+            confidence = ?,
+            track_id = ?,
+            pending_type = ?,
+            case_id = ?,
+            updated_at_utc = ?
+        WHERE id = ?;
+        """,
+        (
+            session_id,
             status,
             confidence,
             track_id,
-            item_instance_id,
             pending_type,
             case_id,
-            event_time_utc,
+            updated_at_utc,
+            int(item_id),
         ),
     )
 
@@ -443,15 +495,13 @@ class CollisionResolver:
         return changed
 
     def _handle_put_in(self, operation: ParsedOperation) -> int:
-        _insert_event(
+        _insert_inventory_item(
             self.conn,
             session_id=operation.session_id,
             event_time_utc=operation.event_time_utc,
             item_name=operation.item_name,
-            status=STATUS_IN_FRIDGE,
             confidence=operation.confidence,
             track_id=operation.track_id,
-            item_instance_id=str(uuid.uuid4()),
         )
         return 1
 
@@ -462,15 +512,14 @@ class CollisionResolver:
 
         if len(candidates) == 1:
             candidate = candidates[0]
-            _insert_event(
+            _update_item_status(
                 self.conn,
+                item_id=candidate.item_id,
                 session_id=operation.session_id,
-                event_time_utc=operation.event_time_utc,
-                item_name=candidate.item_name,
+                updated_at_utc=operation.event_time_utc,
                 status=STATUS_REMOVED,
                 confidence=operation.confidence,
                 track_id=operation.track_id,
-                item_instance_id=candidate.item_instance_id,
             )
             return 1
 
@@ -480,15 +529,14 @@ class CollisionResolver:
         default_candidate = candidates[0]
 
         if span_seconds <= self.auto_resolve_window_seconds:
-            _insert_event(
+            _update_item_status(
                 self.conn,
+                item_id=default_candidate.item_id,
                 session_id=operation.session_id,
-                event_time_utc=operation.event_time_utc,
-                item_name=default_candidate.item_name,
+                updated_at_utc=operation.event_time_utc,
                 status=STATUS_REMOVED,
                 confidence=operation.confidence,
                 track_id=operation.track_id,
-                item_instance_id=default_candidate.item_instance_id,
             )
             return 1
 
@@ -500,10 +548,10 @@ class CollisionResolver:
         pending_ids = [] if case is None else list(case.pending_item_ids)
         default_remove_ids = [] if case is None else list(case.default_remove_ids)
 
-        if default_candidate.item_instance_id not in pending_ids:
-            pending_ids.append(default_candidate.item_instance_id)
-        if default_candidate.item_instance_id not in default_remove_ids:
-            default_remove_ids.append(default_candidate.item_instance_id)
+        if default_candidate.item_id not in pending_ids:
+            pending_ids.append(default_candidate.item_id)
+        if default_candidate.item_id not in default_remove_ids:
+            default_remove_ids.append(default_candidate.item_id)
 
         now = operation.event_time_utc
         if case is None:
@@ -560,19 +608,18 @@ class CollisionResolver:
                 ),
             )
 
-        _insert_event(
+        _update_item_status(
             self.conn,
+            item_id=default_candidate.item_id,
             session_id=operation.session_id,
-            event_time_utc=operation.event_time_utc,
-            item_name=default_candidate.item_name,
+            updated_at_utc=operation.event_time_utc,
             status=STATUS_PENDING,
             confidence=operation.confidence,
             track_id=operation.track_id,
-            item_instance_id=default_candidate.item_instance_id,
             pending_type=PENDING_AMBIGUOUS_MULTI_REMOVE,
             case_id=case_id,
         )
-        return 2
+        return 1
 
 
 class CollisionActionConsumer:
@@ -673,39 +720,34 @@ class CollisionActionConsumer:
             remove_ids = [item_id for item_id in requested_remove_ids if item_id in candidate_ids]
 
             for item_id in remove_ids:
-                latest = _latest_instance_state(self.conn, item_id)
-                if latest is None:
+                current = _get_item_row(self.conn, item_id)
+                if current is None or current["status"] == STATUS_REMOVED:
                     continue
-                if latest["status"] == STATUS_REMOVED:
-                    continue
-                _insert_event(
+                _update_item_status(
                     self.conn,
+                    item_id=item_id,
                     session_id=case.session_id,
-                    event_time_utc=str(action["created_at_utc"]),
-                    item_name=str(latest["item_name"]),
+                    updated_at_utc=str(action["created_at_utc"]),
                     status=STATUS_REMOVED,
-                    confidence=latest["confidence"],
-                    track_id=latest["track_id"],
-                    item_instance_id=item_id,
+                    confidence=current["confidence"],
+                    track_id=current["track_id"],
                     case_id=case.case_id,
                 )
 
             for pending_id in case.pending_item_ids:
                 if pending_id in remove_ids:
                     continue
-                latest = _latest_instance_state(self.conn, pending_id)
-                if latest is None or latest["status"] != STATUS_PENDING:
+                current = _get_item_row(self.conn, pending_id)
+                if current is None or current["status"] != STATUS_PENDING:
                     continue
-                _insert_event(
+                _update_item_status(
                     self.conn,
+                    item_id=pending_id,
                     session_id=case.session_id,
-                    event_time_utc=str(action["created_at_utc"]),
-                    item_name=str(latest["item_name"]),
+                    updated_at_utc=str(action["created_at_utc"]),
                     status=STATUS_IN_FRIDGE,
-                    confidence=latest["confidence"],
-                    track_id=latest["track_id"],
-                    item_instance_id=pending_id,
-                    case_id=case.case_id,
+                    confidence=current["confidence"],
+                    track_id=current["track_id"],
                 )
 
             processed_at = _utc_now()
@@ -744,23 +786,11 @@ class CollisionActionConsumer:
     def _candidate_ids_for_case(self, case: CollisionCase) -> List[str]:
         rows = self.conn.execute(
             """
-            WITH latest AS (
-              SELECT e.*
-              FROM events e
-              INNER JOIN (
-                SELECT item_instance_id, MAX(id) AS max_id
-                FROM events
-                WHERE item_instance_id IS NOT NULL
-                GROUP BY item_instance_id
-              ) latest_ids
-                ON latest_ids.item_instance_id = e.item_instance_id
-               AND latest_ids.max_id = e.id
-            )
-            SELECT item_instance_id
-            FROM latest
+            SELECT CAST(id AS TEXT)
+            FROM events
             WHERE item_name = ?
               AND status IN ('IN_FRIDGE', 'PENDING')
-            ORDER BY id ASC;
+            ORDER BY event_time_utc ASC, id ASC;
             """,
             (case.item_name,),
         ).fetchall()

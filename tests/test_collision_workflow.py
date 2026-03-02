@@ -68,7 +68,7 @@ class CollisionWorkflowTest(unittest.TestCase):
         self.assertEqual(len(pending_ids), 1)
 
         all_instances = get_in_fridge_instances(self.conn, "apple")
-        remaining_ids = [instance.item_instance_id for instance in all_instances]
+        remaining_ids = [instance.item_id for instance in all_instances]
         self.assertEqual(len(remaining_ids), 2)
 
         non_default_remove_id = remaining_ids[-1]
@@ -98,7 +98,7 @@ class CollisionWorkflowTest(unittest.TestCase):
         processed = self.consumer.process_new_actions()
         self.assertEqual(processed, 1)
 
-        latest_status = self._latest_status_map("apple")
+        latest_status = self._status_map("apple")
         self.assertEqual(latest_status[non_default_remove_id], "REMOVED")
         self.assertEqual(latest_status[pending_ids[0]], "IN_FRIDGE")
 
@@ -193,27 +193,12 @@ class CollisionWorkflowTest(unittest.TestCase):
         self.conn.row_factory = None
         return row
 
-    def _latest_status_map(self, item_name: str) -> dict[str, str]:
+    def _status_map(self, item_name: str) -> dict[str, str]:
         rows = self.conn.execute(
             """
-            WITH latest AS (
-              SELECT e.item_instance_id, e.status
-              FROM events e
-              INNER JOIN (
-                SELECT item_instance_id, MAX(id) AS max_id
-                FROM events
-                GROUP BY item_instance_id
-              ) latest_ids
-                ON latest_ids.item_instance_id = e.item_instance_id
-               AND latest_ids.max_id = e.id
-            )
-            SELECT item_instance_id, status
-            FROM latest
-            WHERE item_instance_id IN (
-              SELECT item_instance_id
-              FROM events
-              WHERE item_name = ?
-            );
+            SELECT CAST(id AS TEXT), status
+            FROM events
+            WHERE item_name = ?;
             """,
             (item_name,),
         ).fetchall()

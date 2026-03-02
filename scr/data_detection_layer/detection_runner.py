@@ -5,6 +5,7 @@ import os
 import socket
 import sqlite3
 import time
+import argparse
 from pathlib import Path
 from typing import List, Optional, Set
 
@@ -28,6 +29,7 @@ DEFAULT_DB_REL = Path("data/db/fridge.db")
 DEFAULT_SESSIONS_REL = Path("data/sessions")
 
 POLL_INTERVAL_SEC = 0.2
+ACTION_POLL_INTERVAL_SEC = 1.0
 
 
 # ----------------------------
@@ -173,7 +175,7 @@ def _print_db_debug(
 
     rows = conn.execute(
         """
-        SELECT id, session_id, event_time_utc, item_name, status, confidence, track_id, item_instance_id, pending_type, case_id
+        SELECT id, session_id, event_time_utc, item_name, status, confidence, track_id, pending_type, case_id
         FROM events
         WHERE session_id = ?
         ORDER BY event_time_utc ASC, id ASC;
@@ -189,7 +191,7 @@ def _print_db_debug(
             print(
                 "  "
                 f"id={r[0]} time={r[2]} item={r[3]} status={r[4]} conf={r[5]} "
-                f"track_id={r[6]} item_instance_id={r[7]} pending_type={r[8]} case_id={r[9]}"
+                f"track_id={r[6]} pending_type={r[7]} case_id={r[8]}"
             )
 
     item_names: Set[str] = {e.item_name for e in db_events}
@@ -291,6 +293,16 @@ def process_session_to_events(project_root: Path, session_id: str) -> int:
         conn.close()
 
 
+def process_pending_collision_actions(project_root: Path) -> int:
+    db_path = project_root / DEFAULT_DB_REL
+    conn = connect_db(db_path)
+    try:
+        ensure_collision_schema(conn)
+        return CollisionActionConsumer(conn).process_new_actions()
+    finally:
+        conn.close()
+
+
 # ----------------------------
 # Socket listener (UDS)
 # ----------------------------
@@ -325,14 +337,9 @@ def run_socket_listener(
             try:
                 conn, _ = server.accept()
             except socket.timeout:
-                conn = connect_db(project_root / DEFAULT_DB_REL)
-                try:
-                    ensure_collision_schema(conn)
-                    processed_actions = CollisionActionConsumer(conn).process_new_actions()
-                    if processed_actions:
-                        print(f"[DetectionRunner] Processed {processed_actions} queued collision action(s).")
-                finally:
-                    conn.close()
+                processed_actions = process_pending_collision_actions(project_root)
+                if processed_actions:
+                    print(f"[DetectionRunner] Processed {processed_actions} queued collision action(s).")
                 print("[DetectionRunner] Listening...")
                 continue
 
@@ -376,6 +383,25 @@ def run_socket_listener(
             sock_file.unlink()
 
 
+def run_collision_action_worker(
+    *,
+    project_root: Path,
+    poll_interval_sec: float = ACTION_POLL_INTERVAL_SEC,
+) -> None:
+    print(f"[CollisionActionWorker] Project root: {project_root}")
+    print(f"[CollisionActionWorker] Poll interval: {poll_interval_sec}s")
+    print("[CollisionActionWorker] Watching collision_actions for NEW rows...")
+
+    try:
+        while True:
+            processed_actions = process_pending_collision_actions(project_root)
+            if processed_actions:
+                print(f"[CollisionActionWorker] Processed {processed_actions} queued collision action(s).")
+            time.sleep(poll_interval_sec)
+    except KeyboardInterrupt:
+        print("\n[CollisionActionWorker] Shutting down...")
+
+
 # ----------------------------
 # Entry point
 # ----------------------------
@@ -391,7 +417,27 @@ def main() -> None:
     # For local dev: you can temporarily hardcode explicit_root if you want.
     # project_root = get_project_root("/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager")
 
+    parser = argparse.ArgumentParser(description="Detection runner and collision action worker.")
+    parser.add_argument(
+        "--actions-only",
+        action="store_true",
+        help="Run only the collision action polling worker.",
+    )
+    parser.add_argument(
+        "--action-poll-interval",
+        type=float,
+        default=ACTION_POLL_INTERVAL_SEC,
+        help="Polling interval in seconds for the actions-only worker.",
+    )
+    args = parser.parse_args()
+
     project_root = get_project_root()
+    if args.actions_only:
+        run_collision_action_worker(
+            project_root=project_root,
+            poll_interval_sec=args.action_poll_interval,
+        )
+        return
     run_socket_listener(project_root=project_root)
 
 

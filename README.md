@@ -2,11 +2,11 @@
 Shared Git repository for the EE 475 Embedded Systems Capstone project, supporting collaborative development, version control, and documentation of the Smart Refrigerator Manager system, including embedded software, data processing, and system integration.
 
 ## Collision Resolver Workflow
-The backend now treats parsed detections as high-level `PUT_IN` / `TAKE_OUT` operations and resolves them into append-only SQLite rows. The `events` table remains the single source of truth for item state, and the latest row for each `item_instance_id` determines whether that specific instance is currently `IN_FRIDGE`, `PENDING`, or `REMOVED`.
+The backend now treats parsed detections as high-level `PUT_IN` / `TAKE_OUT` operations and resolves them directly onto the `events` table. The `events.id` column is the only item identifier used by the collision workflow, and each row represents the current state of one tracked item in the fridge.
 
 ### Tables
 - `events`: append-only item instance history. New columns:
-  `item_instance_id`, `pending_type`, `case_id`, `updated_at_utc`
+  `pending_type`, `case_id`, `updated_at_utc`
 - `collision_cases`: open/resolved UI-facing collision cases
 - `collision_actions`: UI-written confirmation actions for the backend to consume
 
@@ -25,9 +25,9 @@ The UI should write:
 - one row into `collision_actions` with:
   `action_id`, `case_id`, `created_at_utc`, `remove_item_ids_json`, optional `note`, and `status='NEW'`
 
-`remove_item_ids_json` must be a JSON array of `item_instance_id` values the user confirms should become `REMOVED`. The backend consumer will:
-- append `REMOVED` rows for the selected instances
-- append `IN_FRIDGE` rows for pending instances in the same case that were not selected
+`remove_item_ids_json` must be a JSON array of `events.id` values the user confirms should become `REMOVED`. The backend consumer will:
+- update the selected items to `REMOVED`
+- update pending instances in the same case that were not selected back to `IN_FRIDGE`
 - mark the case `RESOLVED`
 - mark the action `PROCESSED`
 
@@ -36,3 +36,14 @@ The UI should write:
 - Resolver implementation: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/collision_resolver.py`
 - Session pipeline integration: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py`
 - Workflow test: `python3 -m unittest tests.test_collision_workflow`
+
+### Automatic action processing
+`CollisionActionConsumer` does not run from SQLite triggers. It is processed by a running Python worker.
+
+You now have two supported ways to run it automatically:
+- full runner mode:
+  `python3 /Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py`
+- action-only worker mode:
+  `python3 /Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py --actions-only`
+
+In `--actions-only` mode, the process polls `collision_actions` for `status='NEW'` and automatically applies them to `events` and `collision_cases`.

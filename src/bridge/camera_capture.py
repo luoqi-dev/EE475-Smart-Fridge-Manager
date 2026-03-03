@@ -20,10 +20,10 @@ FRAME_HEIGHT = 480
 DETECTION_FPS = 10.0
 RECORDING_FPS = 30.0
 BUFFER_SIZE = 10
-WARMUP_SECONDS = 0.5
+STARTUP_IGNORE_SECONDS = 1.0
 INACTIVITY_TIMEOUT_SECONDS = 1.0
 DELTA_THRESH = 25
-MOTION_PIXEL_THRESHOLD = 10000
+MOTION_PIXEL_THRESHOLD = 20000
 GAUSSIAN_KERNEL = (5, 5)
 JPEG_QUALITY = 90
 FOURCC = "MJPG"
@@ -79,7 +79,7 @@ class CameraCaptureManager:
         recording = False
         frame_index = 0
         last_motion_time = 0.0
-        start_time = time.monotonic()
+        session_start_time = time.monotonic()
         frames_dir = self._sessions_dir / session_id / "frames"
 
         try:
@@ -108,21 +108,20 @@ class CameraCaptureManager:
                 ring_buffer.append(frame.copy())
                 motion_detected, prev_blurred = self._detect_motion(frame, prev_blurred)
                 now = time.monotonic()
-
-                if now - start_time < WARMUP_SECONDS:
-                    motion_detected = False
+                ignore_motion = (now - session_start_time) < STARTUP_IGNORE_SECONDS
+                motion_for_transition = motion_detected and (not ignore_motion)
 
                 if recording:
                     self._write_frame(frames_dir, frame_index, frame)
                     frame_index += 1
 
-                    if motion_detected:
+                    if motion_for_transition:
                         last_motion_time = now
                     elif now - last_motion_time >= INACTIVITY_TIMEOUT_SECONDS:
                         recording = False
                         print("[CAM] inactivity -> back to detect", flush=True)
                 else:
-                    if motion_detected:
+                    if motion_for_transition:
                         frames_dir.mkdir(parents=True, exist_ok=True)
                         for buffered_frame in ring_buffer:
                             self._write_frame(frames_dir, frame_index, buffered_frame)
@@ -133,7 +132,11 @@ class CameraCaptureManager:
 
                 if DEBUG:
                     mode = "record" if recording else "detect"
-                    print(f"[CAM] mode={mode} frame_index={frame_index} motion={motion_detected}", flush=True)
+                    print(
+                        f"[CAM] mode={mode} frame_index={frame_index} "
+                        f"motion={motion_detected} ignore_motion={ignore_motion}",
+                        flush=True,
+                    )
 
                 elapsed = time.monotonic() - loop_started
                 remaining = target_interval - elapsed

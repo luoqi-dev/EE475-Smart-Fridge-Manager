@@ -5,12 +5,11 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT / "scr" / "data_detection_layer"))
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-from collision_resolver import ensure_collision_schema  # noqa: E402
-
+from src.data_detection_layer.collision_resolver import ensure_collision_schema
 
 DB_PATH = REPO_ROOT / "data" / "db" / "fridge.db"
 

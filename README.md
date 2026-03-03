@@ -32,9 +32,9 @@ The UI should write:
 - mark the action `PROCESSED`
 
 ### Developer usage
-- Schema bootstrap: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/db/schemas/manifest.json`
-- Resolver implementation: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/collision_resolver.py`
-- Session pipeline integration: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py`
+- Schema bootstrap: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/src/db/schemas/manifest.json`
+- Resolver implementation: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/src/data_detection_layer/collision_resolver.py`
+- Session pipeline integration: `/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/src/data_detection_layer/detection_runner.py`
 - Workflow test: `python3 -m unittest tests.test_collision_workflow`
 
 ### Automatic action processing
@@ -42,8 +42,8 @@ The UI should write:
 
 You now have two supported ways to run it automatically:
 - full runner mode:
-  `python3 /Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py`
+  `python3 -m src.data_detection_layer.detection_runner`
 - action-only worker mode:
-  `python3 /Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/scr/data_detection_layer/detection_runner.py --actions-only`
+  `python3 -m src.data_detection_layer.detection_runner --actions-only`
 
 In `--actions-only` mode, the process polls `collision_actions` for `status='NEW'` and automatically applies them to `events` and `collision_cases`.

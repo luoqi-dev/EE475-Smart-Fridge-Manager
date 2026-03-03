@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Fridge Inventory System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Smart Fridge Inventory System</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="toolbar">
+        <h2 style="margin:0;">Manual Controls</h2>
+        <span class="hint">Auto refresh every 5 seconds</span>
+      </div>
+
+      <div class="controls">
+        <label>
+          Item:
+          <input id="itemInput" type="text" placeholder="e.g., apple" />
+        </label>
+
+        <button id="addBtn">Add (IN_FRIDGE)</button>
+        <button id="removeBtn" class="secondary">Remove (REMOVED)</button>
+
+        <span id="actionStatus" class="status">Idle</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="toolbar">
+        <h2 style="margin:0;">Current Inventory (from fridge.db)</h2>
+        <div class="toolbar-right">
+          <button id="refreshBtn">Refresh</button>
+          <span id="statusText" class="status">Idle</span>
+        </div>
+      </div>
+
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>item_name</th>
+            <th>quantity</th>
+            <th>earliest_put_in_time</th>
+            <th>latest_put_in_time</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

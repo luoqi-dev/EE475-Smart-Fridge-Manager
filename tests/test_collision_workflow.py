@@ -2,17 +2,12 @@ from __future__ import annotations
 
 import json
 import sqlite3
-import sys
 import tempfile
 import unittest
 import uuid
 from pathlib import Path
 
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT / "scr" / "data_detection_layer"))
-
-from collision_resolver import (  # noqa: E402
+from src.data_detection_layer.collision_resolver import (
     ACTION_STATUS_PROCESSED,
     CASE_STATUS_OPEN,
     CASE_STATUS_RESOLVED,
@@ -25,6 +20,9 @@ from collision_resolver import (  # noqa: E402
     ensure_collision_schema,
     get_in_fridge_instances,
 )
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class CollisionWorkflowTest(unittest.TestCase):

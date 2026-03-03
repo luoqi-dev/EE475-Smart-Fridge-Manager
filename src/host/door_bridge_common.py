@@ -80,6 +80,8 @@ def run_bridge(args: argparse.Namespace, auto_patterns: Iterable[str], missing_p
 
     print(f"[DOOR] listening on {port} @ {args.baud}", flush=True)
 
+    active_session_id: Optional[str] = None
+
     with ser:
         while True:
             try:
@@ -105,11 +107,14 @@ def run_bridge(args: argparse.Namespace, auto_patterns: Iterable[str], missing_p
             print(f"[DOOR] {event_type} seq={seq} t_ms={t_ms}", flush=True)
 
             if event_type == "SESSION_START":
+                active_session_id = "session_" + datetime.now().strftime("%Y%m%d_%H%M%S")
+                print(f"[DOOR] active session_id={active_session_id}", flush=True)
                 print("camera on", flush=True)
                 continue
 
             print("camera off", flush=True)
-            session_id = "session_" + datetime.now().strftime("%Y%m%d_%H%M%S")
+            session_id = active_session_id or ("session_" + datetime.now().strftime("%Y%m%d_%H%M%S"))
+            active_session_id = None
 
             try:
                 send_session_closed(args.socket, session_id)

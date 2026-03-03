@@ -12,8 +12,8 @@ Controls:
 
 Notes:
   - This tool requires a desktop/display session because it uses cv2.imshow().
-  - If RPi.GPIO is missing, install it with:
-      sudo apt install python3-rpi.gpio
+  - On Raspberry Pi 5, install GPIO support with:
+      sudo apt install python3-gpiozero python3-lgpio
 """
 
 from __future__ import annotations
@@ -26,10 +26,10 @@ import cv2
 import numpy as np
 
 try:
-    import RPi.GPIO as GPIO
+    from gpiozero import LED
 except ImportError as exc:
     raise SystemExit(
-        "RPi.GPIO is required for this test tool. Install with: sudo apt install python3-rpi.gpio"
+        "gpiozero is required for this test tool. Install with: sudo apt install python3-gpiozero python3-lgpio"
     ) from exc
 
 
@@ -70,14 +70,12 @@ MODE_RECORD = "RECORD"
 
 
 def setup_gpio() -> None:
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(LED_PIN_BCM, GPIO.OUT, initial=GPIO.LOW)
+    return None
 
 
-def cleanup_gpio() -> None:
-    GPIO.output(LED_PIN_BCM, GPIO.LOW)
-    GPIO.cleanup()
+def cleanup_gpio(led: LED) -> None:
+    led.off()
+    led.close()
 
 
 def configure_camera() -> cv2.VideoCapture:
@@ -134,7 +132,7 @@ def draw_text_block(frame: np.ndarray, lines: list[str]) -> None:
         y += TEXT_LINE_HEIGHT
 
 
-def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[bool, float]:
+def update_led(mode: str, led: LED, led_state: bool, next_toggle_time: float) -> tuple[bool, float]:
     now = time.monotonic()
     blink_interval = (
         RECORD_BLINK_INTERVAL_SECONDS if mode == MODE_RECORD else DETECT_BLINK_INTERVAL_SECONDS
@@ -142,7 +140,10 @@ def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[boo
 
     if now >= next_toggle_time:
         led_state = not led_state
-        GPIO.output(LED_PIN_BCM, GPIO.HIGH if led_state else GPIO.LOW)
+        if led_state:
+            led.on()
+        else:
+            led.off()
         next_toggle_time = now + blink_interval
 
     return led_state, next_toggle_time
@@ -151,6 +152,7 @@ def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[boo
 def main() -> int:
     cap = configure_camera()
     setup_gpio()
+    led = LED(LED_PIN_BCM)
 
     ring_buffer: deque[np.ndarray] = deque(maxlen=BUFFER_SIZE)
     prev_blurred: Optional[np.ndarray] = None
@@ -213,7 +215,7 @@ def main() -> int:
             draw_text_block(frame, overlay_lines)
             cv2.imshow(WINDOW_NAME, frame)
 
-            led_state, next_toggle_time = update_led(mode, led_state, next_toggle_time)
+            led_state, next_toggle_time = update_led(mode, led, led_state, next_toggle_time)
 
             key = cv2.waitKey(1) & 0xFF
             if key in (27, ord("q")):
@@ -226,7 +228,7 @@ def main() -> int:
     finally:
         cap.release()
         cv2.destroyAllWindows()
-        cleanup_gpio()
+        cleanup_gpio(led)
 
     return 0
 

@@ -12,8 +12,6 @@ Controls:
 
 Notes:
   - This tool requires a desktop/display session because it uses cv2.imshow().
-  - On Raspberry Pi 5, install GPIO support with:
-      sudo apt install python3-gpiozero python3-lgpio
 """
 
 from __future__ import annotations
@@ -24,13 +22,6 @@ from typing import Optional
 
 import cv2
 import numpy as np
-
-try:
-    from gpiozero import LED
-except ImportError as exc:
-    raise SystemExit(
-        "gpiozero is required for this test tool. Install with: sudo apt install python3-gpiozero python3-lgpio"
-    ) from exc
 
 
 # Camera and motion constants
@@ -49,11 +40,6 @@ FOURCC = "MJPG"
 WINDOW_NAME = "Camera Motion Tuner"
 SAVE_FRAMES = False
 
-# GPIO LED constants
-LED_PIN_BCM = 4
-DETECT_BLINK_INTERVAL_SECONDS = 0.5
-RECORD_BLINK_INTERVAL_SECONDS = 0.1
-
 # Overlay constants
 TEXT_ORIGIN_X = 10
 TEXT_ORIGIN_Y = 24
@@ -67,15 +53,6 @@ TEXT_SHADOW_COLOR = (0, 0, 0)
 
 MODE_DETECT = "DETECT"
 MODE_RECORD = "RECORD"
-
-
-def setup_gpio() -> None:
-    return None
-
-
-def cleanup_gpio(led: LED) -> None:
-    led.off()
-    led.close()
 
 
 def configure_camera() -> cv2.VideoCapture:
@@ -132,27 +109,8 @@ def draw_text_block(frame: np.ndarray, lines: list[str]) -> None:
         y += TEXT_LINE_HEIGHT
 
 
-def update_led(mode: str, led: LED, led_state: bool, next_toggle_time: float) -> tuple[bool, float]:
-    now = time.monotonic()
-    blink_interval = (
-        RECORD_BLINK_INTERVAL_SECONDS if mode == MODE_RECORD else DETECT_BLINK_INTERVAL_SECONDS
-    )
-
-    if now >= next_toggle_time:
-        led_state = not led_state
-        if led_state:
-            led.on()
-        else:
-            led.off()
-        next_toggle_time = now + blink_interval
-
-    return led_state, next_toggle_time
-
-
 def main() -> int:
     cap = configure_camera()
-    setup_gpio()
-    led = LED(LED_PIN_BCM)
 
     ring_buffer: deque[np.ndarray] = deque(maxlen=BUFFER_SIZE)
     prev_blurred: Optional[np.ndarray] = None
@@ -161,8 +119,6 @@ def main() -> int:
     last_motion_time = start_time
     last_loop_time = start_time
     fps_estimate = 0.0
-    led_state = False
-    next_toggle_time = start_time
 
     try:
         while True:
@@ -205,17 +161,16 @@ def main() -> int:
 
             overlay_lines = [
                 f"MODE: {mode}",
+                f"capture_target_fps: {target_fps:.1f}",
+                f"capture_measured_fps: {fps_estimate:.1f}",
                 f"changed_pixels: {changed_pixels}",
                 f"threshold: {MOTION_PIXEL_THRESHOLD}",
                 f"motion_detected: {motion_detected}",
-                f"fps: {fps_estimate:.1f}",
                 f"warmup_active: {now - start_time < WARMUP_SECONDS}",
                 f"buffer_size: {len(ring_buffer)}/{BUFFER_SIZE}",
             ]
             draw_text_block(frame, overlay_lines)
             cv2.imshow(WINDOW_NAME, frame)
-
-            led_state, next_toggle_time = update_led(mode, led, led_state, next_toggle_time)
 
             key = cv2.waitKey(1) & 0xFF
             if key in (27, ord("q")):
@@ -228,7 +183,6 @@ def main() -> int:
     finally:
         cap.release()
         cv2.destroyAllWindows()
-        cleanup_gpio(led)
 
     return 0
 

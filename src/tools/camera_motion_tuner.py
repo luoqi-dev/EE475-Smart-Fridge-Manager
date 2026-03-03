@@ -12,7 +12,10 @@ Controls:
 
 Notes:
   - This tool requires a desktop/display session because it uses cv2.imshow().
-  - If RPi.GPIO is missing, install it with:
+  - GPIO backend order is: gpiozero -> RPi.GPIO.
+  - On Raspberry Pi 5, prefer gpiozero/lgpio:
+      sudo apt install python3-gpiozero python3-lgpio
+  - If you use RPi.GPIO instead:
       sudo apt install python3-rpi.gpio
 """
 
@@ -26,11 +29,14 @@ import cv2
 import numpy as np
 
 try:
+    from gpiozero import LED
+except ImportError:
+    LED = None  # type: ignore[assignment]
+
+try:
     import RPi.GPIO as GPIO
-except ImportError as exc:
-    raise SystemExit(
-        "RPi.GPIO is required for this test tool. Install with: sudo apt install python3-rpi.gpio"
-    ) from exc
+except ImportError:
+    GPIO = None  # type: ignore[assignment]
 
 
 # Camera and motion constants
@@ -69,15 +75,62 @@ MODE_DETECT = "DETECT"
 MODE_RECORD = "RECORD"
 
 
-def setup_gpio() -> None:
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(LED_PIN_BCM, GPIO.OUT, initial=GPIO.LOW)
+class LedController:
+    def __init__(self) -> None:
+        self.backend = "none"
+        self._state = False
+        self._gpio_led = None
+
+    def setup(self) -> None:
+        if LED is not None:
+            try:
+                self._gpio_led = LED(LED_PIN_BCM)
+                self._gpio_led.off()
+                self.backend = "gpiozero"
+                print(f"[LED] backend=gpiozero pin=BCM{LED_PIN_BCM}", flush=True)
+                return
+            except Exception as exc:
+                print(f"[LED] gpiozero init failed: {exc}", flush=True)
+
+        if GPIO is not None:
+            try:
+                GPIO.setwarnings(False)
+                GPIO.setmode(GPIO.BCM)
+                GPIO.setup(LED_PIN_BCM, GPIO.OUT, initial=GPIO.LOW)
+                self.backend = "RPi.GPIO"
+                print(f"[LED] backend=RPi.GPIO pin=BCM{LED_PIN_BCM}", flush=True)
+                return
+            except RuntimeError as exc:
+                raise SystemExit(
+                    "RPi.GPIO failed to initialize. If you see 'cannot determine SOC peripheral "
+                    "base address', install and use gpiozero/lgpio instead:\n"
+                    "  sudo apt install python3-gpiozero python3-lgpio"
+                ) from exc
+
+        raise SystemExit(
+            "No GPIO backend available. Install one of:\n"
+            "  sudo apt install python3-gpiozero python3-lgpio\n"
+            "  sudo apt install python3-rpi.gpio"
+        )
+
+    def set_state(self, state: bool) -> None:
+        self._state = state
+        if self.backend == "gpiozero" and self._gpio_led is not None:
+            if state:
+                self._gpio_led.on()
+            else:
+                self._gpio_led.off()
+            return
+        if self.backend == "RPi.GPIO":
+            GPIO.output(LED_PIN_BCM, GPIO.HIGH if state else GPIO.LOW)
 
 
-def cleanup_gpio() -> None:
-    GPIO.output(LED_PIN_BCM, GPIO.LOW)
-    GPIO.cleanup()
+    def cleanup(self) -> None:
+        self.set_state(False)
+        if self.backend == "gpiozero" and self._gpio_led is not None:
+            self._gpio_led.close()
+        elif self.backend == "RPi.GPIO":
+            GPIO.cleanup()
 
 
 def configure_camera() -> cv2.VideoCapture:
@@ -134,7 +187,12 @@ def draw_text_block(frame: np.ndarray, lines: list[str]) -> None:
         y += TEXT_LINE_HEIGHT
 
 
-def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[bool, float]:
+def update_led(
+    mode: str,
+    led_state: bool,
+    next_toggle_time: float,
+    led_controller: LedController,
+) -> tuple[bool, float]:
     now = time.monotonic()
     blink_interval = (
         RECORD_BLINK_INTERVAL_SECONDS if mode == MODE_RECORD else DETECT_BLINK_INTERVAL_SECONDS
@@ -142,7 +200,7 @@ def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[boo
 
     if now >= next_toggle_time:
         led_state = not led_state
-        GPIO.output(LED_PIN_BCM, GPIO.HIGH if led_state else GPIO.LOW)
+        led_controller.set_state(led_state)
         next_toggle_time = now + blink_interval
 
     return led_state, next_toggle_time
@@ -150,7 +208,8 @@ def update_led(mode: str, led_state: bool, next_toggle_time: float) -> tuple[boo
 
 def main() -> int:
     cap = configure_camera()
-    setup_gpio()
+    led_controller = LedController()
+    led_controller.setup()
 
     ring_buffer: deque[np.ndarray] = deque(maxlen=BUFFER_SIZE)
     prev_blurred: Optional[np.ndarray] = None
@@ -213,7 +272,12 @@ def main() -> int:
             draw_text_block(frame, overlay_lines)
             cv2.imshow(WINDOW_NAME, frame)
 
-            led_state, next_toggle_time = update_led(mode, led_state, next_toggle_time)
+            led_state, next_toggle_time = update_led(
+                mode,
+                led_state,
+                next_toggle_time,
+                led_controller,
+            )
 
             key = cv2.waitKey(1) & 0xFF
             if key in (27, ord("q")):
@@ -226,7 +290,7 @@ def main() -> int:
     finally:
         cap.release()
         cv2.destroyAllWindows()
-        cleanup_gpio()
+        led_controller.cleanup()
 
     return 0
 

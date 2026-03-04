@@ -8,10 +8,8 @@ import uuid
 # Project root directory
 REPO_ROOT = Path(__file__).resolve().parent
 
-# Prefer a local fridge.db next to server.py; fallback to your original absolute path
-LOCAL_DB = REPO_ROOT / "fridge.db"
-FALLBACK_DB = Path(r"D:\文件\ECE\EE475\EE475-Smart-Fridge-Manager-main\data\db\fridge.db")
-DB_PATH = LOCAL_DB if LOCAL_DB.exists() else FALLBACK_DB
+# database path (same folder as server.py)
+DB_PATH = REPO_ROOT / "fridge.db"
 
 app = Flask(__name__, static_folder=str(REPO_ROOT), static_url_path="")
 
@@ -276,3 +274,4 @@ if __name__ == "__main__":
 
     print(f"Using DB: {DB_PATH}")
     app.run(host="127.0.0.1", port=5000, debug=True)
+

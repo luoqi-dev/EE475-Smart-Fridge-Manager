@@ -1,0 +1,12 @@
+# Core runtime for this branch (bridge + camera + socket bus + utility scripts)
+Flask>=3.0,<4
+numpy>=1.24,<3
+opencv-python>=4.8
+pyserial>=3.5
+
+# Script/test convenience (used in run_one_session_test.sh output formatting)
+pandas>=2.0
+
+# Raspberry Pi GPIO stack (for Pi-side tools if enabled)
+gpiozero>=2.0; platform_system == "Linux"
+lgpio>=0.2.2.0; platform_system == "Linux"

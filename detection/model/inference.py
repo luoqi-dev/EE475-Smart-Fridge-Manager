@@ -35,6 +35,9 @@ MODEL_PATH = _get_model_path()
 # class_0 = Apple, class_1 = Banana, ...
 DATA2_CLASS_NAMES = ["Apple", "Banana", "Grapes", "Kiwi", "Mango", "Orange", "Pineapple", "Sugerapple", "Watermelon"]
 
+# Only keep detections with confidence >= this (avoids "class_0" on blank frames)
+CONFIDENCE_THRESHOLD = 0.5
+
 def ensure_events_dir():
     EVENTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -99,7 +102,7 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
         "metadata": {
             "resolution": "640x480",
             "yolo_model": str(MODEL_PATH.name),
-            "confidence_threshold": 0.5,
+            "confidence_threshold": CONFIDENCE_THRESHOLD,
         },
         "samples": [],
     }
@@ -112,7 +115,7 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
         h, w = frame.shape[:2]
         h0, w0 = h, w
 
-        results = model(frame, verbose=False)
+        results = model(frame, conf=CONFIDENCE_THRESHOLD, verbose=False)
 
         ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
         ts_ms = idx * 500
@@ -129,6 +132,8 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                     cls_id = int(box.cls[0])
                     cls_name = get_class_name(model, cls_id)
                     conf = float(box.conf[0]) if box.conf is not None else 0.0
+                    if conf < CONFIDENCE_THRESHOLD:
+                        continue
 
                     x1 = float(xyxy[0] / w)
                     y1 = float(xyxy[1] / h)

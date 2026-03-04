@@ -31,13 +31,20 @@ def _get_model_path():
 
 MODEL_PATH = _get_model_path()
 
+# Fallback when model has no names (e.g. ONNX): same order as data_2/data.yaml (fruit_model_optimized_data2)
+# class_0 = Apple, class_1 = Banana, ...
+DATA2_CLASS_NAMES = ["Apple", "Banana", "Grapes", "Kiwi", "Mango", "Orange", "Pineapple", "Sugerapple", "Watermelon"]
+
 def ensure_events_dir():
     EVENTS_DIR.mkdir(parents=True, exist_ok=True)
 
 def get_class_name(model, class_id: int) -> str:
-    """Resolve class name from model names dict or id."""
+    """Resolve class name from model names dict or id. Uses DATA2_CLASS_NAMES when model has no names (e.g. ONNX)."""
     if hasattr(model, "names") and model.names is not None:
         return model.names.get(int(class_id), f"class_{class_id}")
+    cid = int(class_id)
+    if 0 <= cid < len(DATA2_CLASS_NAMES):
+        return DATA2_CLASS_NAMES[cid]
     return f"class_{class_id}"
 
 def run_inference_for_session(session_id: str, show: bool = False):

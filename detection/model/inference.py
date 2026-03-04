@@ -2,7 +2,9 @@
 Inference script: load YOLO model, detect fruits in each frame.
 Output: per-frame fruit class and bounding box (coordinates).
 Writes: data/sessions/<session_id>/vision.json (session_id from socket or auto-generated).
+Output format matches data_detection_layer (bbox/center in pixels, track_id, in_roi, frame_hash).
 """
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -100,7 +102,9 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
     demo = {
         "session_id": session_id,
         "metadata": {
+            "camera_model": "",
             "resolution": "640x480",
+            "fps": 2,
             "yolo_model": str(MODEL_PATH.name),
             "confidence_threshold": CONFIDENCE_THRESHOLD,
         },
@@ -119,7 +123,6 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
 
         ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
         ts_ms = idx * 500
-        frame_path_str = str(img_path.resolve())
         detections_for_sample = []
 
         if results and len(results) > 0:
@@ -135,27 +138,29 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                     if conf < CONFIDENCE_THRESHOLD:
                         continue
 
-                    x1 = float(xyxy[0] / w)
-                    y1 = float(xyxy[1] / h)
-                    x2 = float(xyxy[2] / w)
-                    y2 = float(xyxy[3] / h)
-                    x_center = float((xyxy[0] + xyxy[2]) / 2 / w)
-                    y_center = float((xyxy[1] + xyxy[3]) / 2 / h)
+                    x1_px = int(xyxy[0])
+                    y1_px = int(xyxy[1])
+                    x2_px = int(xyxy[2])
+                    y2_px = int(xyxy[3])
+                    w_px = x2_px - x1_px
+                    h_px = y2_px - y1_px
+                    x_center_px = (xyxy[0] + xyxy[2]) / 2.0
+                    y_center_px = (xyxy[1] + xyxy[3]) / 2.0
 
                     det = {
-                        "class_name": str(cls_name),
-                        "confidence": round(float(conf), 4),
+                        "class_name": str(cls_name).lower(),
+                        "confidence": round(float(conf), 2),
                         "bbox": {
-                            "x": float(round(x1, 4)),
-                            "y": float(round(y1, 4)),
-                            "width": float(round(x2 - x1, 4)),
-                            "height": float(round(y2 - y1, 4)),
+                            "x": x1_px,
+                            "y": y1_px,
+                            "width": w_px,
+                            "height": h_px,
                         },
-                        "center": {"x": float(round(x_center, 4)), "y": float(round(y_center, 4))},
+                        "center": {"x": float(x_center_px), "y": float(y_center_px)},
+                        "track_id": 0,
+                        "in_roi": False,
                     }
                     detections_for_sample.append(det)
-
-                    x1_px, y1_px, x2_px, y2_px = map(int, xyxy)
                     cv2.rectangle(frame, (x1_px, y1_px), (x2_px, y2_px), (0, 255, 0), 2)
                     label = f"{cls_name} {conf:.2f}"
                     cv2.putText(
@@ -163,12 +168,13 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1,
                     )
 
+        frame_hash = hashlib.sha256(cv2.imencode(".jpg", frame)[1].tobytes()).hexdigest()
         demo["samples"].append({
-            "frame_path": frame_path_str,
             "index": int(sample_index),
             "timestamp": ts,
             "timestamp_ms": int(ts_ms),
             "detections": detections_for_sample,
+            "frame_hash": frame_hash,
         })
         sample_index += 1
 

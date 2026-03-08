@@ -1,8 +1,0 @@
-# YOLO dataset config for fruit detection (Smart Fridge)
-# path must be absolute so training works from any cwd
-path: C:/Users/Brian/Desktop/EE476/EE475-Smart-Fridge-Manager/data
-train: train/images
-val: valid/images
-
-nc: 1
-names: ["fruit"]

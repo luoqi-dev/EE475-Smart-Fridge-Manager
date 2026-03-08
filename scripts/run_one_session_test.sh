@@ -39,8 +39,8 @@ from pathlib import Path
 import sys
 
 repo_root = Path.cwd()
-sys.path.append(str(repo_root / 'scr' / 'data_detection_layer'))
-from vision_to_events import ensure_schema_v2
+sys.path.append(str(repo_root))
+from src.data_detection_layer.vision_to_events import ensure_schema_v2
 
 conn = sqlite3.connect(str(repo_root / 'data' / 'db' / 'fridge.db'))
 try:
@@ -167,9 +167,9 @@ fi
 clear_events_table
 
 echo "[TEST] Starting DetectionRunner listener ..."
-PYTHONPATH="$REPO_ROOT/scr/data_detection_layer:${PYTHONPATH:-}" \
+PYTHONPATH="$REPO_ROOT:${PYTHONPATH:-}" \
 python3 -u - <<'PY' > "$LOG_PATH" 2>&1 &
-from detection_runner import get_project_root, run_socket_listener
+from src.data_detection_layer.detection_runner import get_project_root, run_socket_listener
 PROJECT_ROOT = get_project_root()
 run_socket_listener(project_root=PROJECT_ROOT)
 PY

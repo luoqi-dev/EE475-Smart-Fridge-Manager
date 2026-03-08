@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from fridge_cli_common import add_seconds, connect_db, utc_now_iso
-from collision_resolver import CollisionResolver, OPERATION_PUT_IN, ParsedOperation
+from src.data_detection_layer.collision_resolver import CollisionResolver, OPERATION_PUT_IN, ParsedOperation
 
 
 def parse_args() -> argparse.Namespace:

@@ -6,11 +6,11 @@ import sys
 import uuid
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT / "scr" / "data_detection_layer"))
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-from collision_resolver import (  # noqa: E402
+from src.data_detection_layer.collision_resolver import (
     CollisionActionConsumer,
     CollisionResolver,
     OPERATION_PUT_IN,

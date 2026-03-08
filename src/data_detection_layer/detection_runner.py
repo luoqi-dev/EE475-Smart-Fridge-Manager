@@ -34,7 +34,7 @@ except ImportError:
 # Config
 # ----------------------------
 
-DEFAULT_SOCKET_PATH = "/tmp/fridge_bus.sock"
+DEFAULT_SOCKET_PATH = "/tmp/vision_to_backend.sock"
 DEFAULT_DB_REL = Path("data/db/fridge.db")
 DEFAULT_SESSIONS_REL = Path("data/sessions")
 
@@ -95,7 +95,7 @@ def get_project_root(explicit_root: str | Path | None = None) -> Path:
 def wait_for_valid_vision_json(project_root: Path, session_id: str) -> Path:
     """
     Wait for a valid vision JSON under:
-      <PROJECT_ROOT>/data/sessions/session_<session_id>/{vision.json|visoin.json}
+      <PROJECT_ROOT>/data/sessions/<session_id>/{vision.json|visoin.json}
 
     Conditions:
       1) session directory exists
@@ -103,7 +103,7 @@ def wait_for_valid_vision_json(project_root: Path, session_id: str) -> Path:
       3) JSON is fully written (json.load succeeds)
       4) contract validation passes (load_and_validate_vision_json)
     """
-    session_dir = project_root / DEFAULT_SESSIONS_REL / f"session_{session_id}"
+    session_dir = project_root / DEFAULT_SESSIONS_REL / session_id
     candidate_files = [
         session_dir / "vision.json",
         session_dir / "visoin.json",
@@ -329,7 +329,10 @@ def run_socket_listener(
     sock_file = Path(socket_path)
 
     if sock_file.exists():
-        sock_file.unlink()
+        if sock_file.is_socket():
+            sock_file.unlink()
+        else:
+            raise RuntimeError(f"Refusing to remove non-socket path: {sock_file}")
 
     server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     server.bind(socket_path)
@@ -354,14 +357,20 @@ def run_socket_listener(
                 continue
 
             try:
-                data = conn.recv(4096)
-                if not data:
+                buf = b""
+                while True:
+                    chunk = conn.recv(4096)
+                    if not chunk:
+                        break
+                    buf += chunk
+
+                if not buf:
                     continue
 
                 try:
-                    msg = json.loads(data.decode("utf-8"))
+                    msg = json.loads(buf.decode("utf-8"))
                 except json.JSONDecodeError:
-                    print("[DetectionRunner] Invalid JSON:", data)
+                    print("[DetectionRunner] Invalid JSON payload.")
                     continue
 
                 session_id = msg.get("session_id")
@@ -370,8 +379,16 @@ def run_socket_listener(
                     continue
 
                 session_id = str(session_id).strip()
+                status = str(msg.get("status", "")).strip().lower()
+                if status not in {"success", "empty"}:
+                    print("[DetectionRunner] Invalid status:", msg)
+                    continue
 
-                print(f"\n[DetectionRunner] Received session_id: {session_id}")
+                print(f"\n[DetectionRunner] Received session_id: {session_id}, status: {status}")
+                if status == "empty":
+                    print("[DetectionRunner] Empty session. Skipping JSON processing.")
+                    print("[DetectionRunner] Ready for next session_id...")
+                    continue
 
                 try:
                     inserted = process_session_to_events(project_root, session_id)

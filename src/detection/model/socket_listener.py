@@ -17,14 +17,28 @@ import os
 import sys
 import threading
 import queue
+import socket
 from pathlib import Path
 
 # same directory as inference.py
 MODEL_DIR = Path(__file__).resolve().parent
 SOCKET_PATH = "/tmp/fridge_bus.sock"
+BACKEND_SOCKET_PATH = "/tmp/vision_to_backend.sock"
 
 # multiple session_id queues, processed by worker in order
 SESSION_QUEUE = queue.Queue()
+
+def _notify_backend(session_id: str, status: str) -> None:
+    payload = {"session_id": session_id, "status": status}
+    try:
+        client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            client.connect(BACKEND_SOCKET_PATH)
+            client.sendall(json.dumps(payload).encode("utf-8"))
+        finally:
+            client.close()
+    except OSError as e:
+        print(f"Backend notify failed for {session_id} ({status}): {e}")
 
 
 def worker():
@@ -37,12 +51,24 @@ def worker():
             frames_dir = SESSIONS_BASE_DIR / session_id / "frames"
             if not frames_dir.is_dir():
                 print(f"Frames dir not found: {frames_dir}")
+                _notify_backend(session_id, "empty")
             else:
                 print(f"Processing: {session_id} (queue size was {SESSION_QUEUE.qsize()})")
                 run_inference_for_session(session_id, show=False)
-                print(f"Done: {session_id}")
+                vision_path = SESSIONS_BASE_DIR / session_id / "vision.json"
+                status = "empty"
+                if vision_path.is_file():
+                    try:
+                        with open(vision_path, "r", encoding="utf-8") as f:
+                            json.load(f)
+                        status = "success"
+                    except (json.JSONDecodeError, OSError):
+                        status = "empty"
+                _notify_backend(session_id, status)
+                print(f"Done: {session_id} ({status})")
         except Exception as e:
             print(f"Error processing {session_id}: {e}")
+            _notify_backend(session_id, "empty")
         finally:
             SESSION_QUEUE.task_done()
 
@@ -51,8 +77,6 @@ def main():
     if sys.platform == "win32":
         print("Unix socket is for Linux (e.g. Raspberry Pi). On Windows use TCP or run inference manually.")
         sys.exit(1)
-
-    import socket
 
     # start worker thread to process session_id in queue
     t = threading.Thread(target=worker, daemon=False)

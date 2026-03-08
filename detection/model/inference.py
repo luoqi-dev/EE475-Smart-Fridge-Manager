@@ -38,7 +38,7 @@ MODEL_PATH = _get_model_path()
 DATA2_CLASS_NAMES = ["Apple", "Banana", "Grapes", "Kiwi", "Mango", "Orange", "Pineapple", "Sugerapple", "Watermelon"]
 
 # Only keep detections with confidence >= this (avoids "class_0" on blank frames)
-CONFIDENCE_THRESHOLD = 0.5
+CONFIDENCE_THRESHOLD = 0.65
 
 def ensure_events_dir():
     EVENTS_DIR.mkdir(parents=True, exist_ok=True)

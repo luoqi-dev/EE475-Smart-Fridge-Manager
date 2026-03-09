@@ -1,0 +1,324 @@
+{
+  "session_id": "session_20260308_214401",
+  "metadata": {
+    "camera_model": "",
+    "resolution": "640x480",
+    "fps": 2,
+    "yolo_model": "fruit_model_optimized_data2.onnx",
+    "confidence_threshold": 0.5
+  },
+  "samples": [
+    {
+      "index": 0,
+      "timestamp": "2026-03-08T21:44:11.923Z",
+      "timestamp_ms": 0,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 332,
+            "y": 246,
+            "width": 307,
+            "height": 234
+          },
+          "center": {
+            "x": 486.17822265625,
+            "y": 363.4146423339844
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "d541101c6dba358f5350d819eb712658afe4a133db1a73d8ddbedbbba00c7e30"
+    },
+    {
+      "index": 1,
+      "timestamp": "2026-03-08T21:44:12.100Z",
+      "timestamp_ms": 500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.94,
+          "bbox": {
+            "x": 327,
+            "y": 247,
+            "width": 312,
+            "height": 233
+          },
+          "center": {
+            "x": 483.9156799316406,
+            "y": 363.8002014160156
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "ee98fa3c292a027367ecb0653de55237acfceaac7dcc99bad21f38d6f2ce44b6"
+    },
+    {
+      "index": 2,
+      "timestamp": "2026-03-08T21:44:12.272Z",
+      "timestamp_ms": 1000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 338,
+            "y": 247,
+            "width": 301,
+            "height": 233
+          },
+          "center": {
+            "x": 489.227783203125,
+            "y": 363.693359375
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "b1a3c9f4627292f7d209ed3730b17cb05272cd557af5cc8c1b951c0e5f65ff1e"
+    },
+    {
+      "index": 3,
+      "timestamp": "2026-03-08T21:44:12.433Z",
+      "timestamp_ms": 1500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.94,
+          "bbox": {
+            "x": 342,
+            "y": 247,
+            "width": 297,
+            "height": 233
+          },
+          "center": {
+            "x": 491.3811340332031,
+            "y": 363.8758544921875
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "afb4ba1ae373390509ecd9df0015aa1e9bba988cf84cb98f82a5b51e220031cc"
+    },
+    {
+      "index": 4,
+      "timestamp": "2026-03-08T21:44:12.589Z",
+      "timestamp_ms": 2000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 342,
+            "y": 248,
+            "width": 297,
+            "height": 232
+          },
+          "center": {
+            "x": 491.30682373046875,
+            "y": 364.4292297363281
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "45f7a9a4fded465b142b7bb3051321220b37252cfac06d5bced40888df39548b"
+    },
+    {
+      "index": 5,
+      "timestamp": "2026-03-08T21:44:12.766Z",
+      "timestamp_ms": 2500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 329,
+            "y": 259,
+            "width": 310,
+            "height": 221
+          },
+          "center": {
+            "x": 484.6501770019531,
+            "y": 369.9971008300781
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "4ae2b75289f19875f684935567241b1c03e6163fffe965c1e4d03b8661df8ce5"
+    },
+    {
+      "index": 6,
+      "timestamp": "2026-03-08T21:44:12.926Z",
+      "timestamp_ms": 3000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 324,
+            "y": 274,
+            "width": 316,
+            "height": 206
+          },
+          "center": {
+            "x": 482.12286376953125,
+            "y": 377.1611328125
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "ce5ff39bcacc3b141f10e45e514f47d0ecb781d289ede16dd0e97cbab9ee4de7"
+    },
+    {
+      "index": 7,
+      "timestamp": "2026-03-08T21:44:13.095Z",
+      "timestamp_ms": 3500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.95,
+          "bbox": {
+            "x": 330,
+            "y": 276,
+            "width": 310,
+            "height": 204
+          },
+          "center": {
+            "x": 485.06561279296875,
+            "y": 378.0203857421875
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "7374cb711491251746851fe5a6e510ce928901091cf129357d29292ccf95dd45"
+    },
+    {
+      "index": 8,
+      "timestamp": "2026-03-08T21:44:13.260Z",
+      "timestamp_ms": 4000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.94,
+          "bbox": {
+            "x": 332,
+            "y": 269,
+            "width": 307,
+            "height": 211
+          },
+          "center": {
+            "x": 486.4430847167969,
+            "y": 374.7412414550781
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "af1ca36aa45c683c15a5c995d3211eaa02cc751d97477354a5311251a321ccf3"
+    },
+    {
+      "index": 9,
+      "timestamp": "2026-03-08T21:44:13.413Z",
+      "timestamp_ms": 4500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.94,
+          "bbox": {
+            "x": 324,
+            "y": 232,
+            "width": 315,
+            "height": 248
+          },
+          "center": {
+            "x": 482.0975646972656,
+            "y": 356.22821044921875
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "31876bc4f1b9bf1dd68a8c35e3a340f7f09d01e500fd0ed127c4c7697ddee58e"
+    },
+    {
+      "index": 10,
+      "timestamp": "2026-03-08T21:44:13.568Z",
+      "timestamp_ms": 5000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.93,
+          "bbox": {
+            "x": 291,
+            "y": 90,
+            "width": 348,
+            "height": 389
+          },
+          "center": {
+            "x": 465.40789794921875,
+            "y": 284.8879699707031
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "53696bf5946cd79bc2afed51c005208c49355af8bf8877e8f5e99a101aa69295"
+    },
+    {
+      "index": 11,
+      "timestamp": "2026-03-08T21:44:13.732Z",
+      "timestamp_ms": 5500,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.9,
+          "bbox": {
+            "x": 203,
+            "y": 1,
+            "width": 437,
+            "height": 319
+          },
+          "center": {
+            "x": 421.6678771972656,
+            "y": 160.77743530273438
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "7cf2cd50e10482a639e43a5b0636513b827cd47ece39c938ce4bae6549aabe67"
+    },
+    {
+      "index": 12,
+      "timestamp": "2026-03-08T21:44:13.888Z",
+      "timestamp_ms": 6000,
+      "detections": [
+        {
+          "class_name": "apple",
+          "confidence": 0.87,
+          "bbox": {
+            "x": 285,
+            "y": 1,
+            "width": 308,
+            "height": 184
+          },
+          "center": {
+            "x": 439.36553955078125,
+            "y": 93.34576416015625
+          },
+          "track_id": 0,
+          "in_roi": false
+        }
+      ],
+      "frame_hash": "e204f8e4467c7b2b9537c72b365b53d0feedc8452d19f14b1736c05b7fc55894"
+    }
+  ]
+}

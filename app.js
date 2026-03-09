@@ -232,9 +232,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sameNameCount = openCases.filter(x => x.item_name === c.item_name).length;
     maxSelectable = Math.max(1, sameNameCount);
-
+    const items = Array.isArray(c.items) ? c.items : [];
+    
     collisionSummary.textContent =
-      `Which ${c.item_name} do you want to remove? (${maxSelectable} item${maxSelectable > 1 ? 's' : ''} need to be removed)`;
+      `There are ${items.length} ${c.item_name}(s) currently in the fridge. Please select exactly ${maxSelectable} item${maxSelectable > 1 ? 's' : ''} to remove.`;
 
     collisionItems.innerHTML = '';
     const defaultIds = new Set((c.default_remove_ids || []).map(String));

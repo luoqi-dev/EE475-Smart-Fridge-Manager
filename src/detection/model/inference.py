@@ -227,9 +227,13 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                 active_tracks[best_id]["center"] = (cx, cy)
                 active_tracks[best_id]["misses"] = 0
 
+            # y_up: downside is the starting point, increasing upwards (bottom=0, up=positive); use y_up to check in_roi
+            y_up_center = h - cy
+            y_up_roi_min = h - (ROI_Y + ROI_HEIGHT)
+            y_up_roi_max = h - ROI_Y
             in_roi = (
                 ROI_X <= cx < (ROI_X + ROI_WIDTH)
-                and ROI_Y <= cy < (ROI_Y + ROI_HEIGHT)
+                and y_up_roi_min <= y_up_center <= y_up_roi_max
             )
             det["track_id"] = int(best_id)
             det["in_roi"] = bool(in_roi)

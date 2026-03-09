@@ -7,7 +7,7 @@ from datetime import datetime
 REPO_ROOT = Path(__file__).resolve().parent
 
 # ====== 固定你的 DB 绝对路径 ======
-DB_PATH = Path(r"D:\文件\ECE\EE475\EE475-Smart-Fridge-Manager-main\data\db\fridge.db")
+DB_PATH = Path(r"./data/db/fridge.db") 
 
 # ====== Flask 初始化 ======
 app = Flask(__name__, static_folder=str(REPO_ROOT), static_url_path="")

@@ -4,8 +4,8 @@ Output: per-frame fruit class and bounding box (coordinates).
 Writes: data/sessions/<session_id>/vision.json (session_id from socket or auto-generated).
 Output format matches data_detection_layer (bbox/center in pixels, track_id, in_roi, frame_hash).
 """
-import hashlib
 import json
+import math
 import re
 from pathlib import Path
 from datetime import datetime, timezone
@@ -14,12 +14,26 @@ from ultralytics import YOLO
 
 # ---------- Config ----------
 MODEL_DIR = Path(__file__).resolve().parent
-REPO_ROOT = MODEL_DIR.parent.parent
+# Runtime assumption: process is started from project root (EE475-Smart-Fridge-Manager).
+REPO_ROOT = Path.cwd().resolve()
 EVENTS_DIR = MODEL_DIR / "events"
 # data/sessions/<session_id>/ — hardware stores frames in frames/ subdir; AI writes vision.json in session dir
 SESSIONS_BASE_DIR = REPO_ROOT / "data" / "sessions"
 FRAMES_SUBDIR = "frames"  # hardware: data/sessions/<session_id>/frames/xxx.jpg
 VISION_OUTPUT_BASE = REPO_ROOT / "data" / "sessions"
+
+# Shared frame-size convention for downstream geometry.
+FRAME_WIDTH = 640
+FRAME_HEIGHT = 480
+
+ROI_X = 0
+ROI_Y = 0
+ROI_WIDTH = FRAME_WIDTH
+ROI_HEIGHT = int(0.5 * FRAME_HEIGHT)
+
+# Lightweight fallback tracker settings (class-aware nearest-center matching).
+TRACK_MAX_DISTANCE_PX = 80.0
+TRACK_MISS_GRACE = 2
 
 def _get_model_path():
     for name in ("fruit_model_optimized_data2.onnx",):
@@ -98,17 +112,27 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
 
     if session_id is None:
         session_id = "session_" + datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    h0, w0 = 480, 640
+    next_track_id = 1
+    active_tracks = {}
     demo = {
         "session_id": session_id,
         "metadata": {
-            "camera_model": "",
-            "resolution": "640x480",
-            "fps": 2,
+            "camera_model": "U20CAM-1080p-1",
+            "resolution": f"{FRAME_WIDTH}x{FRAME_HEIGHT}",
+            "fps": 30,
             "yolo_model": str(MODEL_PATH.name),
             "confidence_threshold": CONFIDENCE_THRESHOLD,
         },
         "samples": [],
+        "roi_definition": {
+            "name": "fridge_interior",
+            "coordinates": {
+                "x": ROI_X,
+                "y": ROI_Y,
+                "width": ROI_WIDTH,
+                "height": ROI_HEIGHT,
+            },
+        },
     }
     sample_index = 0
 
@@ -117,13 +141,14 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
         if frame is None:
             continue
         h, w = frame.shape[:2]
-        h0, w0 = h, w
+        scale_x = FRAME_WIDTH / float(max(w, 1))
+        scale_y = FRAME_HEIGHT / float(max(h, 1))
 
         results = model(frame, conf=CONFIDENCE_THRESHOLD, verbose=False)
 
         ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
         ts_ms = idx * 500
-        detections_for_sample = []
+        raw_detections = []
 
         if results and len(results) > 0:
             r = results[0]
@@ -138,29 +163,32 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                     if conf < CONFIDENCE_THRESHOLD:
                         continue
 
-                    x1_px = int(xyxy[0])
-                    y1_px = int(xyxy[1])
-                    x2_px = int(xyxy[2])
-                    y2_px = int(xyxy[3])
-                    w_px = x2_px - x1_px
-                    h_px = y2_px - y1_px
-                    x_center_px = (xyxy[0] + xyxy[2]) / 2.0
-                    y_center_px = (xyxy[1] + xyxy[3]) / 2.0
+                    x1_px = int(round(float(xyxy[0]) * scale_x))
+                    y1_px = int(round(float(xyxy[1]) * scale_y))
+                    x2_px = int(round(float(xyxy[2]) * scale_x))
+                    y2_px = int(round(float(xyxy[3]) * scale_y))
+                    x1_px = max(0, min(FRAME_WIDTH - 1, x1_px))
+                    y1_px = max(0, min(FRAME_HEIGHT - 1, y1_px))
+                    x2_px = max(x1_px + 1, min(FRAME_WIDTH, x2_px))
+                    y2_px = max(y1_px + 1, min(FRAME_HEIGHT, y2_px))
+                    w_px = max(1, x2_px - x1_px)
+                    h_px = max(1, y2_px - y1_px)
+                    x_center_px = x1_px + (w_px / 2.0)
+                    y_center_px = y1_px + (h_px / 2.0)
 
-                    det = {
-                        "class_name": str(cls_name).lower(),
-                        "confidence": round(float(conf), 2),
-                        "bbox": {
-                            "x": x1_px,
-                            "y": y1_px,
-                            "width": w_px,
-                            "height": h_px,
-                        },
-                        "center": {"x": float(x_center_px), "y": float(y_center_px)},
-                        "track_id": 0,
-                        "in_roi": False,
-                    }
-                    detections_for_sample.append(det)
+                    raw_detections.append(
+                        {
+                            "class_name": str(cls_name).lower(),
+                            "confidence": round(float(conf), 2),
+                            "bbox": {
+                                "x": x1_px,
+                                "y": y1_px,
+                                "width": w_px,
+                                "height": h_px,
+                            },
+                            "center": {"x": float(x_center_px), "y": float(y_center_px)},
+                        }
+                    )
                     cv2.rectangle(frame, (x1_px, y1_px), (x2_px, y2_px), (0, 255, 0), 2)
                     label = f"{cls_name} {conf:.2f}"
                     cv2.putText(
@@ -168,7 +196,55 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1,
                     )
 
-        frame_hash = hashlib.sha256(cv2.imencode(".jpg", frame)[1].tobytes()).hexdigest()
+        available_track_ids = set(active_tracks.keys())
+        assigned_track_ids = set()
+        detections_for_sample = []
+        for det in raw_detections:
+            cls_name = det["class_name"]
+            cx = float(det["center"]["x"])
+            cy = float(det["center"]["y"])
+            best_id = None
+            best_dist = None
+            for tid in available_track_ids:
+                if tid in assigned_track_ids:
+                    continue
+                track = active_tracks.get(tid)
+                if track is None or track["class_name"] != cls_name:
+                    continue
+                tx, ty = track["center"]
+                dist = math.hypot(cx - tx, cy - ty)
+                if dist > TRACK_MAX_DISTANCE_PX:
+                    continue
+                if best_dist is None or dist < best_dist:
+                    best_dist = dist
+                    best_id = tid
+
+            if best_id is None:
+                best_id = next_track_id
+                next_track_id += 1
+                active_tracks[best_id] = {"class_name": cls_name, "center": (cx, cy), "misses": 0}
+            else:
+                active_tracks[best_id]["center"] = (cx, cy)
+                active_tracks[best_id]["misses"] = 0
+
+            in_roi = (
+                ROI_X <= cx < (ROI_X + ROI_WIDTH)
+                and ROI_Y <= cy < (ROI_Y + ROI_HEIGHT)
+            )
+            det["track_id"] = int(best_id)
+            det["in_roi"] = bool(in_roi)
+            detections_for_sample.append(det)
+            assigned_track_ids.add(best_id)
+
+        for tid in list(active_tracks.keys()):
+            if tid in assigned_track_ids:
+                continue
+            active_tracks[tid]["misses"] += 1
+            if active_tracks[tid]["misses"] > TRACK_MISS_GRACE:
+                del active_tracks[tid]
+
+        # Temporary rule: frame_hash mirrors one representative track_id.
+        frame_hash = str(detections_for_sample[0]["track_id"]) if detections_for_sample else "0"
         demo["samples"].append({
             "index": int(sample_index),
             "timestamp": ts,
@@ -186,7 +262,6 @@ def run_inference_on_folder(image_dir: Path, show: bool = True, session_id=None)
     if show:
         cv2.destroyAllWindows()
 
-    demo["metadata"]["resolution"] = f"{w0}x{h0}"
     # output to data/sessions/<session_id>/vision.json
     out_dir = VISION_OUTPUT_BASE / session_id
     out_dir.mkdir(parents=True, exist_ok=True)

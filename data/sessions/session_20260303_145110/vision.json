@@ -1,3195 +1,2210 @@
 {
   "session_id": "session_20260303_145110",
   "metadata": {
+    "camera_model": "U20CAM-1080p-1",
     "resolution": "640x480",
+    "fps": 30,
     "yolo_model": "fruit_model_optimized_data2.onnx",
-    "confidence_threshold": 0.5
+    "confidence_threshold": 0.65
   },
   "samples": [
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/000.jpg",
       "index": 0,
-      "timestamp": "2026-03-04T01:35:16.247Z",
+      "timestamp": "2026-03-09T00:52:44.174Z",
       "timestamp_ms": 0,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6185,
-          "bbox": {
-            "x": 0.0456,
-            "y": 0.8461,
-            "width": 0.113,
-            "height": 0.153
-          },
-          "center": {
-            "x": 0.1021,
-            "y": 0.9226
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/001.jpg",
       "index": 1,
-      "timestamp": "2026-03-04T01:35:16.324Z",
+      "timestamp": "2026-03-09T00:52:44.307Z",
       "timestamp_ms": 500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7306,
+          "class_name": "apple",
+          "confidence": 0.73,
           "bbox": {
-            "x": 0.0529,
-            "y": 0.8451,
-            "width": 0.1056,
-            "height": 0.1539
+            "x": 34,
+            "y": 406,
+            "width": 67,
+            "height": 74
           },
           "center": {
-            "x": 0.1057,
-            "y": 0.9221
-          }
+            "x": 67.5,
+            "y": 443.0
+          },
+          "track_id": 1,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "1"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/002.jpg",
       "index": 2,
-      "timestamp": "2026-03-04T01:35:16.408Z",
+      "timestamp": "2026-03-09T00:52:44.461Z",
       "timestamp_ms": 1000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5624,
-          "bbox": {
-            "x": 0.0282,
-            "y": 0.844,
-            "width": 0.1311,
-            "height": 0.155
-          },
-          "center": {
-            "x": 0.0937,
-            "y": 0.9215
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/003.jpg",
       "index": 3,
-      "timestamp": "2026-03-04T01:35:16.578Z",
+      "timestamp": "2026-03-09T00:52:44.584Z",
       "timestamp_ms": 1500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6346,
-          "bbox": {
-            "x": 0.0232,
-            "y": 0.8455,
-            "width": 0.1348,
-            "height": 0.1533
-          },
-          "center": {
-            "x": 0.0906,
-            "y": 0.9222
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/004.jpg",
       "index": 4,
-      "timestamp": "2026-03-04T01:35:16.714Z",
+      "timestamp": "2026-03-09T00:52:44.705Z",
       "timestamp_ms": 2000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6737,
+          "class_name": "apple",
+          "confidence": 0.67,
           "bbox": {
-            "x": 0.0534,
-            "y": 0.847,
-            "width": 0.1042,
-            "height": 0.1517
+            "x": 34,
+            "y": 407,
+            "width": 67,
+            "height": 72
           },
           "center": {
-            "x": 0.1055,
-            "y": 0.9228
-          }
+            "x": 67.5,
+            "y": 443.0
+          },
+          "track_id": 1,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "1"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/005.jpg",
       "index": 5,
-      "timestamp": "2026-03-04T01:35:16.828Z",
+      "timestamp": "2026-03-09T00:52:44.819Z",
       "timestamp_ms": 2500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5973,
-          "bbox": {
-            "x": 0.0424,
-            "y": 0.8445,
-            "width": 0.117,
-            "height": 0.1549
-          },
-          "center": {
-            "x": 0.1009,
-            "y": 0.922
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/006.jpg",
       "index": 6,
-      "timestamp": "2026-03-04T01:35:16.923Z",
+      "timestamp": "2026-03-09T00:52:44.945Z",
       "timestamp_ms": 3000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6353,
-          "bbox": {
-            "x": 0.046,
-            "y": 0.8436,
-            "width": 0.1136,
-            "height": 0.1553
-          },
-          "center": {
-            "x": 0.1028,
-            "y": 0.9213
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/007.jpg",
       "index": 7,
-      "timestamp": "2026-03-04T01:35:17.024Z",
+      "timestamp": "2026-03-09T00:52:45.070Z",
       "timestamp_ms": 3500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6178,
-          "bbox": {
-            "x": 0.0174,
-            "y": 0.844,
-            "width": 0.1416,
-            "height": 0.155
-          },
-          "center": {
-            "x": 0.0882,
-            "y": 0.9215
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/008.jpg",
       "index": 8,
-      "timestamp": "2026-03-04T01:35:17.112Z",
+      "timestamp": "2026-03-09T00:52:45.178Z",
       "timestamp_ms": 4000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.548,
-          "bbox": {
-            "x": 0.0293,
-            "y": 0.8447,
-            "width": 0.1301,
-            "height": 0.1545
-          },
-          "center": {
-            "x": 0.0944,
-            "y": 0.9219
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/009.jpg",
       "index": 9,
-      "timestamp": "2026-03-04T01:35:17.201Z",
+      "timestamp": "2026-03-09T00:52:45.288Z",
       "timestamp_ms": 4500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5942,
-          "bbox": {
-            "x": 0.0535,
-            "y": 0.8452,
-            "width": 0.1043,
-            "height": 0.1533
-          },
-          "center": {
-            "x": 0.1057,
-            "y": 0.9218
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/010.jpg",
       "index": 10,
-      "timestamp": "2026-03-04T01:35:17.284Z",
+      "timestamp": "2026-03-09T00:52:45.381Z",
       "timestamp_ms": 5000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6816,
+          "class_name": "apple",
+          "confidence": 0.68,
           "bbox": {
-            "x": 0.2596,
-            "y": 0.0059,
-            "width": 0.3204,
-            "height": 0.25
+            "x": 166,
+            "y": 3,
+            "width": 205,
+            "height": 120
           },
           "center": {
-            "x": 0.4198,
-            "y": 0.1309
-          }
+            "x": 268.5,
+            "y": 63.0
+          },
+          "track_id": 2,
+          "in_roi": true
         }
-      ]
+      ],
+      "frame_hash": "2"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/011.jpg",
       "index": 11,
-      "timestamp": "2026-03-04T01:35:17.363Z",
+      "timestamp": "2026-03-09T00:52:45.477Z",
       "timestamp_ms": 5500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/012.jpg",
       "index": 12,
-      "timestamp": "2026-03-04T01:35:17.441Z",
+      "timestamp": "2026-03-09T00:52:45.612Z",
       "timestamp_ms": 6000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/013.jpg",
       "index": 13,
-      "timestamp": "2026-03-04T01:35:17.520Z",
+      "timestamp": "2026-03-09T00:52:45.732Z",
       "timestamp_ms": 6500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/014.jpg",
       "index": 14,
-      "timestamp": "2026-03-04T01:35:17.598Z",
+      "timestamp": "2026-03-09T00:52:45.845Z",
       "timestamp_ms": 7000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7863,
+          "class_name": "apple",
+          "confidence": 0.79,
           "bbox": {
-            "x": 0.3203,
-            "y": 0.2043,
-            "width": 0.36,
-            "height": 0.4913
+            "x": 205,
+            "y": 98,
+            "width": 230,
+            "height": 236
           },
           "center": {
-            "x": 0.5003,
-            "y": 0.45
-          }
+            "x": 320.0,
+            "y": 216.0
+          },
+          "track_id": 3,
+          "in_roi": true
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/015.jpg",
       "index": 15,
-      "timestamp": "2026-03-04T01:35:17.676Z",
+      "timestamp": "2026-03-09T00:52:45.949Z",
       "timestamp_ms": 7500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8263,
+          "class_name": "apple",
+          "confidence": 0.83,
           "bbox": {
-            "x": 0.3368,
-            "y": 0.2566,
-            "width": 0.3586,
-            "height": 0.4822
+            "x": 216,
+            "y": 123,
+            "width": 229,
+            "height": 232
           },
           "center": {
-            "x": 0.5161,
-            "y": 0.4977
-          }
+            "x": 330.5,
+            "y": 239.0
+          },
+          "track_id": 3,
+          "in_roi": true
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/016.jpg",
       "index": 16,
-      "timestamp": "2026-03-04T01:35:17.754Z",
+      "timestamp": "2026-03-09T00:52:46.056Z",
       "timestamp_ms": 8000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8083,
+          "class_name": "apple",
+          "confidence": 0.81,
           "bbox": {
-            "x": 0.3865,
-            "y": 0.3365,
-            "width": 0.3428,
-            "height": 0.4428
+            "x": 247,
+            "y": 161,
+            "width": 220,
+            "height": 213
           },
           "center": {
-            "x": 0.5579,
-            "y": 0.5578
-          }
+            "x": 357.0,
+            "y": 267.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/017.jpg",
       "index": 17,
-      "timestamp": "2026-03-04T01:35:17.837Z",
+      "timestamp": "2026-03-09T00:52:46.161Z",
       "timestamp_ms": 8500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9083,
+          "class_name": "apple",
+          "confidence": 0.91,
           "bbox": {
-            "x": 0.4065,
-            "y": 0.3615,
-            "width": 0.3362,
-            "height": 0.4729
+            "x": 260,
+            "y": 174,
+            "width": 215,
+            "height": 227
           },
           "center": {
-            "x": 0.5746,
-            "y": 0.598
-          }
+            "x": 367.5,
+            "y": 287.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/018.jpg",
       "index": 18,
-      "timestamp": "2026-03-04T01:35:17.918Z",
+      "timestamp": "2026-03-09T00:52:46.282Z",
       "timestamp_ms": 9000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9062,
+          "class_name": "apple",
+          "confidence": 0.91,
           "bbox": {
-            "x": 0.4001,
-            "y": 0.411,
-            "width": 0.3425,
-            "height": 0.4674
+            "x": 256,
+            "y": 197,
+            "width": 219,
+            "height": 225
           },
           "center": {
-            "x": 0.5713,
-            "y": 0.6447
-          }
+            "x": 365.5,
+            "y": 309.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/019.jpg",
       "index": 19,
-      "timestamp": "2026-03-04T01:35:17.996Z",
+      "timestamp": "2026-03-09T00:52:46.415Z",
       "timestamp_ms": 9500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9344,
+          "class_name": "apple",
+          "confidence": 0.93,
           "bbox": {
-            "x": 0.421,
-            "y": 0.452,
-            "width": 0.3298,
-            "height": 0.4704
+            "x": 269,
+            "y": 217,
+            "width": 212,
+            "height": 226
           },
           "center": {
-            "x": 0.5859,
-            "y": 0.6872
-          }
+            "x": 375.0,
+            "y": 330.0
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/020.jpg",
       "index": 20,
-      "timestamp": "2026-03-04T01:35:18.075Z",
+      "timestamp": "2026-03-09T00:52:46.537Z",
       "timestamp_ms": 10000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9189,
+          "class_name": "apple",
+          "confidence": 0.92,
           "bbox": {
-            "x": 0.4414,
-            "y": 0.5132,
-            "width": 0.3274,
-            "height": 0.456
+            "x": 283,
+            "y": 246,
+            "width": 209,
+            "height": 219
           },
           "center": {
-            "x": 0.6051,
-            "y": 0.7412
-          }
+            "x": 387.5,
+            "y": 355.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/021.jpg",
       "index": 21,
-      "timestamp": "2026-03-04T01:35:18.153Z",
+      "timestamp": "2026-03-09T00:52:46.677Z",
       "timestamp_ms": 10500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9223,
+          "class_name": "apple",
+          "confidence": 0.92,
           "bbox": {
-            "x": 0.4461,
-            "y": 0.5772,
-            "width": 0.3298,
-            "height": 0.4221
+            "x": 285,
+            "y": 277,
+            "width": 212,
+            "height": 203
           },
           "center": {
-            "x": 0.6109,
-            "y": 0.7883
-          }
+            "x": 391.0,
+            "y": 378.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/022.jpg",
       "index": 22,
-      "timestamp": "2026-03-04T01:35:18.228Z",
+      "timestamp": "2026-03-09T00:52:46.793Z",
       "timestamp_ms": 11000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8983,
+          "class_name": "apple",
+          "confidence": 0.9,
           "bbox": {
-            "x": 0.4579,
-            "y": 0.6307,
-            "width": 0.3196,
-            "height": 0.3693
+            "x": 293,
+            "y": 303,
+            "width": 205,
+            "height": 177
           },
           "center": {
-            "x": 0.6177,
-            "y": 0.8153
-          }
+            "x": 395.5,
+            "y": 391.5
+          },
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/023.jpg",
       "index": 23,
-      "timestamp": "2026-03-04T01:35:18.307Z",
+      "timestamp": "2026-03-09T00:52:46.889Z",
       "timestamp_ms": 11500,
       "detections": [
         {
-          "class_name": "Apple",
+          "class_name": "apple",
           "confidence": 0.9,
           "bbox": {
-            "x": 0.4692,
-            "y": 0.6837,
-            "width": 0.313,
-            "height": 0.3157
+            "x": 300,
+            "y": 328,
+            "width": 201,
+            "height": 152
           },
           "center": {
-            "x": 0.6257,
-            "y": 0.8416
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.5532,
-          "bbox": {
-            "x": 0.1624,
-            "y": 0.5446,
-            "width": 0.5229,
-            "height": 0.4516
+            "x": 400.5,
+            "y": 404.0
           },
-          "center": {
-            "x": 0.4238,
-            "y": 0.7703
-          }
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/024.jpg",
       "index": 24,
-      "timestamp": "2026-03-04T01:35:18.384Z",
+      "timestamp": "2026-03-09T00:52:46.994Z",
       "timestamp_ms": 12000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8035,
+          "class_name": "apple",
+          "confidence": 0.8,
           "bbox": {
-            "x": 0.4739,
-            "y": 0.7086,
-            "width": 0.3155,
-            "height": 0.2914
+            "x": 303,
+            "y": 340,
+            "width": 202,
+            "height": 140
           },
           "center": {
-            "x": 0.6317,
-            "y": 0.8543
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.5477,
-          "bbox": {
-            "x": 0.1746,
-            "y": 0.5862,
-            "width": 0.5218,
-            "height": 0.4102
+            "x": 404.0,
+            "y": 410.0
           },
-          "center": {
-            "x": 0.4355,
-            "y": 0.7913
-          }
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/025.jpg",
       "index": 25,
-      "timestamp": "2026-03-04T01:35:18.460Z",
+      "timestamp": "2026-03-09T00:52:47.082Z",
       "timestamp_ms": 12500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7583,
+          "class_name": "apple",
+          "confidence": 0.76,
           "bbox": {
-            "x": 0.4764,
-            "y": 0.7579,
-            "width": 0.3149,
-            "height": 0.2417
+            "x": 305,
+            "y": 364,
+            "width": 201,
+            "height": 116
           },
           "center": {
-            "x": 0.6338,
-            "y": 0.8788
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.6374,
-          "bbox": {
-            "x": 0.182,
-            "y": 0.6129,
-            "width": 0.5178,
-            "height": 0.3832
+            "x": 405.5,
+            "y": 422.0
           },
-          "center": {
-            "x": 0.4409,
-            "y": 0.8045
-          }
+          "track_id": 3,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "3"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/026.jpg",
       "index": 26,
-      "timestamp": "2026-03-04T01:35:18.538Z",
+      "timestamp": "2026-03-09T00:52:47.168Z",
       "timestamp_ms": 13000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5915,
-          "bbox": {
-            "x": 0.1853,
-            "y": 0.6321,
-            "width": 0.5167,
-            "height": 0.3649
-          },
-          "center": {
-            "x": 0.4437,
-            "y": 0.8146
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/027.jpg",
       "index": 27,
-      "timestamp": "2026-03-04T01:35:18.622Z",
+      "timestamp": "2026-03-09T00:52:47.255Z",
       "timestamp_ms": 13500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/028.jpg",
       "index": 28,
-      "timestamp": "2026-03-04T01:35:18.707Z",
+      "timestamp": "2026-03-09T00:52:47.334Z",
       "timestamp_ms": 14000,
-      "detections": [
-        {
-          "class_name": "Kiwi",
-          "confidence": 0.5396,
-          "bbox": {
-            "x": 0.4971,
-            "y": 0.9117,
-            "width": 0.274,
-            "height": 0.0883
-          },
-          "center": {
-            "x": 0.6341,
-            "y": 0.9559
-          }
-        },
-        {
-          "class_name": "Kiwi",
-          "confidence": 0.5239,
-          "bbox": {
-            "x": 0.4973,
-            "y": 0.9419,
-            "width": 0.2742,
-            "height": 0.0581
-          },
-          "center": {
-            "x": 0.6344,
-            "y": 0.9709
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/029.jpg",
       "index": 29,
-      "timestamp": "2026-03-04T01:35:18.784Z",
+      "timestamp": "2026-03-09T00:52:47.410Z",
       "timestamp_ms": 14500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/030.jpg",
       "index": 30,
-      "timestamp": "2026-03-04T01:35:18.862Z",
+      "timestamp": "2026-03-09T00:52:47.489Z",
       "timestamp_ms": 15000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/031.jpg",
       "index": 31,
-      "timestamp": "2026-03-04T01:35:18.940Z",
+      "timestamp": "2026-03-09T00:52:47.566Z",
       "timestamp_ms": 15500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/032.jpg",
       "index": 32,
-      "timestamp": "2026-03-04T01:35:19.018Z",
+      "timestamp": "2026-03-09T00:52:47.656Z",
       "timestamp_ms": 16000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/033.jpg",
       "index": 33,
-      "timestamp": "2026-03-04T01:35:19.095Z",
+      "timestamp": "2026-03-09T00:52:47.740Z",
       "timestamp_ms": 16500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/034.jpg",
       "index": 34,
-      "timestamp": "2026-03-04T01:35:19.171Z",
+      "timestamp": "2026-03-09T00:52:47.822Z",
       "timestamp_ms": 17000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/035.jpg",
       "index": 35,
-      "timestamp": "2026-03-04T01:35:19.246Z",
+      "timestamp": "2026-03-09T00:52:47.915Z",
       "timestamp_ms": 17500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/036.jpg",
       "index": 36,
-      "timestamp": "2026-03-04T01:35:19.322Z",
+      "timestamp": "2026-03-09T00:52:47.994Z",
       "timestamp_ms": 18000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/037.jpg",
       "index": 37,
-      "timestamp": "2026-03-04T01:35:19.399Z",
+      "timestamp": "2026-03-09T00:52:48.072Z",
       "timestamp_ms": 18500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/038.jpg",
       "index": 38,
-      "timestamp": "2026-03-04T01:35:19.484Z",
+      "timestamp": "2026-03-09T00:52:48.150Z",
       "timestamp_ms": 19000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/039.jpg",
       "index": 39,
-      "timestamp": "2026-03-04T01:35:19.559Z",
+      "timestamp": "2026-03-09T00:52:48.228Z",
       "timestamp_ms": 19500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/040.jpg",
       "index": 40,
-      "timestamp": "2026-03-04T01:35:19.638Z",
+      "timestamp": "2026-03-09T00:52:48.311Z",
       "timestamp_ms": 20000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/041.jpg",
       "index": 41,
-      "timestamp": "2026-03-04T01:35:19.715Z",
+      "timestamp": "2026-03-09T00:52:48.395Z",
       "timestamp_ms": 20500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/042.jpg",
       "index": 42,
-      "timestamp": "2026-03-04T01:35:19.791Z",
+      "timestamp": "2026-03-09T00:52:48.473Z",
       "timestamp_ms": 21000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/043.jpg",
       "index": 43,
-      "timestamp": "2026-03-04T01:35:19.869Z",
+      "timestamp": "2026-03-09T00:52:48.551Z",
       "timestamp_ms": 21500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/044.jpg",
       "index": 44,
-      "timestamp": "2026-03-04T01:35:19.944Z",
+      "timestamp": "2026-03-09T00:52:48.629Z",
       "timestamp_ms": 22000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/045.jpg",
       "index": 45,
-      "timestamp": "2026-03-04T01:35:20.022Z",
+      "timestamp": "2026-03-09T00:52:48.707Z",
       "timestamp_ms": 22500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/046.jpg",
       "index": 46,
-      "timestamp": "2026-03-04T01:35:20.100Z",
+      "timestamp": "2026-03-09T00:52:48.785Z",
       "timestamp_ms": 23000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/047.jpg",
       "index": 47,
-      "timestamp": "2026-03-04T01:35:20.178Z",
+      "timestamp": "2026-03-09T00:52:48.870Z",
       "timestamp_ms": 23500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/048.jpg",
       "index": 48,
-      "timestamp": "2026-03-04T01:35:20.256Z",
+      "timestamp": "2026-03-09T00:52:48.948Z",
       "timestamp_ms": 24000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/049.jpg",
       "index": 49,
-      "timestamp": "2026-03-04T01:35:20.333Z",
+      "timestamp": "2026-03-09T00:52:49.026Z",
       "timestamp_ms": 24500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/050.jpg",
       "index": 50,
-      "timestamp": "2026-03-04T01:35:20.410Z",
+      "timestamp": "2026-03-09T00:52:49.104Z",
       "timestamp_ms": 25000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/051.jpg",
       "index": 51,
-      "timestamp": "2026-03-04T01:35:20.489Z",
+      "timestamp": "2026-03-09T00:52:49.183Z",
       "timestamp_ms": 25500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/052.jpg",
       "index": 52,
-      "timestamp": "2026-03-04T01:35:20.566Z",
+      "timestamp": "2026-03-09T00:52:49.259Z",
       "timestamp_ms": 26000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/053.jpg",
       "index": 53,
-      "timestamp": "2026-03-04T01:35:20.642Z",
+      "timestamp": "2026-03-09T00:52:49.336Z",
       "timestamp_ms": 26500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/054.jpg",
       "index": 54,
-      "timestamp": "2026-03-04T01:35:20.719Z",
+      "timestamp": "2026-03-09T00:52:49.410Z",
       "timestamp_ms": 27000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/055.jpg",
       "index": 55,
-      "timestamp": "2026-03-04T01:35:20.797Z",
+      "timestamp": "2026-03-09T00:52:49.487Z",
       "timestamp_ms": 27500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/056.jpg",
       "index": 56,
-      "timestamp": "2026-03-04T01:35:20.872Z",
+      "timestamp": "2026-03-09T00:52:49.564Z",
       "timestamp_ms": 28000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/057.jpg",
       "index": 57,
-      "timestamp": "2026-03-04T01:35:20.949Z",
+      "timestamp": "2026-03-09T00:52:49.644Z",
       "timestamp_ms": 28500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/058.jpg",
       "index": 58,
-      "timestamp": "2026-03-04T01:35:21.027Z",
+      "timestamp": "2026-03-09T00:52:49.723Z",
       "timestamp_ms": 29000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/059.jpg",
       "index": 59,
-      "timestamp": "2026-03-04T01:35:21.102Z",
+      "timestamp": "2026-03-09T00:52:49.800Z",
       "timestamp_ms": 29500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/060.jpg",
       "index": 60,
-      "timestamp": "2026-03-04T01:35:21.179Z",
+      "timestamp": "2026-03-09T00:52:49.876Z",
       "timestamp_ms": 30000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/061.jpg",
       "index": 61,
-      "timestamp": "2026-03-04T01:35:21.255Z",
+      "timestamp": "2026-03-09T00:52:49.952Z",
       "timestamp_ms": 30500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/062.jpg",
       "index": 62,
-      "timestamp": "2026-03-04T01:35:21.332Z",
+      "timestamp": "2026-03-09T00:52:50.029Z",
       "timestamp_ms": 31000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/063.jpg",
       "index": 63,
-      "timestamp": "2026-03-04T01:35:21.408Z",
+      "timestamp": "2026-03-09T00:52:50.105Z",
       "timestamp_ms": 31500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/064.jpg",
       "index": 64,
-      "timestamp": "2026-03-04T01:35:21.487Z",
+      "timestamp": "2026-03-09T00:52:50.182Z",
       "timestamp_ms": 32000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/065.jpg",
       "index": 65,
-      "timestamp": "2026-03-04T01:35:21.565Z",
+      "timestamp": "2026-03-09T00:52:50.260Z",
       "timestamp_ms": 32500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5487,
-          "bbox": {
-            "x": 0.0382,
-            "y": 0.8434,
-            "width": 0.1215,
-            "height": 0.1559
-          },
-          "center": {
-            "x": 0.099,
-            "y": 0.9214
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/066.jpg",
       "index": 66,
-      "timestamp": "2026-03-04T01:35:21.643Z",
+      "timestamp": "2026-03-09T00:52:50.338Z",
       "timestamp_ms": 33000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6882,
+          "class_name": "apple",
+          "confidence": 0.69,
           "bbox": {
-            "x": 0.0524,
-            "y": 0.8431,
-            "width": 0.1057,
-            "height": 0.1557
+            "x": 34,
+            "y": 405,
+            "width": 67,
+            "height": 74
           },
           "center": {
-            "x": 0.1053,
-            "y": 0.921
-          }
+            "x": 67.5,
+            "y": 442.0
+          },
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/067.jpg",
       "index": 67,
-      "timestamp": "2026-03-04T01:35:21.721Z",
+      "timestamp": "2026-03-09T00:52:50.415Z",
       "timestamp_ms": 33500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7304,
+          "class_name": "apple",
+          "confidence": 0.73,
           "bbox": {
-            "x": 0.0547,
-            "y": 0.8443,
-            "width": 0.1041,
-            "height": 0.1547
+            "x": 35,
+            "y": 405,
+            "width": 67,
+            "height": 74
           },
           "center": {
-            "x": 0.1067,
-            "y": 0.9216
-          }
+            "x": 68.5,
+            "y": 442.0
+          },
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/068.jpg",
       "index": 68,
-      "timestamp": "2026-03-04T01:35:21.799Z",
+      "timestamp": "2026-03-09T00:52:50.492Z",
       "timestamp_ms": 34000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6554,
+          "class_name": "apple",
+          "confidence": 0.66,
           "bbox": {
-            "x": 0.0503,
-            "y": 0.845,
-            "width": 0.1095,
-            "height": 0.1538
+            "x": 32,
+            "y": 406,
+            "width": 70,
+            "height": 73
           },
           "center": {
-            "x": 0.105,
-            "y": 0.9219
-          }
+            "x": 67.0,
+            "y": 442.5
+          },
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/069.jpg",
       "index": 69,
-      "timestamp": "2026-03-04T01:35:21.875Z",
+      "timestamp": "2026-03-09T00:52:50.571Z",
       "timestamp_ms": 34500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.595,
-          "bbox": {
-            "x": 0.0136,
-            "y": 0.8449,
-            "width": 0.1463,
-            "height": 0.1543
-          },
-          "center": {
-            "x": 0.0868,
-            "y": 0.9221
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/070.jpg",
       "index": 70,
-      "timestamp": "2026-03-04T01:35:21.953Z",
+      "timestamp": "2026-03-09T00:52:50.647Z",
       "timestamp_ms": 35000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5607,
-          "bbox": {
-            "x": 0.0471,
-            "y": 0.8444,
-            "width": 0.1105,
-            "height": 0.1546
-          },
-          "center": {
-            "x": 0.1024,
-            "y": 0.9217
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/071.jpg",
       "index": 71,
-      "timestamp": "2026-03-04T01:35:22.029Z",
+      "timestamp": "2026-03-09T00:52:50.724Z",
       "timestamp_ms": 35500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6829,
+          "class_name": "apple",
+          "confidence": 0.68,
           "bbox": {
-            "x": 0.0431,
-            "y": 0.8421,
-            "width": 0.1148,
-            "height": 0.157
+            "x": 28,
+            "y": 404,
+            "width": 73,
+            "height": 76
           },
           "center": {
-            "x": 0.1005,
-            "y": 0.9206
-          }
+            "x": 64.5,
+            "y": 442.0
+          },
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/072.jpg",
       "index": 72,
-      "timestamp": "2026-03-04T01:35:22.107Z",
+      "timestamp": "2026-03-09T00:52:50.801Z",
       "timestamp_ms": 36000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7131,
+          "class_name": "apple",
+          "confidence": 0.71,
           "bbox": {
-            "x": 0.0487,
-            "y": 0.8448,
-            "width": 0.111,
-            "height": 0.1542
+            "x": 31,
+            "y": 406,
+            "width": 71,
+            "height": 74
           },
           "center": {
-            "x": 0.1042,
-            "y": 0.922
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.5457,
-          "bbox": {
-            "x": 0.0022,
-            "y": 0.8449,
-            "width": 0.1579,
-            "height": 0.1551
+            "x": 66.5,
+            "y": 443.0
           },
-          "center": {
-            "x": 0.0812,
-            "y": 0.9225
-          }
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/073.jpg",
       "index": 73,
-      "timestamp": "2026-03-04T01:35:22.183Z",
+      "timestamp": "2026-03-09T00:52:50.877Z",
       "timestamp_ms": 36500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7056,
+          "class_name": "apple",
+          "confidence": 0.71,
           "bbox": {
-            "x": 0.0359,
-            "y": 0.8456,
-            "width": 0.1219,
-            "height": 0.1535
+            "x": 23,
+            "y": 406,
+            "width": 78,
+            "height": 74
           },
           "center": {
-            "x": 0.0968,
-            "y": 0.9224
-          }
+            "x": 62.0,
+            "y": 443.0
+          },
+          "track_id": 4,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "4"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/074.jpg",
       "index": 74,
-      "timestamp": "2026-03-04T01:35:22.260Z",
+      "timestamp": "2026-03-09T00:52:50.955Z",
       "timestamp_ms": 37000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5828,
-          "bbox": {
-            "x": 0.0531,
-            "y": 0.8438,
-            "width": 0.1045,
-            "height": 0.1554
-          },
-          "center": {
-            "x": 0.1053,
-            "y": 0.9214
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/075.jpg",
       "index": 75,
-      "timestamp": "2026-03-04T01:35:22.336Z",
+      "timestamp": "2026-03-09T00:52:51.032Z",
       "timestamp_ms": 37500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.591,
-          "bbox": {
-            "x": 0.0519,
-            "y": 0.8443,
-            "width": 0.107,
-            "height": 0.1547
-          },
-          "center": {
-            "x": 0.1055,
-            "y": 0.9217
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/076.jpg",
       "index": 76,
-      "timestamp": "2026-03-04T01:35:22.412Z",
+      "timestamp": "2026-03-09T00:52:51.108Z",
       "timestamp_ms": 38000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6218,
-          "bbox": {
-            "x": 0.0485,
-            "y": 0.8474,
-            "width": 0.1108,
-            "height": 0.1515
-          },
-          "center": {
-            "x": 0.1039,
-            "y": 0.9231
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/077.jpg",
       "index": 77,
-      "timestamp": "2026-03-04T01:35:22.490Z",
+      "timestamp": "2026-03-09T00:52:51.185Z",
       "timestamp_ms": 38500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6004,
-          "bbox": {
-            "x": 0.0286,
-            "y": 0.8443,
-            "width": 0.1306,
-            "height": 0.1551
-          },
-          "center": {
-            "x": 0.0939,
-            "y": 0.9219
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/078.jpg",
       "index": 78,
-      "timestamp": "2026-03-04T01:35:22.568Z",
+      "timestamp": "2026-03-09T00:52:51.261Z",
       "timestamp_ms": 39000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6728,
+          "class_name": "apple",
+          "confidence": 0.67,
           "bbox": {
-            "x": 0.0291,
-            "y": 0.8438,
-            "width": 0.1294,
-            "height": 0.1552
+            "x": 19,
+            "y": 405,
+            "width": 82,
+            "height": 75
           },
           "center": {
-            "x": 0.0938,
-            "y": 0.9214
-          }
+            "x": 60.0,
+            "y": 442.5
+          },
+          "track_id": 5,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "5"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/079.jpg",
       "index": 79,
-      "timestamp": "2026-03-04T01:35:22.647Z",
+      "timestamp": "2026-03-09T00:52:51.339Z",
       "timestamp_ms": 39500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6377,
-          "bbox": {
-            "x": 0.0137,
-            "y": 0.8443,
-            "width": 0.1465,
-            "height": 0.1553
-          },
-          "center": {
-            "x": 0.087,
-            "y": 0.9219
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/080.jpg",
       "index": 80,
-      "timestamp": "2026-03-04T01:35:22.723Z",
+      "timestamp": "2026-03-09T00:52:51.415Z",
       "timestamp_ms": 40000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6147,
-          "bbox": {
-            "x": 0.0529,
-            "y": 0.8451,
-            "width": 0.1053,
-            "height": 0.1539
-          },
-          "center": {
-            "x": 0.1055,
-            "y": 0.922
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/081.jpg",
       "index": 81,
-      "timestamp": "2026-03-04T01:35:22.798Z",
+      "timestamp": "2026-03-09T00:52:51.491Z",
       "timestamp_ms": 40500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6453,
-          "bbox": {
-            "x": 0.0446,
-            "y": 0.8443,
-            "width": 0.1136,
-            "height": 0.1552
-          },
-          "center": {
-            "x": 0.1014,
-            "y": 0.9219
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/082.jpg",
       "index": 82,
-      "timestamp": "2026-03-04T01:35:22.876Z",
+      "timestamp": "2026-03-09T00:52:51.568Z",
       "timestamp_ms": 41000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6594,
+          "class_name": "apple",
+          "confidence": 0.66,
           "bbox": {
-            "x": 0.016,
-            "y": 0.8458,
-            "width": 0.142,
-            "height": 0.1532
+            "x": 10,
+            "y": 406,
+            "width": 91,
+            "height": 74
           },
           "center": {
-            "x": 0.087,
-            "y": 0.9224
-          }
+            "x": 55.5,
+            "y": 443.0
+          },
+          "track_id": 6,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "6"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/083.jpg",
       "index": 83,
-      "timestamp": "2026-03-04T01:35:22.952Z",
+      "timestamp": "2026-03-09T00:52:51.647Z",
       "timestamp_ms": 41500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/084.jpg",
       "index": 84,
-      "timestamp": "2026-03-04T01:35:23.029Z",
+      "timestamp": "2026-03-09T00:52:51.723Z",
       "timestamp_ms": 42000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/085.jpg",
       "index": 85,
-      "timestamp": "2026-03-04T01:35:23.107Z",
+      "timestamp": "2026-03-09T00:52:51.804Z",
       "timestamp_ms": 42500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5692,
-          "bbox": {
-            "x": 0.3592,
-            "y": 0.2603,
-            "width": 0.36,
-            "height": 0.4768
-          },
-          "center": {
-            "x": 0.5392,
-            "y": 0.4987
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/086.jpg",
       "index": 86,
-      "timestamp": "2026-03-04T01:35:23.183Z",
+      "timestamp": "2026-03-09T00:52:51.894Z",
       "timestamp_ms": 43000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.9262,
+          "class_name": "apple",
+          "confidence": 0.93,
           "bbox": {
-            "x": 0.4277,
-            "y": 0.4644,
-            "width": 0.3384,
-            "height": 0.4594
+            "x": 274,
+            "y": 223,
+            "width": 216,
+            "height": 220
           },
           "center": {
-            "x": 0.5969,
-            "y": 0.694
-          }
+            "x": 382.0,
+            "y": 333.0
+          },
+          "track_id": 7,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "7"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/087.jpg",
       "index": 87,
-      "timestamp": "2026-03-04T01:35:23.261Z",
+      "timestamp": "2026-03-09T00:52:51.978Z",
       "timestamp_ms": 43500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8982,
+          "class_name": "apple",
+          "confidence": 0.9,
           "bbox": {
-            "x": 0.4744,
-            "y": 0.6326,
-            "width": 0.3238,
-            "height": 0.3671
+            "x": 304,
+            "y": 304,
+            "width": 207,
+            "height": 176
           },
           "center": {
-            "x": 0.6363,
-            "y": 0.8162
-          }
+            "x": 407.5,
+            "y": 392.0
+          },
+          "track_id": 7,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "7"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/088.jpg",
       "index": 88,
-      "timestamp": "2026-03-04T01:35:23.337Z",
+      "timestamp": "2026-03-09T00:52:52.058Z",
       "timestamp_ms": 44000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.8542,
+          "class_name": "apple",
+          "confidence": 0.85,
           "bbox": {
-            "x": 0.4897,
-            "y": 0.7166,
-            "width": 0.3168,
-            "height": 0.2833
+            "x": 313,
+            "y": 344,
+            "width": 203,
+            "height": 136
           },
           "center": {
-            "x": 0.6482,
-            "y": 0.8583
-          }
+            "x": 414.5,
+            "y": 412.0
+          },
+          "track_id": 7,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "7"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/089.jpg",
       "index": 89,
-      "timestamp": "2026-03-04T01:35:23.414Z",
+      "timestamp": "2026-03-09T00:52:52.137Z",
       "timestamp_ms": 44500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/090.jpg",
       "index": 90,
-      "timestamp": "2026-03-04T01:35:23.490Z",
+      "timestamp": "2026-03-09T00:52:52.213Z",
       "timestamp_ms": 45000,
       "detections": [
         {
-          "class_name": "Kiwi",
-          "confidence": 0.6854,
+          "class_name": "kiwi",
+          "confidence": 0.69,
           "bbox": {
-            "x": 0.5235,
-            "y": 0.8941,
-            "width": 0.2867,
-            "height": 0.1059
+            "x": 335,
+            "y": 429,
+            "width": 183,
+            "height": 51
           },
           "center": {
-            "x": 0.6668,
-            "y": 0.9471
-          }
+            "x": 426.5,
+            "y": 454.5
+          },
+          "track_id": 8,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "8"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/091.jpg",
       "index": 91,
-      "timestamp": "2026-03-04T01:35:23.567Z",
+      "timestamp": "2026-03-09T00:52:52.288Z",
       "timestamp_ms": 45500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/092.jpg",
       "index": 92,
-      "timestamp": "2026-03-04T01:35:23.644Z",
+      "timestamp": "2026-03-09T00:52:52.364Z",
       "timestamp_ms": 46000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/093.jpg",
       "index": 93,
-      "timestamp": "2026-03-04T01:35:23.722Z",
+      "timestamp": "2026-03-09T00:52:52.441Z",
       "timestamp_ms": 46500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/094.jpg",
       "index": 94,
-      "timestamp": "2026-03-04T01:35:23.799Z",
+      "timestamp": "2026-03-09T00:52:52.517Z",
       "timestamp_ms": 47000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/095.jpg",
       "index": 95,
-      "timestamp": "2026-03-04T01:35:23.877Z",
+      "timestamp": "2026-03-09T00:52:52.594Z",
       "timestamp_ms": 47500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/096.jpg",
       "index": 96,
-      "timestamp": "2026-03-04T01:35:23.954Z",
+      "timestamp": "2026-03-09T00:52:52.671Z",
       "timestamp_ms": 48000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/097.jpg",
       "index": 97,
-      "timestamp": "2026-03-04T01:35:24.031Z",
+      "timestamp": "2026-03-09T00:52:52.750Z",
       "timestamp_ms": 48500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/098.jpg",
       "index": 98,
-      "timestamp": "2026-03-04T01:35:24.118Z",
+      "timestamp": "2026-03-09T00:52:52.828Z",
       "timestamp_ms": 49000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/099.jpg",
       "index": 99,
-      "timestamp": "2026-03-04T01:35:24.195Z",
+      "timestamp": "2026-03-09T00:52:52.905Z",
       "timestamp_ms": 49500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/100.jpg",
       "index": 100,
-      "timestamp": "2026-03-04T01:35:24.271Z",
+      "timestamp": "2026-03-09T00:52:52.980Z",
       "timestamp_ms": 50000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/101.jpg",
       "index": 101,
-      "timestamp": "2026-03-04T01:35:24.348Z",
+      "timestamp": "2026-03-09T00:52:53.056Z",
       "timestamp_ms": 50500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5155,
-          "bbox": {
-            "x": 0.0,
-            "y": 0.5306,
-            "width": 0.1612,
-            "height": 0.4688
-          },
-          "center": {
-            "x": 0.0807,
-            "y": 0.765
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/102.jpg",
       "index": 102,
-      "timestamp": "2026-03-04T01:35:24.425Z",
+      "timestamp": "2026-03-09T00:52:53.132Z",
       "timestamp_ms": 51000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/103.jpg",
       "index": 103,
-      "timestamp": "2026-03-04T01:35:24.504Z",
+      "timestamp": "2026-03-09T00:52:53.208Z",
       "timestamp_ms": 51500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/104.jpg",
       "index": 104,
-      "timestamp": "2026-03-04T01:35:24.582Z",
+      "timestamp": "2026-03-09T00:52:53.286Z",
       "timestamp_ms": 52000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/105.jpg",
       "index": 105,
-      "timestamp": "2026-03-04T01:35:24.659Z",
+      "timestamp": "2026-03-09T00:52:53.363Z",
       "timestamp_ms": 52500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/106.jpg",
       "index": 106,
-      "timestamp": "2026-03-04T01:35:24.737Z",
+      "timestamp": "2026-03-09T00:52:53.440Z",
       "timestamp_ms": 53000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/107.jpg",
       "index": 107,
-      "timestamp": "2026-03-04T01:35:24.814Z",
+      "timestamp": "2026-03-09T00:52:53.517Z",
       "timestamp_ms": 53500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/108.jpg",
       "index": 108,
-      "timestamp": "2026-03-04T01:35:24.890Z",
+      "timestamp": "2026-03-09T00:52:53.593Z",
       "timestamp_ms": 54000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/109.jpg",
       "index": 109,
-      "timestamp": "2026-03-04T01:35:24.967Z",
+      "timestamp": "2026-03-09T00:52:53.670Z",
       "timestamp_ms": 54500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/110.jpg",
       "index": 110,
-      "timestamp": "2026-03-04T01:35:25.044Z",
+      "timestamp": "2026-03-09T00:52:53.746Z",
       "timestamp_ms": 55000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/111.jpg",
       "index": 111,
-      "timestamp": "2026-03-04T01:35:25.122Z",
+      "timestamp": "2026-03-09T00:52:53.822Z",
       "timestamp_ms": 55500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/112.jpg",
       "index": 112,
-      "timestamp": "2026-03-04T01:35:25.197Z",
+      "timestamp": "2026-03-09T00:52:53.901Z",
       "timestamp_ms": 56000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/113.jpg",
       "index": 113,
-      "timestamp": "2026-03-04T01:35:25.273Z",
+      "timestamp": "2026-03-09T00:52:53.978Z",
       "timestamp_ms": 56500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/114.jpg",
       "index": 114,
-      "timestamp": "2026-03-04T01:35:25.350Z",
+      "timestamp": "2026-03-09T00:52:54.054Z",
       "timestamp_ms": 57000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/115.jpg",
       "index": 115,
-      "timestamp": "2026-03-04T01:35:25.446Z",
+      "timestamp": "2026-03-09T00:52:54.130Z",
       "timestamp_ms": 57500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6068,
-          "bbox": {
-            "x": 0.0019,
-            "y": 0.8268,
-            "width": 0.1452,
-            "height": 0.1711
-          },
-          "center": {
-            "x": 0.0744,
-            "y": 0.9124
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/116.jpg",
       "index": 116,
-      "timestamp": "2026-03-04T01:35:25.538Z",
+      "timestamp": "2026-03-09T00:52:54.206Z",
       "timestamp_ms": 58000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/117.jpg",
       "index": 117,
-      "timestamp": "2026-03-04T01:35:25.616Z",
+      "timestamp": "2026-03-09T00:52:54.282Z",
       "timestamp_ms": 58500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/118.jpg",
       "index": 118,
-      "timestamp": "2026-03-04T01:35:25.694Z",
+      "timestamp": "2026-03-09T00:52:54.361Z",
       "timestamp_ms": 59000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/119.jpg",
       "index": 119,
-      "timestamp": "2026-03-04T01:35:25.780Z",
+      "timestamp": "2026-03-09T00:52:54.435Z",
       "timestamp_ms": 59500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/120.jpg",
       "index": 120,
-      "timestamp": "2026-03-04T01:35:25.878Z",
+      "timestamp": "2026-03-09T00:52:54.513Z",
       "timestamp_ms": 60000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/121.jpg",
       "index": 121,
-      "timestamp": "2026-03-04T01:35:25.975Z",
+      "timestamp": "2026-03-09T00:52:54.589Z",
       "timestamp_ms": 60500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/122.jpg",
       "index": 122,
-      "timestamp": "2026-03-04T01:35:26.072Z",
+      "timestamp": "2026-03-09T00:52:54.667Z",
       "timestamp_ms": 61000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/123.jpg",
       "index": 123,
-      "timestamp": "2026-03-04T01:35:26.167Z",
+      "timestamp": "2026-03-09T00:52:54.745Z",
       "timestamp_ms": 61500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/124.jpg",
       "index": 124,
-      "timestamp": "2026-03-04T01:35:26.245Z",
+      "timestamp": "2026-03-09T00:52:54.824Z",
       "timestamp_ms": 62000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.656,
+          "class_name": "apple",
+          "confidence": 0.66,
           "bbox": {
-            "x": 0.0114,
-            "y": 0.8268,
-            "width": 0.1408,
-            "height": 0.1712
+            "x": 7,
+            "y": 397,
+            "width": 90,
+            "height": 82
           },
           "center": {
-            "x": 0.0818,
-            "y": 0.9124
-          }
+            "x": 52.0,
+            "y": 438.0
+          },
+          "track_id": 9,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "9"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/125.jpg",
       "index": 125,
-      "timestamp": "2026-03-04T01:35:26.323Z",
+      "timestamp": "2026-03-09T00:52:54.901Z",
       "timestamp_ms": 62500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/126.jpg",
       "index": 126,
-      "timestamp": "2026-03-04T01:35:26.401Z",
+      "timestamp": "2026-03-09T00:52:54.982Z",
       "timestamp_ms": 63000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/127.jpg",
       "index": 127,
-      "timestamp": "2026-03-04T01:35:26.481Z",
+      "timestamp": "2026-03-09T00:52:55.061Z",
       "timestamp_ms": 63500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5018,
-          "bbox": {
-            "x": 0.0012,
-            "y": 0.8558,
-            "width": 0.154,
-            "height": 0.143
-          },
-          "center": {
-            "x": 0.0782,
-            "y": 0.9272
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/128.jpg",
       "index": 128,
-      "timestamp": "2026-03-04T01:35:26.575Z",
+      "timestamp": "2026-03-09T00:52:55.139Z",
       "timestamp_ms": 64000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6658,
+          "class_name": "apple",
+          "confidence": 0.67,
           "bbox": {
-            "x": 0.0294,
-            "y": 0.829,
-            "width": 0.1227,
-            "height": 0.1692
+            "x": 19,
+            "y": 398,
+            "width": 78,
+            "height": 81
           },
           "center": {
-            "x": 0.0908,
-            "y": 0.9136
-          }
+            "x": 58.0,
+            "y": 438.5
+          },
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/129.jpg",
       "index": 129,
-      "timestamp": "2026-03-04T01:35:26.671Z",
+      "timestamp": "2026-03-09T00:52:55.216Z",
       "timestamp_ms": 64500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6697,
+          "class_name": "apple",
+          "confidence": 0.67,
           "bbox": {
-            "x": 0.0497,
-            "y": 0.8445,
-            "width": 0.1163,
-            "height": 0.1545
+            "x": 32,
+            "y": 405,
+            "width": 74,
+            "height": 75
           },
           "center": {
-            "x": 0.1079,
-            "y": 0.9217
-          }
+            "x": 69.0,
+            "y": 442.5
+          },
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/130.jpg",
       "index": 130,
-      "timestamp": "2026-03-04T01:35:26.767Z",
+      "timestamp": "2026-03-09T00:52:55.292Z",
       "timestamp_ms": 65000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/131.jpg",
       "index": 131,
-      "timestamp": "2026-03-04T01:35:26.857Z",
+      "timestamp": "2026-03-09T00:52:55.369Z",
       "timestamp_ms": 65500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5151,
-          "bbox": {
-            "x": 0.0,
-            "y": 0.862,
-            "width": 0.1614,
-            "height": 0.1377
-          },
-          "center": {
-            "x": 0.0807,
-            "y": 0.9309
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/132.jpg",
       "index": 132,
-      "timestamp": "2026-03-04T01:35:26.937Z",
+      "timestamp": "2026-03-09T00:52:55.446Z",
       "timestamp_ms": 66000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7206,
+          "class_name": "apple",
+          "confidence": 0.72,
           "bbox": {
-            "x": 0.0225,
-            "y": 0.8347,
-            "width": 0.1309,
-            "height": 0.1633
+            "x": 14,
+            "y": 401,
+            "width": 84,
+            "height": 78
           },
           "center": {
-            "x": 0.0879,
-            "y": 0.9164
-          }
+            "x": 56.0,
+            "y": 440.0
+          },
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/133.jpg",
       "index": 133,
-      "timestamp": "2026-03-04T01:35:27.015Z",
+      "timestamp": "2026-03-09T00:52:55.523Z",
       "timestamp_ms": 66500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7509,
+          "class_name": "apple",
+          "confidence": 0.75,
           "bbox": {
-            "x": 0.0267,
-            "y": 0.8379,
-            "width": 0.1366,
-            "height": 0.1605
+            "x": 17,
+            "y": 402,
+            "width": 88,
+            "height": 77
           },
           "center": {
-            "x": 0.095,
-            "y": 0.9182
-          }
+            "x": 61.0,
+            "y": 440.5
+          },
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/134.jpg",
       "index": 134,
-      "timestamp": "2026-03-04T01:35:27.099Z",
+      "timestamp": "2026-03-09T00:52:55.600Z",
       "timestamp_ms": 67000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5078,
-          "bbox": {
-            "x": 0.0714,
-            "y": 0.8659,
-            "width": 0.0961,
-            "height": 0.1339
-          },
-          "center": {
-            "x": 0.1195,
-            "y": 0.9329
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/135.jpg",
       "index": 135,
-      "timestamp": "2026-03-04T01:35:27.197Z",
+      "timestamp": "2026-03-09T00:52:55.679Z",
       "timestamp_ms": 67500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/136.jpg",
       "index": 136,
-      "timestamp": "2026-03-04T01:35:27.283Z",
+      "timestamp": "2026-03-09T00:52:55.755Z",
       "timestamp_ms": 68000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7149,
+          "class_name": "apple",
+          "confidence": 0.71,
           "bbox": {
-            "x": 0.0378,
-            "y": 0.8399,
-            "width": 0.1192,
-            "height": 0.1585
+            "x": 24,
+            "y": 403,
+            "width": 76,
+            "height": 76
           },
           "center": {
-            "x": 0.0974,
-            "y": 0.9192
-          }
+            "x": 62.0,
+            "y": 441.0
+          },
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/137.jpg",
       "index": 137,
-      "timestamp": "2026-03-04T01:35:27.362Z",
+      "timestamp": "2026-03-09T00:52:55.857Z",
       "timestamp_ms": 68500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7504,
+          "class_name": "apple",
+          "confidence": 0.75,
           "bbox": {
-            "x": 0.005,
-            "y": 0.8349,
-            "width": 0.1575,
-            "height": 0.1637
+            "x": 3,
+            "y": 401,
+            "width": 101,
+            "height": 78
           },
           "center": {
-            "x": 0.0838,
-            "y": 0.9167
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.5517,
-          "bbox": {
-            "x": 0.0628,
-            "y": 0.8349,
-            "width": 0.1009,
-            "height": 0.1633
+            "x": 53.5,
+            "y": 440.0
           },
-          "center": {
-            "x": 0.1133,
-            "y": 0.9166
-          }
+          "track_id": 10,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "10"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/138.jpg",
       "index": 138,
-      "timestamp": "2026-03-04T01:35:27.440Z",
+      "timestamp": "2026-03-09T00:52:55.948Z",
       "timestamp_ms": 69000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.616,
-          "bbox": {
-            "x": 0.07,
-            "y": 0.8555,
-            "width": 0.0961,
-            "height": 0.1444
-          },
-          "center": {
-            "x": 0.118,
-            "y": 0.9277
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/139.jpg",
       "index": 139,
-      "timestamp": "2026-03-04T01:35:27.518Z",
+      "timestamp": "2026-03-09T00:52:56.030Z",
       "timestamp_ms": 69500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/140.jpg",
       "index": 140,
-      "timestamp": "2026-03-04T01:35:27.596Z",
+      "timestamp": "2026-03-09T00:52:56.108Z",
       "timestamp_ms": 70000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5744,
-          "bbox": {
-            "x": 0.0449,
-            "y": 0.8464,
-            "width": 0.113,
-            "height": 0.1534
-          },
-          "center": {
-            "x": 0.1014,
-            "y": 0.9231
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/141.jpg",
       "index": 141,
-      "timestamp": "2026-03-04T01:35:27.671Z",
+      "timestamp": "2026-03-09T00:52:56.185Z",
       "timestamp_ms": 70500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7832,
+          "class_name": "apple",
+          "confidence": 0.78,
           "bbox": {
-            "x": 0.0181,
-            "y": 0.8341,
-            "width": 0.1399,
-            "height": 0.1643
+            "x": 12,
+            "y": 400,
+            "width": 89,
+            "height": 79
           },
           "center": {
-            "x": 0.088,
-            "y": 0.9162
-          }
+            "x": 56.5,
+            "y": 439.5
+          },
+          "track_id": 11,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "11"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/142.jpg",
       "index": 142,
-      "timestamp": "2026-03-04T01:35:27.751Z",
+      "timestamp": "2026-03-09T00:52:56.262Z",
       "timestamp_ms": 71000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5549,
-          "bbox": {
-            "x": 0.0351,
-            "y": 0.8472,
-            "width": 0.1285,
-            "height": 0.152
-          },
-          "center": {
-            "x": 0.0994,
-            "y": 0.9232
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/143.jpg",
       "index": 143,
-      "timestamp": "2026-03-04T01:35:27.828Z",
+      "timestamp": "2026-03-09T00:52:56.339Z",
       "timestamp_ms": 71500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/144.jpg",
       "index": 144,
-      "timestamp": "2026-03-04T01:35:27.917Z",
+      "timestamp": "2026-03-09T00:52:56.418Z",
       "timestamp_ms": 72000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6681,
+          "class_name": "apple",
+          "confidence": 0.67,
           "bbox": {
-            "x": 0.0079,
-            "y": 0.8562,
-            "width": 0.1509,
-            "height": 0.1435
+            "x": 5,
+            "y": 411,
+            "width": 97,
+            "height": 69
           },
           "center": {
-            "x": 0.0834,
-            "y": 0.928
-          }
+            "x": 53.5,
+            "y": 445.5
+          },
+          "track_id": 11,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "11"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/145.jpg",
       "index": 145,
-      "timestamp": "2026-03-04T01:35:28.015Z",
+      "timestamp": "2026-03-09T00:52:56.494Z",
       "timestamp_ms": 72500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7753,
+          "class_name": "apple",
+          "confidence": 0.78,
           "bbox": {
-            "x": 0.0398,
-            "y": 0.8372,
-            "width": 0.1197,
-            "height": 0.1613
+            "x": 25,
+            "y": 402,
+            "width": 77,
+            "height": 77
           },
           "center": {
-            "x": 0.0996,
-            "y": 0.9178
-          }
+            "x": 63.5,
+            "y": 440.5
+          },
+          "track_id": 11,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "11"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/146.jpg",
       "index": 146,
-      "timestamp": "2026-03-04T01:35:28.112Z",
+      "timestamp": "2026-03-09T00:52:56.571Z",
       "timestamp_ms": 73000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6523,
+          "class_name": "apple",
+          "confidence": 0.65,
           "bbox": {
-            "x": 0.0359,
-            "y": 0.8442,
-            "width": 0.1249,
-            "height": 0.1549
+            "x": 23,
+            "y": 405,
+            "width": 80,
+            "height": 75
           },
           "center": {
-            "x": 0.0984,
-            "y": 0.9216
-          }
+            "x": 63.0,
+            "y": 442.5
+          },
+          "track_id": 11,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "11"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/147.jpg",
       "index": 147,
-      "timestamp": "2026-03-04T01:35:28.199Z",
+      "timestamp": "2026-03-09T00:52:56.648Z",
       "timestamp_ms": 73500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/148.jpg",
       "index": 148,
-      "timestamp": "2026-03-04T01:35:28.286Z",
+      "timestamp": "2026-03-09T00:52:56.724Z",
       "timestamp_ms": 74000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5896,
-          "bbox": {
-            "x": 0.0,
-            "y": 0.8598,
-            "width": 0.1621,
-            "height": 0.1402
-          },
-          "center": {
-            "x": 0.081,
-            "y": 0.9299
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/149.jpg",
       "index": 149,
-      "timestamp": "2026-03-04T01:35:28.368Z",
+      "timestamp": "2026-03-09T00:52:56.800Z",
       "timestamp_ms": 74500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7398,
+          "class_name": "apple",
+          "confidence": 0.74,
           "bbox": {
-            "x": 0.0172,
-            "y": 0.8387,
-            "width": 0.1426,
-            "height": 0.1601
+            "x": 11,
+            "y": 403,
+            "width": 91,
+            "height": 76
           },
           "center": {
-            "x": 0.0885,
-            "y": 0.9188
-          }
+            "x": 56.5,
+            "y": 441.0
+          },
+          "track_id": 11,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "11"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/150.jpg",
       "index": 150,
-      "timestamp": "2026-03-04T01:35:28.459Z",
+      "timestamp": "2026-03-09T00:52:56.876Z",
       "timestamp_ms": 75000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6351,
-          "bbox": {
-            "x": 0.0107,
-            "y": 0.8379,
-            "width": 0.1521,
-            "height": 0.1609
-          },
-          "center": {
-            "x": 0.0867,
-            "y": 0.9184
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/151.jpg",
       "index": 151,
-      "timestamp": "2026-03-04T01:35:28.555Z",
+      "timestamp": "2026-03-09T00:52:56.954Z",
       "timestamp_ms": 75500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5205,
-          "bbox": {
-            "x": 0.0155,
-            "y": 0.8592,
-            "width": 0.1465,
-            "height": 0.1408
-          },
-          "center": {
-            "x": 0.0887,
-            "y": 0.9296
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/152.jpg",
       "index": 152,
-      "timestamp": "2026-03-04T01:35:28.661Z",
+      "timestamp": "2026-03-09T00:52:57.030Z",
       "timestamp_ms": 76000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5105,
-          "bbox": {
-            "x": 0.0027,
-            "y": 0.8631,
-            "width": 0.1571,
-            "height": 0.1369
-          },
-          "center": {
-            "x": 0.0812,
-            "y": 0.9316
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/153.jpg",
       "index": 153,
-      "timestamp": "2026-03-04T01:35:28.756Z",
+      "timestamp": "2026-03-09T00:52:57.108Z",
       "timestamp_ms": 76500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6537,
+          "class_name": "apple",
+          "confidence": 0.65,
           "bbox": {
-            "x": 0.0253,
-            "y": 0.8451,
-            "width": 0.136,
-            "height": 0.1549
+            "x": 16,
+            "y": 406,
+            "width": 87,
+            "height": 74
           },
           "center": {
-            "x": 0.0933,
-            "y": 0.9225
-          }
+            "x": 59.5,
+            "y": 443.0
+          },
+          "track_id": 12,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "12"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/154.jpg",
       "index": 154,
-      "timestamp": "2026-03-04T01:35:28.858Z",
+      "timestamp": "2026-03-09T00:52:57.187Z",
       "timestamp_ms": 77000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7099,
+          "class_name": "apple",
+          "confidence": 0.71,
           "bbox": {
-            "x": 0.0528,
-            "y": 0.8379,
-            "width": 0.1116,
-            "height": 0.1606
+            "x": 34,
+            "y": 402,
+            "width": 71,
+            "height": 77
           },
           "center": {
-            "x": 0.1086,
-            "y": 0.9182
-          }
-        },
-        {
-          "class_name": "Apple",
-          "confidence": 0.5523,
-          "bbox": {
-            "x": 0.0024,
-            "y": 0.8374,
-            "width": 0.1612,
-            "height": 0.1626
+            "x": 69.5,
+            "y": 440.5
           },
-          "center": {
-            "x": 0.083,
-            "y": 0.9187
-          }
+          "track_id": 12,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "12"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/155.jpg",
       "index": 155,
-      "timestamp": "2026-03-04T01:35:28.959Z",
+      "timestamp": "2026-03-09T00:52:57.266Z",
       "timestamp_ms": 77500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/156.jpg",
       "index": 156,
-      "timestamp": "2026-03-04T01:35:29.056Z",
+      "timestamp": "2026-03-09T00:52:57.345Z",
       "timestamp_ms": 78000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5151,
-          "bbox": {
-            "x": 0.0106,
-            "y": 0.8627,
-            "width": 0.1495,
-            "height": 0.1373
-          },
-          "center": {
-            "x": 0.0853,
-            "y": 0.9313
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/157.jpg",
       "index": 157,
-      "timestamp": "2026-03-04T01:35:29.158Z",
+      "timestamp": "2026-03-09T00:52:57.423Z",
       "timestamp_ms": 78500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5693,
-          "bbox": {
-            "x": 0.0089,
-            "y": 0.8482,
-            "width": 0.1531,
-            "height": 0.1515
-          },
-          "center": {
-            "x": 0.0855,
-            "y": 0.924
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/158.jpg",
       "index": 158,
-      "timestamp": "2026-03-04T01:35:29.255Z",
+      "timestamp": "2026-03-09T00:52:57.506Z",
       "timestamp_ms": 79000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6517,
+          "class_name": "apple",
+          "confidence": 0.65,
           "bbox": {
-            "x": 0.0095,
-            "y": 0.8384,
-            "width": 0.1533,
-            "height": 0.1602
+            "x": 6,
+            "y": 402,
+            "width": 98,
+            "height": 77
           },
           "center": {
-            "x": 0.0862,
-            "y": 0.9185
-          }
+            "x": 55.0,
+            "y": 440.5
+          },
+          "track_id": 13,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "13"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/159.jpg",
       "index": 159,
-      "timestamp": "2026-03-04T01:35:29.344Z",
+      "timestamp": "2026-03-09T00:52:57.585Z",
       "timestamp_ms": 79500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5116,
-          "bbox": {
-            "x": 0.0023,
-            "y": 0.8491,
-            "width": 0.1603,
-            "height": 0.1507
-          },
-          "center": {
-            "x": 0.0825,
-            "y": 0.9245
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/160.jpg",
       "index": 160,
-      "timestamp": "2026-03-04T01:35:29.451Z",
+      "timestamp": "2026-03-09T00:52:57.663Z",
       "timestamp_ms": 80000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.503,
-          "bbox": {
-            "x": 0.0421,
-            "y": 0.8606,
-            "width": 0.1176,
-            "height": 0.1394
-          },
-          "center": {
-            "x": 0.1009,
-            "y": 0.9303
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/161.jpg",
       "index": 161,
-      "timestamp": "2026-03-04T01:35:29.551Z",
+      "timestamp": "2026-03-09T00:52:57.741Z",
       "timestamp_ms": 80500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6019,
-          "bbox": {
-            "x": 0.0359,
-            "y": 0.8546,
-            "width": 0.1246,
-            "height": 0.1446
-          },
-          "center": {
-            "x": 0.0982,
-            "y": 0.9269
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/162.jpg",
       "index": 162,
-      "timestamp": "2026-03-04T01:35:29.650Z",
+      "timestamp": "2026-03-09T00:52:57.820Z",
       "timestamp_ms": 81000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6545,
+          "class_name": "apple",
+          "confidence": 0.65,
           "bbox": {
-            "x": 0.0134,
-            "y": 0.84,
-            "width": 0.15,
-            "height": 0.1588
+            "x": 9,
+            "y": 403,
+            "width": 96,
+            "height": 76
           },
           "center": {
-            "x": 0.0884,
-            "y": 0.9194
-          }
+            "x": 57.0,
+            "y": 441.0
+          },
+          "track_id": 14,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "14"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/163.jpg",
       "index": 163,
-      "timestamp": "2026-03-04T01:35:29.751Z",
+      "timestamp": "2026-03-09T00:52:57.902Z",
       "timestamp_ms": 81500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5652,
-          "bbox": {
-            "x": 0.011,
-            "y": 0.8464,
-            "width": 0.1503,
-            "height": 0.1528
-          },
-          "center": {
-            "x": 0.0861,
-            "y": 0.9228
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/164.jpg",
       "index": 164,
-      "timestamp": "2026-03-04T01:35:29.850Z",
+      "timestamp": "2026-03-09T00:52:58.000Z",
       "timestamp_ms": 82000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/165.jpg",
       "index": 165,
-      "timestamp": "2026-03-04T01:35:29.938Z",
+      "timestamp": "2026-03-09T00:52:58.095Z",
       "timestamp_ms": 82500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6192,
-          "bbox": {
-            "x": 0.001,
-            "y": 0.8592,
-            "width": 0.1597,
-            "height": 0.1408
-          },
-          "center": {
-            "x": 0.0808,
-            "y": 0.9296
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/166.jpg",
       "index": 166,
-      "timestamp": "2026-03-04T01:35:30.020Z",
+      "timestamp": "2026-03-09T00:52:58.180Z",
       "timestamp_ms": 83000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6452,
-          "bbox": {
-            "x": 0.01,
-            "y": 0.8422,
-            "width": 0.1515,
-            "height": 0.1571
-          },
-          "center": {
-            "x": 0.0858,
-            "y": 0.9208
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/167.jpg",
       "index": 167,
-      "timestamp": "2026-03-04T01:35:30.098Z",
+      "timestamp": "2026-03-09T00:52:58.267Z",
       "timestamp_ms": 83500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5944,
-          "bbox": {
-            "x": 0.0198,
-            "y": 0.8438,
-            "width": 0.1414,
-            "height": 0.1554
-          },
-          "center": {
-            "x": 0.0905,
-            "y": 0.9215
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/168.jpg",
       "index": 168,
-      "timestamp": "2026-03-04T01:35:30.176Z",
+      "timestamp": "2026-03-09T00:52:58.346Z",
       "timestamp_ms": 84000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5238,
-          "bbox": {
-            "x": 0.0083,
-            "y": 0.8591,
-            "width": 0.152,
-            "height": 0.1408
-          },
-          "center": {
-            "x": 0.0843,
-            "y": 0.9295
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/169.jpg",
       "index": 169,
-      "timestamp": "2026-03-04T01:35:30.254Z",
+      "timestamp": "2026-03-09T00:52:58.425Z",
       "timestamp_ms": 84500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5098,
-          "bbox": {
-            "x": 0.0005,
-            "y": 0.8612,
-            "width": 0.159,
-            "height": 0.1382
-          },
-          "center": {
-            "x": 0.0799,
-            "y": 0.9303
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/170.jpg",
       "index": 170,
-      "timestamp": "2026-03-04T01:35:30.333Z",
+      "timestamp": "2026-03-09T00:52:58.505Z",
       "timestamp_ms": 85000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6956,
+          "class_name": "apple",
+          "confidence": 0.7,
           "bbox": {
-            "x": 0.034,
-            "y": 0.8435,
-            "width": 0.1277,
-            "height": 0.1561
+            "x": 22,
+            "y": 405,
+            "width": 82,
+            "height": 75
           },
           "center": {
-            "x": 0.0979,
-            "y": 0.9216
-          }
+            "x": 63.0,
+            "y": 442.5
+          },
+          "track_id": 15,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "15"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/171.jpg",
       "index": 171,
-      "timestamp": "2026-03-04T01:35:30.419Z",
+      "timestamp": "2026-03-09T00:52:58.583Z",
       "timestamp_ms": 85500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6027,
-          "bbox": {
-            "x": 0.0326,
-            "y": 0.8428,
-            "width": 0.1293,
-            "height": 0.1564
-          },
-          "center": {
-            "x": 0.0973,
-            "y": 0.921
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/172.jpg",
       "index": 172,
-      "timestamp": "2026-03-04T01:35:30.503Z",
+      "timestamp": "2026-03-09T00:52:58.660Z",
       "timestamp_ms": 86000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6381,
-          "bbox": {
-            "x": 0.0045,
-            "y": 0.8534,
-            "width": 0.157,
-            "height": 0.1465
-          },
-          "center": {
-            "x": 0.0831,
-            "y": 0.9267
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/173.jpg",
       "index": 173,
-      "timestamp": "2026-03-04T01:35:30.595Z",
+      "timestamp": "2026-03-09T00:52:58.735Z",
       "timestamp_ms": 86500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5569,
-          "bbox": {
-            "x": 0.0045,
-            "y": 0.8603,
-            "width": 0.1561,
-            "height": 0.1397
-          },
-          "center": {
-            "x": 0.0825,
-            "y": 0.9301
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/174.jpg",
       "index": 174,
-      "timestamp": "2026-03-04T01:35:30.693Z",
+      "timestamp": "2026-03-09T00:52:58.812Z",
       "timestamp_ms": 87000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5675,
-          "bbox": {
-            "x": 0.0063,
-            "y": 0.8491,
-            "width": 0.1564,
-            "height": 0.1502
-          },
-          "center": {
-            "x": 0.0845,
-            "y": 0.9242
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/175.jpg",
       "index": 175,
-      "timestamp": "2026-03-04T01:35:30.776Z",
+      "timestamp": "2026-03-09T00:52:58.888Z",
       "timestamp_ms": 87500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6039,
-          "bbox": {
-            "x": 0.028,
-            "y": 0.8421,
-            "width": 0.134,
-            "height": 0.1571
-          },
-          "center": {
-            "x": 0.095,
-            "y": 0.9207
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/176.jpg",
       "index": 176,
-      "timestamp": "2026-03-04T01:35:30.865Z",
+      "timestamp": "2026-03-09T00:52:58.965Z",
       "timestamp_ms": 88000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/177.jpg",
       "index": 177,
-      "timestamp": "2026-03-04T01:35:30.965Z",
+      "timestamp": "2026-03-09T00:52:59.043Z",
       "timestamp_ms": 88500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5484,
-          "bbox": {
-            "x": 0.0,
-            "y": 0.8581,
-            "width": 0.162,
-            "height": 0.1419
-          },
-          "center": {
-            "x": 0.081,
-            "y": 0.9291
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/178.jpg",
       "index": 178,
-      "timestamp": "2026-03-04T01:35:31.046Z",
+      "timestamp": "2026-03-09T00:52:59.125Z",
       "timestamp_ms": 89000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5572,
-          "bbox": {
-            "x": 0.0071,
-            "y": 0.8528,
-            "width": 0.1535,
-            "height": 0.1463
-          },
-          "center": {
-            "x": 0.0838,
-            "y": 0.9259
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/179.jpg",
       "index": 179,
-      "timestamp": "2026-03-04T01:35:31.131Z",
+      "timestamp": "2026-03-09T00:52:59.209Z",
       "timestamp_ms": 89500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5767,
-          "bbox": {
-            "x": 0.0207,
-            "y": 0.8431,
-            "width": 0.1422,
-            "height": 0.1562
-          },
-          "center": {
-            "x": 0.0918,
-            "y": 0.9211
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/180.jpg",
       "index": 180,
-      "timestamp": "2026-03-04T01:35:31.215Z",
+      "timestamp": "2026-03-09T00:52:59.296Z",
       "timestamp_ms": 90000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/181.jpg",
       "index": 181,
-      "timestamp": "2026-03-04T01:35:31.293Z",
+      "timestamp": "2026-03-09T00:52:59.376Z",
       "timestamp_ms": 90500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5575,
-          "bbox": {
-            "x": 0.0269,
-            "y": 0.8571,
-            "width": 0.1334,
-            "height": 0.1424
-          },
-          "center": {
-            "x": 0.0937,
-            "y": 0.9284
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/182.jpg",
       "index": 182,
-      "timestamp": "2026-03-04T01:35:31.383Z",
+      "timestamp": "2026-03-09T00:52:59.455Z",
       "timestamp_ms": 91000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5981,
-          "bbox": {
-            "x": 0.0044,
-            "y": 0.855,
-            "width": 0.1587,
-            "height": 0.1449
-          },
-          "center": {
-            "x": 0.0838,
-            "y": 0.9275
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/183.jpg",
       "index": 183,
-      "timestamp": "2026-03-04T01:35:31.484Z",
+      "timestamp": "2026-03-09T00:52:59.534Z",
       "timestamp_ms": 91500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6496,
-          "bbox": {
-            "x": 0.0077,
-            "y": 0.8456,
-            "width": 0.1537,
-            "height": 0.154
-          },
-          "center": {
-            "x": 0.0845,
-            "y": 0.9226
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/184.jpg",
       "index": 184,
-      "timestamp": "2026-03-04T01:35:31.585Z",
+      "timestamp": "2026-03-09T00:52:59.610Z",
       "timestamp_ms": 92000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6001,
-          "bbox": {
-            "x": 0.005,
-            "y": 0.8452,
-            "width": 0.1564,
-            "height": 0.1541
-          },
-          "center": {
-            "x": 0.0832,
-            "y": 0.9223
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/185.jpg",
       "index": 185,
-      "timestamp": "2026-03-04T01:35:31.685Z",
+      "timestamp": "2026-03-09T00:52:59.688Z",
       "timestamp_ms": 92500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/186.jpg",
       "index": 186,
-      "timestamp": "2026-03-04T01:35:31.786Z",
+      "timestamp": "2026-03-09T00:52:59.769Z",
       "timestamp_ms": 93000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.6087,
-          "bbox": {
-            "x": 0.0038,
-            "y": 0.8563,
-            "width": 0.1586,
-            "height": 0.1432
-          },
-          "center": {
-            "x": 0.0831,
-            "y": 0.9279
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/187.jpg",
       "index": 187,
-      "timestamp": "2026-03-04T01:35:31.881Z",
+      "timestamp": "2026-03-09T00:52:59.856Z",
       "timestamp_ms": 93500,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.6568,
+          "class_name": "apple",
+          "confidence": 0.66,
           "bbox": {
-            "x": 0.0059,
-            "y": 0.8469,
-            "width": 0.156,
-            "height": 0.1527
+            "x": 4,
+            "y": 407,
+            "width": 100,
+            "height": 73
           },
           "center": {
-            "x": 0.0839,
-            "y": 0.9233
-          }
+            "x": 54.0,
+            "y": 443.5
+          },
+          "track_id": 16,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "16"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/188.jpg",
       "index": 188,
-      "timestamp": "2026-03-04T01:35:31.965Z",
+      "timestamp": "2026-03-09T00:52:59.940Z",
       "timestamp_ms": 94000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5989,
-          "bbox": {
-            "x": 0.0073,
-            "y": 0.8442,
-            "width": 0.1534,
-            "height": 0.1552
-          },
-          "center": {
-            "x": 0.084,
-            "y": 0.9218
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/189.jpg",
       "index": 189,
-      "timestamp": "2026-03-04T01:35:32.043Z",
+      "timestamp": "2026-03-09T00:53:00.024Z",
       "timestamp_ms": 94500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/190.jpg",
       "index": 190,
-      "timestamp": "2026-03-04T01:35:32.121Z",
+      "timestamp": "2026-03-09T00:53:00.112Z",
       "timestamp_ms": 95000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5504,
-          "bbox": {
-            "x": 0.0031,
-            "y": 0.8563,
-            "width": 0.1578,
-            "height": 0.1435
-          },
-          "center": {
-            "x": 0.082,
-            "y": 0.9281
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/191.jpg",
       "index": 191,
-      "timestamp": "2026-03-04T01:35:32.199Z",
+      "timestamp": "2026-03-09T00:53:00.194Z",
       "timestamp_ms": 95500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5143,
-          "bbox": {
-            "x": 0.0076,
-            "y": 0.8484,
-            "width": 0.154,
-            "height": 0.1511
-          },
-          "center": {
-            "x": 0.0846,
-            "y": 0.924
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/192.jpg",
       "index": 192,
-      "timestamp": "2026-03-04T01:35:32.276Z",
+      "timestamp": "2026-03-09T00:53:00.273Z",
       "timestamp_ms": 96000,
       "detections": [
         {
-          "class_name": "Apple",
-          "confidence": 0.7016,
+          "class_name": "apple",
+          "confidence": 0.7,
           "bbox": {
-            "x": 0.004,
-            "y": 0.8457,
-            "width": 0.1574,
-            "height": 0.1537
+            "x": 3,
+            "y": 406,
+            "width": 100,
+            "height": 74
           },
           "center": {
-            "x": 0.0827,
-            "y": 0.9226
-          }
+            "x": 53.0,
+            "y": 443.0
+          },
+          "track_id": 17,
+          "in_roi": false
         }
-      ]
+      ],
+      "frame_hash": "17"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/193.jpg",
       "index": 193,
-      "timestamp": "2026-03-04T01:35:32.353Z",
+      "timestamp": "2026-03-09T00:53:00.352Z",
       "timestamp_ms": 96500,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/194.jpg",
       "index": 194,
-      "timestamp": "2026-03-04T01:35:32.429Z",
+      "timestamp": "2026-03-09T00:53:00.431Z",
       "timestamp_ms": 97000,
-      "detections": []
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/195.jpg",
       "index": 195,
-      "timestamp": "2026-03-04T01:35:32.506Z",
+      "timestamp": "2026-03-09T00:53:00.511Z",
       "timestamp_ms": 97500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5586,
-          "bbox": {
-            "x": 0.0066,
-            "y": 0.8519,
-            "width": 0.1542,
-            "height": 0.1476
-          },
-          "center": {
-            "x": 0.0837,
-            "y": 0.9257
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/196.jpg",
       "index": 196,
-      "timestamp": "2026-03-04T01:35:32.592Z",
+      "timestamp": "2026-03-09T00:53:00.587Z",
       "timestamp_ms": 98000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5223,
-          "bbox": {
-            "x": 0.0137,
-            "y": 0.8472,
-            "width": 0.1471,
-            "height": 0.1519
-          },
-          "center": {
-            "x": 0.0872,
-            "y": 0.9231
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/197.jpg",
       "index": 197,
-      "timestamp": "2026-03-04T01:35:32.683Z",
+      "timestamp": "2026-03-09T00:53:00.663Z",
       "timestamp_ms": 98500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5022,
-          "bbox": {
-            "x": 0.0055,
-            "y": 0.8473,
-            "width": 0.1563,
-            "height": 0.1517
-          },
-          "center": {
-            "x": 0.0837,
-            "y": 0.9232
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/198.jpg",
       "index": 198,
-      "timestamp": "2026-03-04T01:35:32.761Z",
+      "timestamp": "2026-03-09T00:53:00.740Z",
       "timestamp_ms": 99000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5242,
-          "bbox": {
-            "x": 0.0008,
-            "y": 0.8557,
-            "width": 0.1632,
-            "height": 0.1443
-          },
-          "center": {
-            "x": 0.0824,
-            "y": 0.9278
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/199.jpg",
       "index": 199,
-      "timestamp": "2026-03-04T01:35:32.839Z",
+      "timestamp": "2026-03-09T00:53:00.821Z",
       "timestamp_ms": 99500,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5305,
-          "bbox": {
-            "x": 0.0076,
-            "y": 0.8559,
-            "width": 0.1524,
-            "height": 0.1437
-          },
-          "center": {
-            "x": 0.0838,
-            "y": 0.9278
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     },
     {
-      "frame_path": "/Users/liluoqi/Documents/Luoqi_github/EE475-Smart-Fridge-Manager/data/sessions/session_20260303_145110/frames/200.jpg",
       "index": 200,
-      "timestamp": "2026-03-04T01:35:32.917Z",
+      "timestamp": "2026-03-09T00:53:00.899Z",
       "timestamp_ms": 100000,
-      "detections": [
-        {
-          "class_name": "Apple",
-          "confidence": 0.5659,
-          "bbox": {
-            "x": 0.0036,
-            "y": 0.8448,
-            "width": 0.1588,
-            "height": 0.1548
-          },
-          "center": {
-            "x": 0.083,
-            "y": 0.9222
-          }
-        }
-      ]
+      "detections": [],
+      "frame_hash": "0"
     }
-  ]
+  ],
+  "roi_definition": {
+    "name": "fridge_interior",
+    "coordinates": {
+      "x": 0,
+      "y": 0,
+      "width": 640,
+      "height": 240
+    }
+  }
 }

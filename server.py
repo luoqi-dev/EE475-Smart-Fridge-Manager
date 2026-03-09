@@ -140,33 +140,31 @@ def collisions_open():
     if not include_items:
         return jsonify(cases)
 
-    # Attach item details for each case
     out = []
     for c in cases:
-        pending_ids = safe_json_loads(c.get("pending_item_ids_json"), [])
-        # normalize to int list if possible
-        norm_ids = []
-        for x in pending_ids:
-            try:
-                norm_ids.append(int(x))
-            except Exception:
-                pass
+        item_name = (c.get("item_name") or "").strip()
 
-        items = []
-        if norm_ids:
-            placeholders = ",".join(["?"] * len(norm_ids))
-            items = query_db(
-                f"""
-                SELECT id, item_name, status, event_time_utc, confidence, track_id
-                FROM events
-                WHERE id IN ({placeholders})
-                ORDER BY event_time_utc DESC, id DESC;
-                """,
-                tuple(norm_ids),
+        items = query_db("""
+            WITH ranked AS (
+              SELECT
+                id, session_id, event_time_utc, item_name, status, confidence, track_id,
+                ROW_NUMBER() OVER (
+                  PARTITION BY track_id
+                  ORDER BY event_time_utc DESC, id DESC
+                ) AS rn
+              FROM events
             )
+            SELECT
+              id, item_name, status, event_time_utc, confidence, track_id
+            FROM ranked
+            WHERE rn = 1
+              AND status = 'IN_FRIDGE'
+              AND lower(trim(item_name)) = lower(trim(?))
+            ORDER BY event_time_utc ASC, id ASC;
+        """, (item_name,))
 
         c2 = dict(c)
-        c2["pending_item_ids"] = pending_ids
+        c2["pending_item_ids"] = safe_json_loads(c.get("pending_item_ids_json"), [])
         c2["default_remove_ids"] = safe_json_loads(c.get("default_remove_ids_json"), [])
         c2["items"] = items
         out.append(c2)
@@ -274,5 +272,6 @@ if __name__ == "__main__":
 
     print(f"Using DB: {DB_PATH}")
     app.run(host="0.0.0.0", port=5000, debug=True)
+
 
 

@@ -96,6 +96,24 @@ def all_events():
     """
     return jsonify(query_db(sql))
 
+
+# ---------------------------
+# Environment API
+# ---------------------------
+
+@app.route("/api/environment/latest")
+def environment_latest():
+    sql = """
+    SELECT id, temperature, humidity
+    FROM environment
+    ORDER BY id DESC
+    LIMIT 1;
+    """
+    rows = query_db(sql)
+    if not rows:
+        return jsonify({"temperature": None, "humidity": None})
+    return jsonify(rows[0])
+
 # ---------------------------
 # Collision (new integration)
 # ---------------------------

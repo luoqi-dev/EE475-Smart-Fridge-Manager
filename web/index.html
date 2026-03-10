@@ -9,8 +9,25 @@
 
 <header>
   <div class="header-inner">
-    <h1 class="page-title">Smart Fridge Hub</h1>
-    <p class="page-subtitle">Monitor inventory, food freshness, and fridge activity in one place.</p>
+    <div class="header-copy">
+      <h1 class="page-title">Smart Fridge Hub</h1>
+      <p class="page-subtitle">Monitor inventory, food freshness, and fridge activity in one place.</p>
+    </div>
+
+    <div class="env-panel">
+      <div class="env-panel-title">Fridge Environment</div>
+      <div class="env-panel-metrics">
+        <div class="env-metric">
+          <span class="env-label">Temperature</span>
+          <span id="tempValue" class="env-value">-- °C</span>
+        </div>
+        <div class="env-metric">
+          <span class="env-label">Humidity</span>
+          <span id="humidityValue" class="env-value">-- %</span>
+        </div>
+      </div>
+      <span id="envStatus" class="env-status">Ready</span>
+    </div>
   </div>
 </header>
 
@@ -133,6 +150,8 @@
 </div>
 
 </main>
+
+<div id="toastContainer" class="toast-container"></div>
 
 <script src="app.js"></script>
 

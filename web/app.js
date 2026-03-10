@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   const API_SUMMARY = '/api/inventory/summary';
+  const API_INVENTORY = '/api/inventory';
   const API_ADD = '/api/manual/add';
   const API_REMOVE = '/api/manual/remove';
   const API_COLLISIONS_OPEN = '/api/collisions/open?include_items=1';
+  const API_ENVIRONMENT = '/api/environment/latest';
 
   const table = document.getElementById('inventoryTable');
   const tbody = table?.querySelector('tbody');
@@ -17,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const addBtn = document.getElementById('addBtn');
   const removeBtn = document.getElementById('removeBtn');
   const actionStatus = document.getElementById('actionStatus');
+  const tempValue = document.getElementById('tempValue');
+  const humidityValue = document.getElementById('humidityValue');
+  const envStatus = document.getElementById('envStatus');
 
   const modal = document.getElementById('collisionModal');
   const collisionCardList = document.getElementById('collisionCardList');
@@ -27,11 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const manualRemoveConfirmBtn = document.getElementById('manualRemoveConfirmBtn');
   const manualRemoveCancelBtn = document.getElementById('manualRemoveCancelBtn');
   const manualRemoveStatus = document.getElementById('manualRemoveStatus');
+  const toastContainer = document.getElementById('toastContainer');
 
   if (
     !table || !tbody || !refreshBtn || !statusText ||
     !itemInput || !manualYearInput || !manualMonthInput || !manualDayInput ||
     !manualHourInput || !addBtn || !removeBtn || !actionStatus ||
+    !tempValue || !humidityValue || !envStatus || !toastContainer ||
     !modal || !collisionCardList || !manualRemoveModal || !manualRemoveTitle ||
     !manualRemoveSummary || !manualRemoveItems || !manualRemoveConfirmBtn ||
     !manualRemoveCancelBtn || !manualRemoveStatus
@@ -46,6 +53,16 @@ document.addEventListener('DOMContentLoaded', function () {
   let modalOpen = false;
   let manualRemoveSelection = [];
   let manualRemoveItemsState = [];
+
+  // Expiration rules
+  const EXPIRY_RULES_MS = {
+    apple: 30 * 1000,
+    banana: 2 * 60 * 1000,
+    orange: 2 * 60 * 1000,
+    lemon: 2 * 60 * 1000,
+    carrot: 2 * 60 * 1000,
+  };
+  const expiredToastShown = new Set();
 
   function setStatus(el, msg, isError = false) {
     el.textContent = msg;
@@ -72,6 +89,60 @@ document.addEventListener('DOMContentLoaded', function () {
     const mi = String(d.getMinutes()).padStart(2, '0');
     const ss = String(d.getSeconds()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+  }
+
+
+  // Toast helper
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+      <div class="toast-title">Expired Item</div>
+      <div class="toast-message">${escapeHtml(message)}</div>
+      <button type="button" class="toast-close" aria-label="Close">&times;</button>
+    `;
+
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn?.addEventListener('click', () => toast.remove());
+
+    toastContainer.appendChild(toast);
+    window.setTimeout(() => toast.remove(), 6000);
+  }
+
+  // Expiration helpers
+  function getExpiryMs(itemName) {
+    return EXPIRY_RULES_MS[String(itemName || '').trim().toLowerCase()] || null;
+  }
+
+  function getExpiredInventoryItems(items) {
+    const now = Date.now();
+    const expired = [];
+
+    for (const item of Array.isArray(items) ? items : []) {
+      const expiryMs = getExpiryMs(item.item_name);
+      if (!expiryMs || !item.event_time_utc) continue;
+
+      const putInMs = new Date(item.event_time_utc).getTime();
+      if (Number.isNaN(putInMs)) continue;
+
+      if (now - putInMs > expiryMs) {
+        expired.push(item);
+      }
+    }
+
+    return expired;
+  }
+
+  function handleExpiredNotifications(items) {
+    const expiredItems = getExpiredInventoryItems(items);
+
+    for (const item of expiredItems) {
+      const key = `${String(item.item_name || '').toLowerCase()}-${String(item.id || '')}-${String(item.event_time_utc || '')}`;
+      if (expiredToastShown.has(key)) continue;
+
+      expiredToastShown.add(key);
+      showToast(`${titleCase(item.item_name)} has expired.`);
+    }
   }
 
   function showModal(show) {
@@ -103,6 +174,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+
+  // Environment helpers
+  function renderEnvironment(data) {
+    tempValue.textContent = `${data.temperature ?? '--'} °C`;
+    humidityValue.textContent = `${data.humidity ?? '--'} %`;
+  }
+
+  async function refreshEnvironment() {
+    try {
+      const res = await fetch(API_ENVIRONMENT);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      renderEnvironment(data || {});
+      setStatus(envStatus, 'Updated');
+    } catch (e) {
+      console.error(e);
+      renderEnvironment({});
+      setStatus(envStatus, 'Something went wrong', true);
+    }
+  }
+
+  // Inventory refresh
   async function refresh() {
     if (refreshing) return;
     refreshing = true;
@@ -111,10 +204,19 @@ document.addEventListener('DOMContentLoaded', function () {
     refreshBtn.disabled = true;
 
     try {
-      const res = await fetch(API_SUMMARY);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      renderSummary(data);
+      const [summaryRes, inventoryRes] = await Promise.all([
+        fetch(API_SUMMARY),
+        fetch(API_INVENTORY),
+      ]);
+
+      if (!summaryRes.ok) throw new Error(`HTTP ${summaryRes.status}`);
+      if (!inventoryRes.ok) throw new Error(`HTTP ${inventoryRes.status}`);
+
+      const summaryData = await summaryRes.json();
+      const inventoryData = await inventoryRes.json();
+
+      renderSummary(summaryData);
+      handleExpiredNotifications(inventoryData);
       setStatus(statusText, 'Updated');
     } catch (e) {
       console.error(e);
@@ -126,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Manual action payload
   function getPayload() {
     const item_name = (itemInput.value || '').trim();
     return {
@@ -137,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
+  // Shared POST helper
   async function postJson(url, payload) {
     const res = await fetch(url, {
       method: 'POST',
@@ -155,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return json;
   }
 
+  // Manual add action
   async function handleAdd() {
     const payload = getPayload();
     if (!payload.item_name) {
@@ -183,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Manual remove modal
   function showManualRemoveModal(show) {
     manualRemoveModal.classList.toggle('hidden', !show);
     if (!show) {
@@ -195,6 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Manual remove list
   function renderManualRemoveItems() {
     manualRemoveItems.innerHTML = '';
     for (const item of manualRemoveItemsState) {
@@ -216,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return postJson(API_REMOVE, { remove_item_ids: removeItemIds.map(Number) });
   }
 
+  // Manual remove action
   async function handleRemove() {
     const payload = getPayload();
     if (!payload.item_name) {
@@ -296,6 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   manualRemoveCancelBtn.addEventListener('click', () => showManualRemoveModal(false));
 
+  // Collision helpers
   function formatCaseTime(isoUtc) {
     if (!isoUtc) return '';
     const d = new Date(isoUtc);
@@ -370,6 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return selectionByCaseId;
   }
 
+  // Collision submit
   async function submitCollisionAction(caseId, removeItemIds) {
     const res = await fetch(`/api/collisions/${encodeURIComponent(caseId)}/actions`, {
       method: 'POST',
@@ -388,6 +498,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderCollisionCases();
   }
 
+  // Collision rendering
   function renderCollisionCases() {
     const existingSelections = getExistingCaseSelections();
     collisionCardList.innerHTML = '';
@@ -536,6 +647,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showModal(true);
   }
 
+  // Collision polling
   async function pollCollisions() {
     try {
       const res = await fetch(API_COLLISIONS_OPEN);
@@ -562,10 +674,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (ev.key === 'Enter') handleAdd();
   });
 
+  // Initial load
   refresh();
+  refreshEnvironment();
   pollCollisions();
   if (window.__smartFridgeRefreshTimer) window.clearInterval(window.__smartFridgeRefreshTimer);
   if (window.__smartFridgeCollisionTimer) window.clearInterval(window.__smartFridgeCollisionTimer);
+  if (window.__smartFridgeEnvironmentTimer) window.clearInterval(window.__smartFridgeEnvironmentTimer);
   window.__smartFridgeRefreshTimer = window.setInterval(refresh, 5000);
   window.__smartFridgeCollisionTimer = window.setInterval(pollCollisions, 5000);
+  window.__smartFridgeEnvironmentTimer = window.setInterval(refreshEnvironment, 5000);
 });

@@ -99,3 +99,136 @@ th, td {
 th {
   background: #f0f3f7;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.modal-panel {
+  position: relative;
+  max-width: 760px;
+  max-height: calc(100vh - 64px);
+  margin: 32px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  overflow-y: auto;
+}
+
+.modal-header {
+  margin-bottom: 12px;
+}
+
+.collision-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.collision-case-card {
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  padding: 16px;
+  background: #fdfefe;
+}
+
+.collision-case-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.collision-case-title {
+  margin: 0;
+}
+
+.collision-section {
+  margin-top: 12px;
+}
+
+.collision-section-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.collision-message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.collision-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.collision-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.collision-item-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.collision-item-name {
+  font-weight: 600;
+}
+
+.collision-item-time {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.collision-default-block {
+  background: #f5f9ff;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.collision-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.collision-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #2c7be5;
+  color: white;
+}
+
+.collision-btn-secondary {
+  background: #6c757d;
+}

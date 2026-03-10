@@ -86,8 +86,7 @@ def _json_load_list(raw: str) -> List[str]:
 
 
 def _json_dump_list(values: Sequence[str]) -> str:
-    unique_values = list(dict.fromkeys(str(value) for value in values))
-    return json.dumps(unique_values)
+    return json.dumps([str(value) for value in values])
 
 
 def _table_exists(conn: sqlite3.Connection, table_name: str) -> bool:
@@ -331,6 +330,41 @@ def get_in_fridge_instances(conn: sqlite3.Connection, item_name: str) -> List[It
     ]
 
 
+def get_active_case_instances(conn: sqlite3.Connection, item_name: str) -> List[ItemInstanceState]:
+    rows = conn.execute(
+        """
+        SELECT id,
+               item_name,
+               status,
+               session_id,
+               confidence,
+               track_id,
+               case_id,
+               pending_type,
+               event_time_utc
+        FROM events
+        WHERE item_name = ?
+          AND status IN ('IN_FRIDGE', 'PENDING')
+        ORDER BY event_time_utc ASC, id ASC;
+        """,
+        (item_name,),
+    ).fetchall()
+    return [
+        ItemInstanceState(
+            item_id=str(row[0]),
+            item_name=str(row[1]),
+            current_status=str(row[2]),
+            session_id=row[3],
+            confidence=row[4],
+            track_id=row[5],
+            case_id=row[6],
+            pending_type=row[7],
+            put_in_time_utc=str(row[8]),
+        )
+        for row in rows
+    ]
+
+
 def get_open_collision_case(
     conn: sqlite3.Connection,
     *,
@@ -472,6 +506,19 @@ def _update_item_status(
     )
 
 
+def _has_full_default_remove_coverage(
+    candidate_ids: Sequence[str],
+    default_remove_ids: Sequence[str],
+) -> bool:
+    candidate_list = [str(item_id) for item_id in candidate_ids]
+    default_list = [str(item_id) for item_id in default_remove_ids]
+    if not candidate_list:
+        return False
+    if len(default_list) < len(candidate_list):
+        return False
+    return set(default_list) == set(candidate_list)
+
+
 class CollisionResolver:
     def __init__(self, conn: sqlite3.Connection, *, auto_resolve_window_seconds: int = 60):
         self.conn = conn
@@ -511,10 +558,15 @@ class CollisionResolver:
 
     def _handle_take_out(self, operation: ParsedOperation) -> int:
         candidates = get_in_fridge_instances(self.conn, operation.item_name)
+        case = get_open_collision_case(
+            self.conn,
+            item_name=operation.item_name,
+            pending_type=PENDING_AMBIGUOUS_MULTI_REMOVE,
+        )
         if not candidates:
             return 0
 
-        if len(candidates) == 1:
+        if case is None and len(candidates) == 1:
             candidate = candidates[0]
             _update_item_status(
                 self.conn,
@@ -532,7 +584,7 @@ class CollisionResolver:
         ).total_seconds()
         default_candidate = candidates[0]
 
-        if span_seconds <= self.auto_resolve_window_seconds:
+        if case is None and span_seconds <= self.auto_resolve_window_seconds:
             _update_item_status(
                 self.conn,
                 item_id=default_candidate.item_id,
@@ -544,18 +596,10 @@ class CollisionResolver:
             )
             return 1
 
-        case = get_open_collision_case(
-            self.conn,
-            item_name=operation.item_name,
-            pending_type=PENDING_AMBIGUOUS_MULTI_REMOVE,
-        )
-        pending_ids = [] if case is None else list(case.pending_item_ids)
+        candidate_pool = get_active_case_instances(self.conn, operation.item_name)
+        pending_ids = [candidate.item_id for candidate in candidate_pool]
         default_remove_ids = [] if case is None else list(case.default_remove_ids)
-
-        if default_candidate.item_id not in pending_ids:
-            pending_ids.append(default_candidate.item_id)
-        if default_candidate.item_id not in default_remove_ids:
-            default_remove_ids.append(default_candidate.item_id)
+        default_remove_ids.append(default_candidate.item_id)
 
         now = operation.event_time_utc
         if case is None:
@@ -615,14 +659,42 @@ class CollisionResolver:
         _update_item_status(
             self.conn,
             item_id=default_candidate.item_id,
-            session_id=operation.session_id,
+            session_id=default_candidate.session_id,
             updated_at_utc=operation.event_time_utc,
             status=STATUS_PENDING,
-            confidence=operation.confidence,
-            track_id=operation.track_id,
+            confidence=default_candidate.confidence,
+            track_id=default_candidate.track_id,
             pending_type=PENDING_AMBIGUOUS_MULTI_REMOVE,
             case_id=case_id,
         )
+
+        if _has_full_default_remove_coverage(pending_ids, default_remove_ids):
+            for item_id in default_remove_ids:
+                current = _get_item_row(self.conn, item_id)
+                if current is None or str(current["item_name"]) != operation.item_name:
+                    continue
+                if str(current["status"]) == STATUS_REMOVED:
+                    continue
+                _update_item_status(
+                    self.conn,
+                    item_id=item_id,
+                    session_id=current["session_id"],
+                    updated_at_utc=operation.event_time_utc,
+                    status=STATUS_REMOVED,
+                    confidence=current["confidence"],
+                    track_id=current["track_id"],
+                    case_id=case_id,
+                )
+
+            self.conn.execute(
+                """
+                UPDATE collision_cases
+                SET status = 'RESOLVED',
+                    updated_at_utc = ?
+                WHERE case_id = ?;
+                """,
+                (operation.event_time_utc, case_id),
+            )
         return 1
 
 

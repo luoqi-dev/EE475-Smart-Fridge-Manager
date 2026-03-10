@@ -59,51 +59,29 @@ def serve_css():
 # Inventory APIs
 # ---------------------------
 
-# New: return instance-level inventory (latest status per track_id)
+# Return instance-level inventory directly from current event rows.
 @app.route("/api/inventory")
 def inventory_instances():
     sql = """
-    WITH ranked AS (
-      SELECT
-        id, session_id, event_time_utc, item_name, status, confidence, track_id,
-        ROW_NUMBER() OVER (
-          PARTITION BY track_id
-          ORDER BY event_time_utc DESC, id DESC
-        ) AS rn
-      FROM events
-    )
     SELECT
       id, item_name, status, event_time_utc, confidence, track_id
-    FROM ranked
-    WHERE rn = 1 AND status = 'IN_FRIDGE'
+    FROM events
+    WHERE status = 'IN_FRIDGE'
     ORDER BY event_time_utc DESC, id DESC;
     """
     return jsonify(query_db(sql))
 
-# Keep your old summary endpoint (do not break existing UI)
+# Keep the summary endpoint shape used by the current UI.
 @app.route("/api/inventory/summary")
 def inventory_summary():
     sql = """
-    WITH ranked AS (
-      SELECT
-        id,
-        item_name,
-        status,
-        event_time_utc,
-        track_id,
-        ROW_NUMBER() OVER (
-          PARTITION BY track_id
-          ORDER BY event_time_utc DESC, id DESC
-        ) AS rn
-      FROM events
-    )
     SELECT
       lower(trim(item_name)) AS item_name,
       COUNT(*) AS quantity,
       MIN(event_time_utc) AS earliest_put_in_time,
       MAX(event_time_utc) AS latest_put_in_time
-    FROM ranked
-    WHERE rn = 1 AND status = 'IN_FRIDGE'
+    FROM events
+    WHERE status = 'IN_FRIDGE'
     GROUP BY lower(trim(item_name))
     ORDER BY item_name ASC;
     """
@@ -235,38 +213,34 @@ def manual_remove():
     if not item_name:
         return jsonify({"ok": False, "error": "item_name is required"}), 400
 
-    confidence = 1.00
-
     sql_find = """
-    WITH ranked AS (
-      SELECT
-        id, item_name, status, event_time_utc, track_id,
-        ROW_NUMBER() OVER (PARTITION BY track_id ORDER BY event_time_utc DESC, id DESC) AS rn
-      FROM events
-    )
-    SELECT track_id, event_time_utc
-    FROM ranked
-    WHERE rn = 1 AND status = 'IN_FRIDGE' AND lower(trim(item_name)) = lower(trim(?))
-    ORDER BY event_time_utc DESC
+    SELECT id
+    FROM events
+    WHERE status = 'IN_FRIDGE'
+      AND lower(trim(item_name)) = lower(trim(?))
+    ORDER BY event_time_utc DESC, id DESC
     LIMIT 1;
     """
     rows = query_db(sql_find, (item_name,))
     if not rows:
         return jsonify({"ok": False, "error": f'No IN_FRIDGE item found for "{item_name}"'}), 404
 
-    track_id = int(rows[0]["track_id"])
+    event_id = int(rows[0]["id"])
     session_id = "manual_remove"
     event_time_utc = utc_now_iso()
 
     exec_db(
         """
-        INSERT INTO events (session_id, event_time_utc, item_name, status, confidence, track_id)
-        VALUES (?, ?, ?, 'REMOVED', ?, ?);
+        UPDATE events
+        SET session_id = ?,
+            status = 'REMOVED',
+            updated_at_utc = ?
+        WHERE id = ?;
         """,
-        (session_id, event_time_utc, item_name, confidence, track_id),
+        (session_id, event_time_utc, event_id),
     )
 
-    return jsonify({"ok": True, "track_id": track_id, "event_time_utc": event_time_utc})
+    return jsonify({"ok": True, "id": event_id, "event_time_utc": event_time_utc})
 
 if __name__ == "__main__":
     if not DB_PATH.exists():

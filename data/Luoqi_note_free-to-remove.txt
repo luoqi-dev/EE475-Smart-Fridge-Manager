@@ -2,18 +2,18 @@ Quick Note
 
 
 -------Tasks-------
-------- Yolo 🌹
-PUT_IN/TAKE_OUT 没什么问题了 ✅
 
-------- Front end 🖥️
-优化UI页面
-manual remove and add 功能优化
-时间显示优化
-
-------- Back end 🔢
-
-------- Hardware ⚡️
+------- Hardware ⚡️--------------
 增加RTOS
+开机即启动
+
+------- Front end 🖥️--------------
+优化UI页面：时间显示优化
+manual remove and add 功能优化
+
+------- Back end 🔢--------------
+
+------- Yolo 🌹--------------
 
 
 source venv/bin/activate

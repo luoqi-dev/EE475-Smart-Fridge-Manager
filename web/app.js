@@ -10,17 +10,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const statusText = document.getElementById('statusText');
 
   const itemInput = document.getElementById('itemInput');
+  const manualYearInput = document.getElementById('manualYearInput');
+  const manualMonthInput = document.getElementById('manualMonthInput');
+  const manualDayInput = document.getElementById('manualDayInput');
+  const manualHourInput = document.getElementById('manualHourInput');
   const addBtn = document.getElementById('addBtn');
   const removeBtn = document.getElementById('removeBtn');
   const actionStatus = document.getElementById('actionStatus');
 
   const modal = document.getElementById('collisionModal');
   const collisionCardList = document.getElementById('collisionCardList');
+  const manualRemoveModal = document.getElementById('manualRemoveModal');
+  const manualRemoveTitle = document.getElementById('manualRemoveTitle');
+  const manualRemoveSummary = document.getElementById('manualRemoveSummary');
+  const manualRemoveItems = document.getElementById('manualRemoveItems');
+  const manualRemoveConfirmBtn = document.getElementById('manualRemoveConfirmBtn');
+  const manualRemoveCancelBtn = document.getElementById('manualRemoveCancelBtn');
+  const manualRemoveStatus = document.getElementById('manualRemoveStatus');
 
   if (
     !table || !tbody || !refreshBtn || !statusText ||
-    !itemInput || !addBtn || !removeBtn || !actionStatus ||
-    !modal || !collisionCardList
+    !itemInput || !manualYearInput || !manualMonthInput || !manualDayInput ||
+    !manualHourInput || !addBtn || !removeBtn || !actionStatus ||
+    !modal || !collisionCardList || !manualRemoveModal || !manualRemoveTitle ||
+    !manualRemoveSummary || !manualRemoveItems || !manualRemoveConfirmBtn ||
+    !manualRemoveCancelBtn || !manualRemoveStatus
   ) {
     console.error('Required elements not found.');
     return;
@@ -30,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let openCases = [];
   let modalOpen = false;
+  let manualRemoveSelection = [];
+  let manualRemoveItemsState = [];
 
   function setStatus(el, msg, isError = false) {
     el.textContent = msg;
@@ -112,7 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function getPayload() {
     const item_name = (itemInput.value || '').trim();
-    return { item_name };
+    return {
+      item_name,
+      year: (manualYearInput.value || '').trim(),
+      month: (manualMonthInput.value || '').trim(),
+      day: (manualDayInput.value || '').trim(),
+      hour: (manualHourInput.value || '').trim(),
+    };
   }
 
   async function postJson(url, payload) {
@@ -139,6 +161,10 @@ document.addEventListener('DOMContentLoaded', function () {
       setStatus(actionStatus, 'Item is required.', true);
       return;
     }
+    if (!payload.year || !payload.month) {
+      setStatus(actionStatus, 'Year and month are required.', true);
+      return;
+    }
 
     addBtn.disabled = true;
     removeBtn.disabled = true;
@@ -146,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     try {
       const r = await postJson(API_ADD, payload);
-      setStatus(actionStatus, `Added "${payload.item_name}" (track_id=${r.track_id})`);
+      setStatus(actionStatus, `Added "${payload.item_name}" (${formatCaseTime(r.event_time_utc)})`);
       await refresh();
     } catch (e) {
       console.error(e);
@@ -155,6 +181,39 @@ document.addEventListener('DOMContentLoaded', function () {
       addBtn.disabled = false;
       removeBtn.disabled = false;
     }
+  }
+
+  function showManualRemoveModal(show) {
+    manualRemoveModal.classList.toggle('hidden', !show);
+    if (!show) {
+      manualRemoveSelection = [];
+      manualRemoveItemsState = [];
+      manualRemoveItems.innerHTML = '';
+      manualRemoveTitle.textContent = '';
+      manualRemoveSummary.textContent = '';
+      setStatus(manualRemoveStatus, 'Idle');
+    }
+  }
+
+  function renderManualRemoveItems() {
+    manualRemoveItems.innerHTML = '';
+    for (const item of manualRemoveItemsState) {
+      const row = document.createElement('label');
+      row.className = 'collision-item-row manual-remove-row';
+      const checked = manualRemoveSelection.includes(String(item.id));
+      row.innerHTML = `
+        <input type="checkbox" class="manualRemoveCheck" value="${escapeHtml(item.id)}" ${checked ? 'checked' : ''} />
+        <div class="collision-item-meta">
+          <span class="collision-item-name">${escapeHtml(item.item_name)} #${escapeHtml(item.sequence)}</span>
+          <span class="collision-item-time">${escapeHtml(formatCaseTime(item.event_time_utc))}</span>
+        </div>
+      `;
+      manualRemoveItems.appendChild(row);
+    }
+  }
+
+  async function submitManualRemove(removeItemIds) {
+    return postJson(API_REMOVE, { remove_item_ids: removeItemIds.map(Number) });
   }
 
   async function handleRemove() {
@@ -169,9 +228,28 @@ document.addEventListener('DOMContentLoaded', function () {
     setStatus(actionStatus, 'Removing...');
 
     try {
-      const r = await postJson(API_REMOVE, payload);
-      setStatus(actionStatus, `Removed "${payload.item_name}" (id=${r.id})`);
-      await refresh();
+      const result = await postJson('/api/manual/remove/candidates', { item_name: payload.item_name });
+      const items = Array.isArray(result.items) ? result.items : [];
+
+      if (items.length === 0) {
+        window.alert(`No in-fridge ${payload.item_name} found.`);
+        setStatus(actionStatus, 'Idle');
+      } else if (items.length === 1) {
+        await submitManualRemove([items[0].id]);
+        setStatus(actionStatus, `Removed "${payload.item_name}" (id=${items[0].id})`);
+        await refresh();
+      } else {
+        manualRemoveItemsState = items.map((item, index) => ({
+          ...item,
+          sequence: index + 1,
+        }));
+        manualRemoveSelection = [String(manualRemoveItemsState[0].id)];
+        manualRemoveTitle.textContent = `Item: ${payload.item_name}`;
+        manualRemoveSummary.textContent = 'Select the item(s) to remove.';
+        renderManualRemoveItems();
+        showManualRemoveModal(true);
+        setStatus(actionStatus, 'Idle');
+      }
     } catch (e) {
       console.error(e);
       setStatus(actionStatus, `Error: ${e.message}`, true);
@@ -180,6 +258,43 @@ document.addEventListener('DOMContentLoaded', function () {
       removeBtn.disabled = false;
     }
   }
+
+  manualRemoveItems.addEventListener('change', (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLInputElement) || !target.classList.contains('manualRemoveCheck')) return;
+
+    const itemId = String(target.value);
+    if (target.checked) {
+      if (!manualRemoveSelection.includes(itemId)) manualRemoveSelection.push(itemId);
+    } else {
+      manualRemoveSelection = manualRemoveSelection.filter((id) => id !== itemId);
+    }
+    setStatus(manualRemoveStatus, 'Idle');
+  });
+
+  manualRemoveConfirmBtn.addEventListener('click', async () => {
+    if (manualRemoveSelection.length === 0) {
+      setStatus(manualRemoveStatus, 'Please select at least one item.', true);
+      return;
+    }
+
+    manualRemoveConfirmBtn.disabled = true;
+    manualRemoveCancelBtn.disabled = true;
+    setStatus(manualRemoveStatus, 'Submitting...');
+    try {
+      await submitManualRemove(manualRemoveSelection);
+      showManualRemoveModal(false);
+      setStatus(actionStatus, 'Manual remove completed.');
+      await refresh();
+    } catch (e) {
+      setStatus(manualRemoveStatus, `Error: ${e.message}`, true);
+    } finally {
+      manualRemoveConfirmBtn.disabled = false;
+      manualRemoveCancelBtn.disabled = false;
+    }
+  });
+
+  manualRemoveCancelBtn.addEventListener('click', () => showManualRemoveModal(false));
 
   function formatCaseTime(isoUtc) {
     if (!isoUtc) return '';

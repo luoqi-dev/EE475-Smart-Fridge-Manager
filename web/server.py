@@ -190,57 +190,94 @@ def manual_add():
     if not item_name:
         return jsonify({"ok": False, "error": "item_name is required"}), 400
 
-    confidence = 1.00
-    row = query_db("SELECT COALESCE(MAX(track_id), 0) AS mx FROM events;")
-    next_track = int(row[0]["mx"]) + 1 if row else 1
+    year = int(data.get("year") or 0)
+    month = int(data.get("month") or 0)
+    day = int(data.get("day") or 1)
+    hour = int(data.get("hour") or 12)
 
-    session_id = "manual_add"
-    event_time_utc = utc_now_iso()
+    if year <= 0 or not 1 <= month <= 12:
+        return jsonify({"ok": False, "error": "year and month are required"}), 400
+    if not 1 <= day <= 31:
+        return jsonify({"ok": False, "error": "day must be between 1 and 31"}), 400
+    if not 0 <= hour <= 23:
+        return jsonify({"ok": False, "error": "hour must be between 0 and 23"}), 400
+
+    session_id = "session_00000000_000000"
+    event_time_utc = f"{year:04d}-{month:02d}-{day:02d}T{hour:02d}:00:00Z"
+    confidence = 1.0
+    track_id = -1
 
     exec_db(
         """
         INSERT INTO events (session_id, event_time_utc, item_name, status, confidence, track_id)
         VALUES (?, ?, ?, 'IN_FRIDGE', ?, ?);
         """,
-        (session_id, event_time_utc, item_name, confidence, next_track),
+        (session_id, event_time_utc, item_name, confidence, track_id),
     )
-    return jsonify({"ok": True, "track_id": next_track, "event_time_utc": event_time_utc})
+    return jsonify({"ok": True, "event_time_utc": event_time_utc})
 
-@app.route("/api/manual/remove", methods=["POST"])
-def manual_remove():
+@app.route("/api/manual/remove/candidates", methods=["POST"])
+def manual_remove_candidates():
     data = request.get_json(silent=True) or {}
     item_name = (data.get("item_name") or "").strip()
     if not item_name:
         return jsonify({"ok": False, "error": "item_name is required"}), 400
 
     sql_find = """
-    SELECT id
+    SELECT id, item_name, event_time_utc
     FROM events
     WHERE status = 'IN_FRIDGE'
       AND lower(trim(item_name)) = lower(trim(?))
-    ORDER BY event_time_utc DESC, id DESC
-    LIMIT 1;
+    ORDER BY event_time_utc ASC, id ASC;
     """
     rows = query_db(sql_find, (item_name,))
-    if not rows:
-        return jsonify({"ok": False, "error": f'No IN_FRIDGE item found for "{item_name}"'}), 404
+    return jsonify({"ok": True, "items": rows})
 
-    event_id = int(rows[0]["id"])
-    session_id = "manual_remove"
+@app.route("/api/manual/remove", methods=["POST"])
+def manual_remove():
+    data = request.get_json(silent=True) or {}
+    remove_item_ids = data.get("remove_item_ids", [])
+    if not isinstance(remove_item_ids, list) or not remove_item_ids:
+        return jsonify({"ok": False, "error": "remove_item_ids must be a non-empty list"}), 400
+
+    norm_ids = []
+    for item_id in remove_item_ids:
+        try:
+            norm_ids.append(int(item_id))
+        except Exception:
+            return jsonify({"ok": False, "error": f"invalid event id: {item_id}"}), 400
+
     event_time_utc = utc_now_iso()
+    placeholders = ",".join(["?"] * len(norm_ids))
 
-    exec_db(
-        """
-        UPDATE events
-        SET session_id = ?,
-            status = 'REMOVED',
-            updated_at_utc = ?
-        WHERE id = ?;
+    conn = sqlite3.connect(str(DB_PATH))
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute(
+            f"""
+            UPDATE events
+            SET status = 'REMOVED',
+                updated_at_utc = ?
+            WHERE id IN ({placeholders})
+              AND status = 'IN_FRIDGE';
+            """,
+            (event_time_utc, *norm_ids),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    rows = query_db(
+        f"""
+        SELECT id
+        FROM events
+        WHERE id IN ({placeholders})
+          AND status = 'REMOVED'
+        ORDER BY id ASC;
         """,
-        (session_id, event_time_utc, event_id),
+        tuple(norm_ids),
     )
-
-    return jsonify({"ok": True, "id": event_id, "event_time_utc": event_time_utc})
+    return jsonify({"ok": True, "removed_item_ids": [int(row["id"]) for row in rows], "event_time_utc": event_time_utc})
 
 if __name__ == "__main__":
     if not DB_PATH.exists():

@@ -73,6 +73,13 @@ main {
   border-radius: 6px;
 }
 
+.controls input[type="number"] {
+  width: 88px;
+  padding: 6px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+}
+
 .controls button {
   padding: 6px 12px;
   border: none;
@@ -231,4 +238,8 @@ th {
 
 .collision-btn-secondary {
   background: #6c757d;
+}
+
+.manual-remove-row {
+  justify-content: flex-start;
 }

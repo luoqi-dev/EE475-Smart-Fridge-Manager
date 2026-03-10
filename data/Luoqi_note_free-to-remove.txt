@@ -14,8 +14,6 @@ manual remove and add 功能优化
 ------- Back end 🔢--------------
 
 ------- Yolo 🌹--------------
-
-
 source venv/bin/activate
 pip install -r requirements.txt
 
@@ -26,7 +24,6 @@ python ./src/detection/model/socket_listener.py
 python ./src/data_detection_layer/detection_runner.py
 
 python ./web/server.py
-
 
 -------
 python scripts/send_session_socket.py <session_ID>

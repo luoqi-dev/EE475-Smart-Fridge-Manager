@@ -14,9 +14,7 @@ trap cleanup SIGINT SIGTERM
 
 echo "Clearing database tables..."
 
-python scripts/clear_table.py events
-python scripts/clear_table.py collision_cases
-python scripts/clear_table.py collision_actions
+python3 scripts/clear_collision_tables.py
 
 echo "Tables cleared."
 

@@ -25,6 +25,26 @@
       <input id="itemInput" type="text" placeholder="e.g., apple" />
     </label>
 
+    <label>
+      Year:
+      <input id="manualYearInput" type="number" placeholder="2026" />
+    </label>
+
+    <label>
+      Month:
+      <input id="manualMonthInput" type="number" placeholder="03" min="1" max="12" />
+    </label>
+
+    <label>
+      Day:
+      <input id="manualDayInput" type="number" placeholder="1" min="1" max="31" />
+    </label>
+
+    <label>
+      Hour:
+      <input id="manualHourInput" type="number" placeholder="12" min="0" max="23" />
+    </label>
+
     <button id="addBtn">Add (IN_FRIDGE)</button>
     <button id="removeBtn" class="secondary">Remove (REMOVED)</button>
 
@@ -78,6 +98,34 @@
 
   </div>
 
+</div>
+
+<div id="manualRemoveModal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h2 style="margin:0;">Manual Remove</h2>
+    </div>
+
+    <div class="hint" id="manualRemoveTitle" style="margin-top:6px;"></div>
+
+    <p id="manualRemoveSummary" style="margin-top:12px;"></p>
+
+    <div class="card" style="margin-top:12px; margin-bottom:0;">
+      <div class="toolbar">
+        <h3 style="margin:0;">Select item(s) to remove</h3>
+      </div>
+
+      <div id="manualRemoveItems" class="collision-item-list"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button id="manualRemoveConfirmBtn">Confirm</button>
+      <button id="manualRemoveCancelBtn" class="secondary">Cancel</button>
+      <span id="manualRemoveStatus" class="status">Idle</span>
+    </div>
+  </div>
 </div>
 
 </main>

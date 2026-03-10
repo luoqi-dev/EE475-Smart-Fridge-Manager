@@ -36,20 +36,20 @@ TRACK_MAX_DISTANCE_PX = 80.0
 TRACK_MISS_GRACE = 2
 
 def _get_model_path():
-    for name in ("fruit_model_optimized_data2.onnx",):
+    for name in ("fruit_model_data3.onnx",):
         p = MODEL_DIR / name
         if p.exists():
             return p
     pt = REPO_ROOT / "runs" / "fruit" / "yolo11n_data2" / "weights" / "best.pt"
     if pt.exists():
         return pt
-    raise FileNotFoundError("can't find model, run export_tflite_only.py or place fruit_model_optimized_data2.onnx in detection/model")
+    raise FileNotFoundError("can't find model, run export_tflite_only.py or place fruit_model_data3.onnx in detection/model")
 
 MODEL_PATH = _get_model_path()
 
-# Fallback when model has no names (e.g. ONNX): same order as data_2/data.yaml (fruit_model_optimized_data2)
+# Fallback when model has no names (e.g. ONNX): same order as data_2/data.yaml (fruit_model_data3)
 # class_0 = Apple, class_1 = Banana, ...
-DATA2_CLASS_NAMES = ["Apple", "Banana", "Grapes", "Kiwi", "Mango", "Orange", "Pineapple", "Sugerapple", "Watermelon"]
+DATA2_CLASS_NAMES = ["Apple", "Banana", "Grapes", "Kiwi", "Mango", "Orange", "Pineapple", "Sugerapple", "Watermelon, Carrot, Lime"]
 
 # Only keep detections with confidence >= this (avoids "class_0" on blank frames)
 CONFIDENCE_THRESHOLD = 0.65

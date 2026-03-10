@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import sqlite3
-from collections import deque
-from dataclasses import dataclass, field
-from typing import Deque, Dict, List, Optional, Set, Tuple
+from dataclasses import dataclass
+from typing import Dict, List, Optional
 
 try:
     from .collision_resolver import (
@@ -25,6 +24,14 @@ except ImportError:
     from models import VisionSession
 
 
+# Segment merge threshold: a same-class gap shorter than this stays in one segment.
+MAX_MERGE_GAP_FRAMES = 5
+# Minimum number of detection frames required before a segment can emit an event.
+MIN_FRAMES = 3
+# Minimum vertical movement needed to classify a segment as PUT_IN or TAKE_OUT.
+MIN_DELTA_Y = 30
+
+
 @dataclass(frozen=True)
 class DbEvent:
     session_id: str
@@ -36,20 +43,130 @@ class DbEvent:
 
 
 @dataclass
-class _TrackState:
-    outside_evidence: int = 0
-    has_inside_baseline: bool = False
-    confirmed_in_fridge: bool = False
-    inside_hits_window: Deque[int] = field(default_factory=deque)
-    outside_hits_window: Deque[int] = field(default_factory=deque)
-    pending_put_frame: Optional[int] = None
-    pending_remove_frame: Optional[int] = None
-    miss_count: int = 0
+class _SegmentDetection:
+    frame_no: int
+    timestamp: str
+    class_name: str
+    confidence: float
+    center_y: float
+    track_id: int
 
 
-def _prune_window(window: Deque[int], current_frame: int, window_frames: int) -> None:
-    while window and (current_frame - window[0]) >= window_frames:
-        window.popleft()
+@dataclass
+class _DetectionSegment:
+    class_name: str
+    detections: List[_SegmentDetection]
+
+
+@dataclass(frozen=True)
+class SegmentDecision:
+    class_name: str
+    first_frame_index: int
+    last_frame_index: int
+    first_y: float
+    last_y: float
+    delta_y: float
+    detection_count: int
+    event_time_utc: str
+    confidence: float
+    track_id: int
+    operation: Optional[str]
+
+
+def _collect_detections_by_class(session: VisionSession) -> Dict[str, List[_SegmentDetection]]:
+    grouped: Dict[str, List[_SegmentDetection]] = {}
+    samples_sorted = sorted(session.samples, key=lambda s: (s.timestamp_ms, s.index))
+
+    for frame_no, sample in enumerate(samples_sorted):
+        detections_by_class: Dict[str, _SegmentDetection] = {}
+        for det in sample.detections:
+            candidate = _SegmentDetection(
+                frame_no=frame_no,
+                timestamp=sample.timestamp,
+                class_name=det.class_name,
+                confidence=float(det.confidence),
+                center_y=float(det.center.y),
+                track_id=int(det.track_id),
+            )
+            current = detections_by_class.get(det.class_name)
+            if current is None or candidate.confidence > current.confidence:
+                detections_by_class[det.class_name] = candidate
+
+        for class_name, det in detections_by_class.items():
+            grouped.setdefault(class_name, []).append(det)
+
+    return grouped
+
+
+def _merge_detections_into_segments(
+    detections_by_class: Dict[str, List[_SegmentDetection]],
+) -> List[_DetectionSegment]:
+    segments: List[_DetectionSegment] = []
+
+    for class_name, detections in detections_by_class.items():
+        if not detections:
+            continue
+
+        current_segment: List[_SegmentDetection] = [detections[0]]
+        last_frame_no = detections[0].frame_no
+
+        for det in detections[1:]:
+            gap_frames = det.frame_no - last_frame_no - 1
+            if gap_frames >= MAX_MERGE_GAP_FRAMES:
+                segments.append(_DetectionSegment(class_name=class_name, detections=current_segment))
+                current_segment = [det]
+            else:
+                current_segment.append(det)
+            last_frame_no = det.frame_no
+
+        segments.append(_DetectionSegment(class_name=class_name, detections=current_segment))
+
+    return segments
+
+
+def _classify_segment(
+    segment: _DetectionSegment,
+) -> Optional[SegmentDecision]:
+    if len(segment.detections) < MIN_FRAMES:
+        return None
+
+    first_det = segment.detections[0]
+    last_det = segment.detections[-1]
+    delta_y = last_det.center_y - first_det.center_y
+
+    if abs(delta_y) < MIN_DELTA_Y:
+        operation = None
+    else:
+        operation = OPERATION_TAKE_OUT if delta_y > 0 else OPERATION_PUT_IN
+
+    return SegmentDecision(
+        class_name=segment.class_name,
+        first_frame_index=first_det.frame_no,
+        last_frame_index=last_det.frame_no,
+        first_y=first_det.center_y,
+        last_y=last_det.center_y,
+        delta_y=delta_y,
+        detection_count=len(segment.detections),
+        event_time_utc=last_det.timestamp,
+        confidence=last_det.confidence,
+        track_id=first_det.track_id,
+        operation=operation,
+    )
+
+
+def analyze_operation_segments(session: VisionSession) -> List[SegmentDecision]:
+    # Public helper for notebooks/tests: exposes the same segment and direction
+    # decisions used by the production operation inference path.
+    detections_by_class = _collect_detections_by_class(session)
+    segments = _merge_detections_into_segments(detections_by_class)
+
+    decisions: List[SegmentDecision] = []
+    for segment in sorted(segments, key=lambda seg: seg.detections[0].frame_no):
+        decision = _classify_segment(segment)
+        if decision is not None:
+            decisions.append(decision)
+
+    return decisions
 
 
 def ensure_schema_v2(conn: sqlite3.Connection) -> None:
@@ -98,108 +215,31 @@ def infer_operations_from_vision_session(
     stable_after_transition: int = 3,
     miss_grace: int = 2,
 ) -> List[ParsedOperation]:
-    states: Dict[Tuple[int, str], _TrackState] = {}
-    out: List[ParsedOperation] = []
+    del (
+        outside_evidence_min,
+        inside_hit_min,
+        outside_hit_min,
+        window_frames,
+        stable_after_transition,
+        miss_grace,
+    )
 
-    samples_sorted = sorted(session.samples, key=lambda s: (s.timestamp_ms, s.index))
+    operations: List[ParsedOperation] = []
+    for decision in analyze_operation_segments(session):
+        if decision.operation is None:
+            continue
+        operations.append(
+            ParsedOperation(
+                session_id=session.session_id,
+                event_time_utc=decision.event_time_utc,
+                item_name=decision.class_name,
+                operation=decision.operation,
+                confidence=decision.confidence,
+                track_id=decision.track_id,
+            )
+        )
 
-    for frame_no, sample in enumerate(samples_sorted):
-        seen_keys: Set[Tuple[int, str]] = set()
-
-        for det in sample.detections:
-            key = (int(det.track_id), det.class_name)
-            seen_keys.add(key)
-
-            st = states.get(key)
-            if st is None:
-                st = _TrackState()
-                states[key] = st
-
-            st.miss_count = 0
-
-            if det.in_roi:
-                st.has_inside_baseline = True
-                st.inside_hits_window.append(frame_no)
-                _prune_window(st.inside_hits_window, frame_no, window_frames)
-
-                if st.pending_remove_frame is not None:
-                    st.pending_remove_frame = None
-                    st.outside_hits_window.clear()
-
-                can_try_put = (
-                    not st.confirmed_in_fridge
-                    and st.outside_evidence >= outside_evidence_min
-                    and len(st.inside_hits_window) >= inside_hit_min
-                )
-                if can_try_put:
-                    if st.pending_put_frame is None:
-                        st.pending_put_frame = frame_no
-                    elif 0 < (frame_no - st.pending_put_frame) <= stable_after_transition:
-                        out.append(
-                            ParsedOperation(
-                                session_id=session.session_id,
-                                event_time_utc=sample.timestamp,
-                                item_name=det.class_name,
-                                operation=OPERATION_PUT_IN,
-                                confidence=float(det.confidence),
-                                track_id=int(det.track_id),
-                            )
-                        )
-                        st.confirmed_in_fridge = True
-                        st.pending_put_frame = None
-                        st.outside_evidence = 0
-                        st.inside_hits_window.clear()
-                        st.outside_hits_window.clear()
-                    elif (frame_no - st.pending_put_frame) > stable_after_transition:
-                        st.pending_put_frame = frame_no
-                else:
-                    st.pending_put_frame = None
-            else:
-                st.outside_evidence += 1
-                st.outside_hits_window.append(frame_no)
-                _prune_window(st.outside_hits_window, frame_no, window_frames)
-
-                if st.pending_put_frame is not None:
-                    st.pending_put_frame = None
-                    st.inside_hits_window.clear()
-
-                can_try_remove = (
-                    (st.has_inside_baseline or st.confirmed_in_fridge)
-                    and len(st.outside_hits_window) >= outside_hit_min
-                )
-                if can_try_remove:
-                    if st.pending_remove_frame is None:
-                        st.pending_remove_frame = frame_no
-                    elif 0 < (frame_no - st.pending_remove_frame) <= stable_after_transition:
-                        out.append(
-                            ParsedOperation(
-                                session_id=session.session_id,
-                                event_time_utc=sample.timestamp,
-                                item_name=det.class_name,
-                                operation=OPERATION_TAKE_OUT,
-                                confidence=float(det.confidence),
-                                track_id=int(det.track_id),
-                            )
-                        )
-                        st.confirmed_in_fridge = False
-                        st.pending_remove_frame = None
-                        st.has_inside_baseline = False
-                        st.outside_hits_window.clear()
-                        st.inside_hits_window.clear()
-                    elif (frame_no - st.pending_remove_frame) > stable_after_transition:
-                        st.pending_remove_frame = frame_no
-                else:
-                    st.pending_remove_frame = None
-
-        for key in list(states.keys()):
-            if key in seen_keys:
-                continue
-            st = states[key]
-            st.miss_count += 1
-            if st.miss_count > miss_grace:
-                del states[key]
-
-    return out
+    return operations
 
 
 def apply_events(conn: sqlite3.Connection, events: List[DbEvent]) -> int:

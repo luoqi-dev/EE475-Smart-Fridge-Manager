@@ -1,26 +1,49 @@
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f7fa;
+  background: linear-gradient(180deg, #eef4fb 0%, #f7f9fc 100%);
   margin: 0;
+  color: #1f2a37;
 }
 
 header {
-  background: #2c7be5;
+  background: linear-gradient(135deg, #6c9ff0 0%, #4e84da 60%, #4777c8 100%);
   color: white;
-  padding: 16px 24px;
+  padding: 28px 24px 32px;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin: 10px 0 0;
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 main {
-  padding: 24px;
-  max-width: 900px;
+  padding: 28px 24px 36px;
+  max-width: 980px;
   margin: auto;
 }
 
 .card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #dbe7f3;
+  box-shadow: 0 12px 28px rgba(63, 90, 138, 0.08);
+  padding: 20px;
   margin-bottom: 24px;
 }
 
@@ -32,20 +55,35 @@ main {
   margin-bottom: 12px;
 }
 
+.section-title {
+  margin: 0;
+  font-size: 20px;
+  color: #17324d;
+}
+
+.subsection-title {
+  margin: 0;
+  font-size: 17px;
+  color: #1f3650;
+}
+
 .toolbar-right {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .hint {
   font-size: 12px;
-  opacity: 0.75;
+  line-height: 1.5;
+  color: #5d728d;
 }
 
 .status {
   font-size: 12px;
-  opacity: 0.85;
+  color: #496079;
+  line-height: 1.5;
 }
 
 .status.error {
@@ -63,48 +101,85 @@ main {
 .controls label {
   font-size: 14px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   gap: 6px;
+  color: #29425d;
 }
 
 .controls input[type="text"] {
-  padding: 6px 8px;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #c7d7e6;
+  border-radius: 10px;
+  background: #fbfdff;
+  color: #16324a;
+  box-sizing: border-box;
 }
 
 .controls input[type="number"] {
   width: 88px;
-  padding: 6px 8px;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid #c7d7e6;
+  border-radius: 10px;
+  background: #fbfdff;
+  color: #16324a;
+  box-sizing: border-box;
 }
 
 .controls button {
-  padding: 6px 12px;
+  padding: 10px 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  background: #2c7be5;
+  background: #4f86df;
   color: white;
+  box-shadow: 0 6px 14px rgba(79, 134, 223, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .controls .secondary {
-  background: #6c757d;
+  background: #7a8da3;
+  box-shadow: 0 6px 14px rgba(122, 141, 163, 0.18);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: default;
+  transform: none;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 th, td {
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 13px 12px;
+  border-bottom: 1px solid #e6edf5;
+  text-align: left;
 }
 
 th {
-  background: #f0f3f7;
+  background: #eff5fb;
+  color: #405770;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+tbody tr {
+  background: #ffffff;
+}
+
+tbody tr:hover {
+  background: #f8fbff;
 }
 
 .hidden {
@@ -128,15 +203,37 @@ th {
   max-width: 760px;
   max-height: calc(100vh - 64px);
   margin: 32px auto;
-  padding: 20px;
+  padding: 24px;
   background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  border-radius: 20px;
+  border: 1px solid #dbe7f3;
+  box-shadow: 0 24px 48px rgba(39, 61, 102, 0.18);
   overflow-y: auto;
 }
 
 .modal-header {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 24px;
+  color: #17324d;
+}
+
+.modal-stack-gap {
+  margin-bottom: 6px;
+}
+
+.modal-subcard {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.section-copy {
+  margin: 12px 0 0;
+  color: #3e5872;
+  line-height: 1.6;
 }
 
 .collision-card-list {
@@ -147,10 +244,11 @@ th {
 }
 
 .collision-case-card {
-  border: 1px solid #d9e2ec;
-  border-radius: 10px;
+  border: 1px solid #dbe7f3;
+  border-radius: 16px;
   padding: 16px;
-  background: #fdfefe;
+  background: #fcfdff;
+  box-shadow: 0 8px 18px rgba(69, 93, 131, 0.06);
 }
 
 .collision-case-header {
@@ -163,6 +261,8 @@ th {
 
 .collision-case-title {
   margin: 0;
+  font-size: 20px;
+  color: #17324d;
 }
 
 .collision-section {
@@ -172,12 +272,14 @@ th {
 .collision-section-title {
   margin: 0 0 8px 0;
   font-size: 14px;
+  color: #3c5873;
 }
 
 .collision-message {
   margin: 0;
   font-size: 14px;
   line-height: 1.5;
+  color: #425d77;
 }
 
 .collision-item-list {
@@ -192,8 +294,8 @@ th {
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border: 1px solid #e2ebf4;
+  border-radius: 12px;
   background: #fff;
   font-size: 14px;
 }
@@ -206,17 +308,27 @@ th {
 
 .collision-item-name {
   font-weight: 600;
+  color: #1f3650;
 }
 
 .collision-item-time {
-  opacity: 0.8;
+  color: #617893;
   font-size: 13px;
 }
 
 .collision-default-block {
-  background: #f5f9ff;
-  border-radius: 8px;
+  background: #f4f8fd;
+  border: 1px solid #dde8f4;
+  border-radius: 14px;
   padding: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
 .collision-actions {
@@ -228,18 +340,53 @@ th {
 }
 
 .collision-actions button {
-  padding: 6px 12px;
+  padding: 10px 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  background: #2c7be5;
+  background: #4f86df;
   color: white;
+  box-shadow: 0 6px 14px rgba(79, 134, 223, 0.2);
 }
 
 .collision-btn-secondary {
-  background: #6c757d;
+  background: #7a8da3;
 }
 
 .manual-remove-row {
   justify-content: flex-start;
+}
+
+@media (max-width: 720px) {
+  header {
+    padding: 24px 18px 28px;
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  main {
+    padding: 20px 16px 28px;
+  }
+
+  .card,
+  .modal-panel {
+    padding: 18px;
+  }
+
+  .controls label {
+    width: calc(50% - 10px);
+    min-width: 140px;
+  }
+
+  .controls input[type="text"],
+  .controls input[type="number"] {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .toolbar {
+    align-items: flex-start;
+  }
 }

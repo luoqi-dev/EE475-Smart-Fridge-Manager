@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.innerHTML = '';
     if (!Array.isArray(rows) || rows.length === 0) {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td colspan="4" style="text-align:center;opacity:0.7;">No data</td>`;
+      tr.innerHTML = `<td colspan="4" class="empty-state-cell">No items to show</td>`;
       tbody.appendChild(tr);
       return;
     }
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (refreshing) return;
     refreshing = true;
 
-    setStatus(statusText, 'Loading...');
+    setStatus(statusText, 'Working...');
     refreshBtn.disabled = true;
 
     try {
@@ -115,11 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       renderSummary(data);
-      setStatus(statusText, `Updated: ${new Date().toLocaleString()}`);
+      setStatus(statusText, 'Updated');
     } catch (e) {
       console.error(e);
       renderSummary([]);
-      setStatus(statusText, `Error: ${e.message}`, true);
+      setStatus(statusText, 'Something went wrong', true);
     } finally {
       refreshBtn.disabled = false;
       refreshing = false;
@@ -158,25 +158,25 @@ document.addEventListener('DOMContentLoaded', function () {
   async function handleAdd() {
     const payload = getPayload();
     if (!payload.item_name) {
-      setStatus(actionStatus, 'Item is required.', true);
+      setStatus(actionStatus, 'Something went wrong', true);
       return;
     }
     if (!payload.year || !payload.month) {
-      setStatus(actionStatus, 'Year and month are required.', true);
+      setStatus(actionStatus, 'Something went wrong', true);
       return;
     }
 
     addBtn.disabled = true;
     removeBtn.disabled = true;
-    setStatus(actionStatus, 'Adding...');
+    setStatus(actionStatus, 'Working...');
 
     try {
-      const r = await postJson(API_ADD, payload);
-      setStatus(actionStatus, `Added "${payload.item_name}" (${formatCaseTime(r.event_time_utc)})`);
+      await postJson(API_ADD, payload);
+      setStatus(actionStatus, 'Updated');
       await refresh();
     } catch (e) {
       console.error(e);
-      setStatus(actionStatus, `Error: ${e.message}`, true);
+      setStatus(actionStatus, 'Something went wrong', true);
     } finally {
       addBtn.disabled = false;
       removeBtn.disabled = false;
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
       manualRemoveItems.innerHTML = '';
       manualRemoveTitle.textContent = '';
       manualRemoveSummary.textContent = '';
-      setStatus(manualRemoveStatus, 'Idle');
+      setStatus(manualRemoveStatus, 'Ready');
     }
   }
 
@@ -219,13 +219,13 @@ document.addEventListener('DOMContentLoaded', function () {
   async function handleRemove() {
     const payload = getPayload();
     if (!payload.item_name) {
-      setStatus(actionStatus, 'Item is required.', true);
+      setStatus(actionStatus, 'Something went wrong', true);
       return;
     }
 
     addBtn.disabled = true;
     removeBtn.disabled = true;
-    setStatus(actionStatus, 'Removing...');
+    setStatus(actionStatus, 'Working...');
 
     try {
       const result = await postJson('/api/manual/remove/candidates', { item_name: payload.item_name });
@@ -233,10 +233,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (items.length === 0) {
         window.alert(`No in-fridge ${payload.item_name} found.`);
-        setStatus(actionStatus, 'Idle');
+        setStatus(actionStatus, 'Ready');
       } else if (items.length === 1) {
         await submitManualRemove([items[0].id]);
-        setStatus(actionStatus, `Removed "${payload.item_name}" (id=${items[0].id})`);
+        setStatus(actionStatus, 'Updated');
         await refresh();
       } else {
         manualRemoveItemsState = items.map((item, index) => ({
@@ -244,15 +244,15 @@ document.addEventListener('DOMContentLoaded', function () {
           sequence: index + 1,
         }));
         manualRemoveSelection = [String(manualRemoveItemsState[0].id)];
-        manualRemoveTitle.textContent = `Item: ${payload.item_name}`;
-        manualRemoveSummary.textContent = 'Select the item(s) to remove.';
+        manualRemoveTitle.textContent = 'Select one or more items to remove from the fridge.';
+        manualRemoveSummary.textContent = `${titleCase(payload.item_name)} items currently in the fridge`;
         renderManualRemoveItems();
         showManualRemoveModal(true);
-        setStatus(actionStatus, 'Idle');
+        setStatus(actionStatus, 'Ready');
       }
     } catch (e) {
       console.error(e);
-      setStatus(actionStatus, `Error: ${e.message}`, true);
+      setStatus(actionStatus, 'Something went wrong', true);
     } finally {
       addBtn.disabled = false;
       removeBtn.disabled = false;
@@ -269,25 +269,25 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       manualRemoveSelection = manualRemoveSelection.filter((id) => id !== itemId);
     }
-    setStatus(manualRemoveStatus, 'Idle');
+    setStatus(manualRemoveStatus, 'Ready');
   });
 
   manualRemoveConfirmBtn.addEventListener('click', async () => {
     if (manualRemoveSelection.length === 0) {
-      setStatus(manualRemoveStatus, 'Please select at least one item.', true);
+      setStatus(manualRemoveStatus, 'Something went wrong', true);
       return;
     }
 
     manualRemoveConfirmBtn.disabled = true;
     manualRemoveCancelBtn.disabled = true;
-    setStatus(manualRemoveStatus, 'Submitting...');
+    setStatus(manualRemoveStatus, 'Working...');
     try {
       await submitManualRemove(manualRemoveSelection);
       showManualRemoveModal(false);
-      setStatus(actionStatus, 'Manual remove completed.');
+      setStatus(actionStatus, 'Updated');
       await refresh();
     } catch (e) {
-      setStatus(manualRemoveStatus, `Error: ${e.message}`, true);
+      setStatus(manualRemoveStatus, 'Something went wrong', true);
     } finally {
       manualRemoveConfirmBtn.disabled = false;
       manualRemoveCancelBtn.disabled = false;
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const statusEl = document.createElement('span');
       statusEl.className = 'status';
-      statusEl.textContent = 'Idle';
+      statusEl.textContent = 'Ready';
 
       const defaultMessage = document.createElement('p');
       defaultMessage.className = 'collision-message';
@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         <div class="collision-actions">
           <button type="button" class="collisionConfirmBtn">Confirm</button>
-          <button type="button" class="collisionIgnoreBtn collision-btn-secondary">Ignore</button>
+          <button type="button" class="collisionIgnoreBtn collision-btn-secondary">Use Default</button>
         </div>
       `;
 
@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
           setStatus(statusEl, `You can select at most ${requiredCount} item${requiredCount === 1 ? '' : 's'}.`, true);
           return false;
         }
-        setStatus(statusEl, 'Idle');
+        setStatus(statusEl, 'Ready');
         return true;
       }
 
@@ -501,13 +501,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         confirmBtn.disabled = true;
         ignoreBtn.disabled = true;
-        setStatus(statusEl, 'Submitting...');
+        setStatus(statusEl, 'Working...');
         try {
           await submitCollisionAction(c.case_id, selected);
           removeCaseCard(c.case_id);
           await refresh();
         } catch (e) {
-          setStatus(statusEl, `Error: ${e.message}`, true);
+          setStatus(statusEl, 'Something went wrong', true);
         } finally {
           confirmBtn.disabled = false;
           ignoreBtn.disabled = false;
@@ -517,13 +517,13 @@ document.addEventListener('DOMContentLoaded', function () {
       ignoreBtn.addEventListener('click', async () => {
         confirmBtn.disabled = true;
         ignoreBtn.disabled = true;
-        setStatus(statusEl, 'Submitting...');
+        setStatus(statusEl, 'Working...');
         try {
           await submitCollisionAction(c.case_id, view.defaultIds);
           removeCaseCard(c.case_id);
           await refresh();
         } catch (e) {
-          setStatus(statusEl, `Error: ${e.message}`, true);
+          setStatus(statusEl, 'Something went wrong', true);
         } finally {
           confirmBtn.disabled = false;
           ignoreBtn.disabled = false;

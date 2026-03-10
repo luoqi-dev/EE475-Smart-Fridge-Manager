@@ -1,6 +1,4 @@
 Quick Note
-
-
 -------Tasks-------
 
 ------- Hardware ⚡️--------------
@@ -8,8 +6,6 @@ Quick Note
 开机即启动
 
 ------- Front end 🖥️--------------
-优化UI页面：时间显示优化
-manual remove and add 功能优化
 
 ------- Back end 🔢--------------
 

@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Smart Fridge Inventory System</title>
+  <title>Smart Fridge Hub</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>
-  <h1>Smart Fridge Inventory System</h1>
+  <div class="header-inner">
+    <h1 class="page-title">Smart Fridge Hub</h1>
+    <p class="page-subtitle">Monitor inventory, food freshness, and fridge activity in one place.</p>
+  </div>
 </header>
 
 <main>
 
 <div class="card">
   <div class="toolbar">
-    <h2 style="margin:0;">Manual Controls</h2>
-    <span class="hint">Auto refresh every 5 seconds</span>
+    <h2 class="section-title">Quick Actions</h2>
+    <span class="hint">Use manual actions when an item is missed or needs correction.</span>
   </div>
 
   <div class="controls">
@@ -45,30 +48,31 @@
       <input id="manualHourInput" type="number" placeholder="12" min="0" max="23" />
     </label>
 
-    <button id="addBtn">Add (IN_FRIDGE)</button>
-    <button id="removeBtn" class="secondary">Remove (REMOVED)</button>
+    <button id="addBtn">Add Item</button>
+    <button id="removeBtn" class="secondary">Remove Items</button>
 
-    <span id="actionStatus" class="status">Idle</span>
+    <span id="actionStatus" class="status">Ready</span>
   </div>
 </div>
 
 
 <div class="card">
   <div class="toolbar">
-    <h2 style="margin:0;">Current Inventory</h2>
+    <h2 class="section-title">Fridge Inventory</h2>
     <div class="toolbar-right">
       <button id="refreshBtn">Refresh</button>
-      <span id="statusText" class="status">Idle</span>
+      <span class="hint">Updates every 5 seconds</span>
+      <span id="statusText" class="status">Ready</span>
     </div>
   </div>
 
   <table id="inventoryTable">
     <thead>
       <tr>
-        <th>item_name</th>
-        <th>quantity</th>
-        <th>earliest_put_in_time</th>
-        <th>latest_put_in_time</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>First Added</th>
+        <th>Latest Added</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -84,14 +88,14 @@
 
   <div class="modal-panel">
 
-    <div class="modal-header">
+    <div class="modal-header modal-stack-gap">
 
-      <h2 style="margin:0;">Action Required</h2>
+      <h2 class="modal-title">Review Needed</h2>
 
     </div>
 
-    <div class="hint" style="margin-top:6px;">
-      Review each open collision case below.
+    <div class="hint">
+      Please review the open inventory cases below.
     </div>
 
     <div id="collisionCardList" class="collision-card-list"></div>
@@ -104,17 +108,17 @@
   <div class="modal-backdrop"></div>
 
   <div class="modal-panel">
-    <div class="modal-header">
-      <h2 style="margin:0;">Manual Remove</h2>
+    <div class="modal-header modal-stack-gap">
+      <h2 class="modal-title">Remove Items</h2>
     </div>
 
-    <div class="hint" id="manualRemoveTitle" style="margin-top:6px;"></div>
+    <div class="hint" id="manualRemoveTitle">Select one or more items to remove from the fridge.</div>
 
-    <p id="manualRemoveSummary" style="margin-top:12px;"></p>
+    <p id="manualRemoveSummary" class="section-copy"></p>
 
-    <div class="card" style="margin-top:12px; margin-bottom:0;">
+    <div class="card modal-subcard">
       <div class="toolbar">
-        <h3 style="margin:0;">Select item(s) to remove</h3>
+        <h3 class="subsection-title">Select item(s) to remove</h3>
       </div>
 
       <div id="manualRemoveItems" class="collision-item-list"></div>
@@ -123,7 +127,7 @@
     <div class="modal-actions">
       <button id="manualRemoveConfirmBtn">Confirm</button>
       <button id="manualRemoveCancelBtn" class="secondary">Cancel</button>
-      <span id="manualRemoveStatus" class="status">Idle</span>
+      <span id="manualRemoveStatus" class="status">Ready</span>
     </div>
   </div>
 </div>

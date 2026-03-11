@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   const expiredToastShown = new Set();
 
+  const toastQueue = [];
+  let toastActive = false;
+
   function setStatus(el, msg, isError = false) {
     el.textContent = msg;
     el.classList.toggle('error', !!isError);
@@ -94,19 +97,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Toast helper
   function showToast(message) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const toastData = { message };
+
+    if (toastActive) {
+      toastQueue.push(toastData);
+      return;
+    }
+
+    displayToast(toastData);
+  }
+
+  function displayToast(data) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    toastActive = true;
+
     const toast = document.createElement('div');
     toast.className = 'toast';
+
     toast.innerHTML = `
       <div class="toast-title">Expired Item</div>
-      <div class="toast-message">${escapeHtml(message)}</div>
-      <button type="button" class="toast-close" aria-label="Close">&times;</button>
+      <div class="toast-message">${data.message}</div>
+      <button class="toast-close">&times;</button>
     `;
 
     const closeBtn = toast.querySelector('.toast-close');
-    closeBtn?.addEventListener('click', () => toast.remove());
 
-    toastContainer.appendChild(toast);
-    window.setTimeout(() => toast.remove(), 6000);
+    closeBtn.addEventListener('click', () => {
+      toast.remove();
+      toastActive = false;
+
+      showNextToast();
+    });
+
+    container.appendChild(toast);
+  }
+
+  function showNextToast() {
+    if (toastQueue.length === 0) return;
+
+    const nextToast = toastQueue.shift();
+    displayToast(nextToast);
   }
 
   // Expiration helpers

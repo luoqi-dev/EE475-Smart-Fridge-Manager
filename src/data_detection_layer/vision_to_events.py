@@ -29,7 +29,7 @@ MAX_MERGE_GAP_FRAMES = 5
 # Minimum number of detection frames required before a segment can emit an event.
 MIN_FRAMES = 3
 # Minimum vertical movement needed to classify a segment as PUT_IN or TAKE_OUT.
-MIN_DELTA_Y = 30
+MIN_DELTA_Y = 100
 
 
 @dataclass(frozen=True)

@@ -56,11 +56,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Expiration rules
   const EXPIRY_RULES_MS = {
-    apple: 30 * 1000,
-    banana: 2 * 60 * 1000,
-    orange: 2 * 60 * 1000,
-    lemon: 2 * 60 * 1000,
-    carrot: 2 * 60 * 1000,
+    apple: 300 * 1000,
+    banana: 600 * 1000,
+    orange: 120 * 1000,
+    lemon: 600 * 1000,
+    carrot: 600 * 1000,
   };
   const expiredToastShown = new Set();
 

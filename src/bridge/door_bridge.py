@@ -6,6 +6,7 @@ import argparse
 import glob
 import json
 import socket
+import sqlite3
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -39,6 +40,10 @@ def sessions_dir() -> Path:
     return repo_root() / "data" / "sessions"
 
 
+def db_path() -> Path:
+    return repo_root() / "data" / "db" / "fridge.db"
+
+
 def auto_detect_port() -> Optional[str]:
     candidates = []
     for pattern in PORT_PATTERNS:
@@ -67,6 +72,46 @@ def parse_event_line(line: str) -> Optional[dict]:
         return None
 
     return {"event_type": event_type, "seq": seq, "t_ms": t_ms}
+
+
+def parse_sensor_line(line: str) -> Optional[dict]:
+    if not line.startswith("FRIDGE,SENSOR,DHT11,"):
+        return None
+
+    parts = line.split(",")
+    if len(parts) != 6:
+        return None
+
+    _, _, sensor_type, t_ms_part, temp_part, humidity_part = parts
+    if sensor_type != "DHT11":
+        return None
+    if not t_ms_part.startswith("t_ms="):
+        return None
+    if not temp_part.startswith("temp_c="):
+        return None
+    if not humidity_part.startswith("humidity_pct="):
+        return None
+
+    try:
+        t_ms = int(t_ms_part.split("=", 1)[1])
+        temperature = int(temp_part.split("=", 1)[1])
+        humidity = int(humidity_part.split("=", 1)[1])
+    except ValueError:
+        return None
+
+    return {"t_ms": t_ms, "temperature": temperature, "humidity": humidity}
+
+
+def insert_environment_reading(database_path: Path, temperature: int, humidity: int) -> None:
+    conn = sqlite3.connect(str(database_path), timeout=5)
+    try:
+        with conn:
+            conn.execute(
+                "INSERT INTO environment (temperature, humidity) VALUES (?, ?)",
+                (temperature, humidity),
+            )
+    finally:
+        conn.close()
 
 
 def send_session_closed(socket_path: str, session_id: str) -> None:
@@ -113,6 +158,7 @@ def main() -> int:
         return 1
 
     camera_manager = CameraCaptureManager(sessions_dir())
+    environment_db_path = db_path()
     active_session_id: Optional[str] = None
 
     print(f"[DOOR] listening on {port} @ {args.baud}", flush=True)
@@ -131,6 +177,29 @@ def main() -> int:
 
                 line = raw.decode("utf-8", errors="replace").strip()
                 if not line:
+                    continue
+
+                sensor = parse_sensor_line(line)
+                if sensor is not None:
+                    try:
+                        insert_environment_reading(
+                            environment_db_path,
+                            sensor["temperature"],
+                            sensor["humidity"],
+                        )
+                        print(
+                            "[SENSOR] "
+                            f"t_ms={sensor['t_ms']} "
+                            f"temp_c={sensor['temperature']} "
+                            f"humidity_pct={sensor['humidity']}",
+                            flush=True,
+                        )
+                    except sqlite3.Error as exc:
+                        print(f"[SENSOR] db insert failed: {exc}", file=sys.stderr)
+                    continue
+
+                if line.startswith("FRIDGE,SENSOR,DHT11,ERROR,"):
+                    print(f"[SENSOR] device read error: {line}", file=sys.stderr)
                     continue
 
                 event = parse_event_line(line)

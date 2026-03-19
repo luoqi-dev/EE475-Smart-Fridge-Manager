@@ -14,8 +14,7 @@ from ultralytics import YOLO
 
 # ---------- Config ----------
 MODEL_DIR = Path(__file__).resolve().parent
-# Runtime assumption: process is started from project root (EE475-Smart-Fridge-Manager).
-REPO_ROOT = Path.cwd().resolve()
+REPO_ROOT = Path(__file__).resolve().parents[3]
 EVENTS_DIR = MODEL_DIR / "events"
 # data/sessions/<session_id>/ — hardware stores frames in frames/ subdir; AI writes vision.json in session dir
 SESSIONS_BASE_DIR = REPO_ROOT / "data" / "sessions"
@@ -40,10 +39,7 @@ def _get_model_path():
         p = MODEL_DIR / name
         if p.exists():
             return p
-    pt = REPO_ROOT / "runs" / "fruit" / "yolo11n_data2" / "weights" / "best.pt"
-    if pt.exists():
-        return pt
-    raise FileNotFoundError("can't find model, run export_tflite_only.py or place fruit_model_data3.onnx in detection/model")
+    raise FileNotFoundError("can't find model, place fruit_model_data3.onnx in src/detection/model")
 
 MODEL_PATH = _get_model_path()
 
